@@ -3,7 +3,7 @@ info:
   title: FreeRADIUS LDAP API
   version: '1.0'
   summary: An API for managing subscribers and attributes in LDAP
-  description: 'A LUA API running in NGINX to abstract LDAP access'
+  description: A LUA API running in NGINX to abstract LDAP access
   contact:
     name: NetworkRADIUS support
     url: 'https://support.networkradius.com'
@@ -64,88 +64,6 @@ paths:
         description: A single subscriber object
 components:
   schemas:
-    policy:
-      title: A collection of policy attributes
-      type: object
-      description: ''
-      properties:
-        radiusAttribute:
-          type: array
-          description: Policies that will be evaluated for RADIUS clients
-          items:
-            $ref: '#/components/schemas/policy-attribute'
-        'dhcpv4Attribute ':
-          type: array
-          description: Policies that will be evaluated for DHCPv4 clients
-          items:
-            $ref: '#/components/schemas/policy-attribute'
-        dhcpv6Attribute:
-          type: array
-          description: Policies that will be evaluated for DHCPv6 clients
-          items:
-            $ref: '#/components/schemas/policy-attribute'
-    policy-attribute:
-      title: policy-attribute
-      type: object
-      examples: []
-      description: A generic attribute in a list of policy operations.
-      properties:
-        attr-ref:
-          type: string
-          pattern: '(?:(outer|parent)\.)?(?:(reply|request|control|session-state)\.)?([-A-Za-z0-9_/]+)'
-          minLength: 1
-          maxLength: 255
-          example: outer.request.User-Name
-          description: An attribute name with request and list qualifiers
-        op:
-          type: string
-          minLength: 1
-          maxLength: 3
-          enum:
-            - +
-            - '-'
-            - '*'
-            - /
-            - '&'
-            - '|'
-            - '!'
-            - ^
-            - '>>'
-            - '<<'
-            - +=
-            - '-='
-            - '*='
-            - /=
-            - '|='
-            - '&='
-            - <<=
-            - '>>='
-            - '='
-            - ':='
-            - ^=
-            - '!='
-            - '>='
-            - '>'
-            - <=
-            - <
-            - '=~'
-            - '!~'
-            - '=*'
-            - '!*'
-            - '=='
-          example: ':='
-          description: The operator which will be used to evaluate this AVP at runtime when the policy is processed by the RADIUS server.
-        value:
-          oneOf:
-            - type: integer
-            - type: boolean
-            - type: string
-              properties: {}
-          description: 'A value to assign to assign to the attribute.  The value may be an integer, boolean, or string when creating a new policy attribute but will always be returned as a string.'
-      required:
-        - attr-ref
-        - op
-        - value
     subscriber:
       title: subscriber
       type: object
@@ -193,6 +111,6 @@ components:
           description: The port the subscriber is bound to.
           example: 'DSLAM03-D6-KTP atm 0/0/0/44:0.35'
         policy:
-          $ref: '#/components/schemas/policy'
+          $ref: ../models/policy.yaml
       required:
         - id

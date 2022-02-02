@@ -1,0 +1,19 @@
+title: A collection of policy attributes
+type: object
+description: 'Object holding the generic/flexible policy assignments for RADIUS, DHCPv4 and DHCPv6'
+properties:
+  radiusAttribute:
+    type: array
+    description: Policies that will be evaluated for RADIUS clients
+    items:
+      $ref: ./policy-attribute.yaml
+  'dhcpv4Attribute ':
+    type: array
+    description: Policies that will be evaluated for DHCPv4 clients
+    items:
+      $ref: ./policy-attribute.yaml
+  dhcpv6Attribute:
+    type: array
+    description: Policies that will be evaluated for DHCPv6 clients
+    items:
+      $ref: ./policy-attribute.yaml

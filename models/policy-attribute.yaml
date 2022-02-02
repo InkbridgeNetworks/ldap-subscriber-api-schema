@@ -1,0 +1,60 @@
+title: policy-attribute
+type: object
+examples: []
+description: A generic attribute in a list of policy operations.
+properties:
+  attr-ref:
+    type: string
+    pattern: '(?:(outer|parent)\.)?(?:(reply|request|control|session-state)\.)?([-A-Za-z0-9_/]+)'
+    minLength: 1
+    maxLength: 255
+    example: outer.request.User-Name
+    description: An attribute name with request and list qualifiers
+  op:
+    type: string
+    minLength: 1
+    maxLength: 3
+    enum:
+      - +
+      - '-'
+      - '*'
+      - /
+      - '&'
+      - '|'
+      - '!'
+      - ^
+      - '>>'
+      - '<<'
+      - +=
+      - '-='
+      - '*='
+      - /=
+      - '|='
+      - '&='
+      - <<=
+      - '>>='
+      - '='
+      - ':='
+      - ^=
+      - '!='
+      - '>='
+      - '>'
+      - <=
+      - <
+      - '=~'
+      - '!~'
+      - '=*'
+      - '!*'
+      - '=='
+    example: ':='
+    description: The operator which will be used to evaluate this AVP at runtime when the policy is processed by the RADIUS server.
+  value:
+    oneOf:
+      - type: integer
+      - type: boolean
+      - type: string
+    description: 'A value to assign to assign to the attribute.  The value may be an integer, boolean, or string when creating a new policy attribute but will always be returned as a string.'
+required:
+  - attr-ref
+  - op
+  - value
