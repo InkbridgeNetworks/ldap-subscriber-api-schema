@@ -1,4 +1,6 @@
 openapi: 3.1.0
+x-stoplight:
+  id: a8dccba0a1772
 info:
   title: FreeRADIUS LDAP API
   version: '1.0'

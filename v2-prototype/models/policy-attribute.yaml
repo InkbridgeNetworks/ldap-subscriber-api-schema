@@ -1,4 +1,6 @@
 title: policy-attribute
+x-stoplight:
+  id: 04c194c3eb9c6
 type: object
 examples: []
 description: A generic attribute in a list of policy operations.

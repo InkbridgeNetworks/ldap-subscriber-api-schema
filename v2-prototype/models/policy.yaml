@@ -1,4 +1,6 @@
 title: A collection of policy attributes
+x-stoplight:
+  id: 8b7dc8373dda3
 type: object
 description: 'Object holding the generic/flexible policy assignments for RADIUS, DHCPv4 and DHCPv6'
 properties:

@@ -1,0 +1,333 @@
+{
+  "openapi": "3.1.0",
+  "x-stoplight": {
+    "id": "j70spdn4dvy7p"
+  },
+  "info": {
+    "title": "NetworkRADIUS LDAP API for Carriers",
+    "version": "1.0",
+    "summary": "A Lua based lightweight wrapper around OpenLDAP",
+    "description": "This API runs natively in OpenResty/NGINX to provide a high performance restful layer around an LDAP instance.  It should be mostly object agonistic, but has some special endpoints.",
+    "contact": {
+      "name": "Arran Cudbard-Bell",
+      "url": "http://www.networkradius.com",
+      "email": "support@networkradius.com"
+    },
+    "license": {}
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/realms": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-realms",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/realm"
+                }
+              }
+            }
+          }
+        },
+        "description": "Return an array available realms"
+      },
+      "post": {
+        "summary": "",
+        "operationId": "post-realms",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "description": "Add a new realm",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/realm"
+              }
+            }
+          },
+          "description": "The definition of the new realm"
+        }
+      }
+    },
+    "/realms/{realmId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/realmId"
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-realms-realmId"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "realm": {
+        "title": "realm",
+        "x-stoplight": {
+          "id": "or81e5rovv950"
+        },
+        "type": "object",
+        "description": "Holds a set of subscribers, and LDAP/RADIUS attributes associated with a given realm",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The realm ID.  This may map directly with the domain portion in a user's NAI, and can be used to separate subscribers belonging to different areas of the business, or to external customers.",
+            "example": "example.org"
+          },
+          "description": {
+            "type": "string",
+            "description": "A humanly readable description of the realm",
+            "example": "example.org subscribers are actually foo subscribers, who we are authenticating on behalf of bar"
+          },
+          "servicePrecedence": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "secondary"
+            ],
+            "example": "primary",
+            "description": "If a subscriber did not authenticate using a qualified NAI, and appears in multiple realms, the first primary realm with take precedence."
+          },
+          "serviceProfile": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://192.168.0.1/service-profiles/fixedLine/profiles/INETG1M",
+            "description": "The URI of a service-profile object to apply to all subscribers in this realm.  The service-profile object must exist, and referential integrity will be enforced."
+          }
+        }
+      },
+      "subscriber": {
+        "title": "subscriber",
+        "x-stoplight": {
+          "id": "39i82q1wb1101"
+        },
+        "type": "object",
+        "description": "A subscriber - A user authenticating via the RADIUS service",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Must be set to the combination of subscriberID '+' serviceAccessMedia.  This uniquely identifies a subscriber object for a particular type of service, e.g. fixedLine vs wireless",
+            "example": "123456789+fixedLine"
+          },
+          "userPassword": {
+            "type": "string",
+            "description": "A password used to authenticate the subscriber. If no password has been explicitly specified for the user (auth via DHCP for example), the User-Password attribute will still be populated in, incoming Access-Requests.  We need to check its value to ensure the RADIUS shared-secret (of which it is reversibly encrypted with) is correct. If a User-Password has not been explicitly set, it will usually be the same as User-Name or Calling-Station-ID",
+            "example": "superSecret"
+          },
+          "subscriberId": {
+            "type": "string",
+            "description": "A unique (within a realm) identifier for a subscriber",
+            "example": "123456789"
+          },
+          "serviceStatus": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "suspended"
+            ],
+            "description": "Whether this subscriber can access the service"
+          },
+          "servicePrecedence": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "secondary"
+            ],
+            "description": "If multiple subscriber objects match an incoming Access-Request, the first subscriber object with \"primary\" will be used.",
+            "example": "primary"
+          },
+          "serviceProfile": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URI of a service profile object to apply to the subscriber",
+            "example": "http://198.51.100.1/service-profiles/fixedLine/profiles/INETG1M"
+          },
+          "clientGroup": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URI of a client-group to bind the subscriber to.  The subscriber will only be able to authenticate via these RADIUS clients.",
+            "example": "http://198.51.100.1/client-groups/group1",
+            "deprecated": true
+          },
+          "subscriberGroup": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://198.51.100.1/subscriber-groups/groupA",
+            "description": "The URI of a subscriber-group object.  Used to apply common sets of RADIUS attributes or service-profiles to subscribers."
+          },
+          "portBinding": {
+            "type": "boolean",
+            "description": "If true, the subscriber will be unabled to authenticate via any other circuit than the one we learned the first time the subscriber authenticated."
+          },
+          "portBindingIdentifier": {
+            "type": "string",
+            "example": "DSLAM03-D6-KTP atm 0/0/0/44:0.35",
+            "description": "The subscriber's unique circuit ID, either learned or pre-provisioned."
+          },
+          "lastRadiusClient": {
+            "type": "string",
+            "format": "uri",
+            "description": "URI of the last client the subscriber authenticated via.  Primarily used for Change of Authorisation and disconnect messages.",
+            "example": "http://198.51.100.1/clients/192.0.2.1"
+          },
+          "generateCDR": {
+            "type": "boolean",
+            "description": "Generate CDRs for this subscriber, overrides generateCDR in the service-profile"
+          }
+        },
+        "required": [
+          "id",
+          "userPassword",
+          "subscriberId",
+          "servicePrecedence",
+          "serviceProfile"
+        ]
+      },
+      "client": {
+        "title": "client",
+        "x-stoplight": {
+          "id": "zhddk66aypm1a"
+        },
+        "type": "object",
+        "description": "A RADIUS client that is authorized to communicate with the RADIUS service.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "192.0.2.1",
+            "description": "An IP address or subnet (cidr format) that uniquely identifies the RADIUS client"
+          },
+          "radiusClientSecret": {
+            "type": "string",
+            "example": "testing123",
+            "description": "The shared secret (pre-shared-key) the RADIUS client will use to communicate with the RADIUS service.",
+            "format": "password"
+          },
+          "radiusClientShortname": {
+            "type": "string",
+            "example": "my-test-client",
+            "description": "A friendly name that will be shown in logs"
+          },
+          "radiusClientType": {
+            "type": "string",
+            "description": "What the RADIUS client is (type/make/model)",
+            "example": "myFirstNAS"
+          },
+          "radiusClientRequireMa": {
+            "type": "boolean",
+            "description": "Whether we requires the Message-Authenticator attribute in Access-Requests from this client."
+          },
+          "radiusClientComment": {
+            "type": "string",
+            "description": "A humanly readable comment associated with the client",
+            "example": "This RADIUS client authenticates all subscribers in the foo region of bar"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "client-group": {
+        "type": "object",
+        "title": "client-group",
+        "x-stoplight": {
+          "id": "5b9nnqawh4d41"
+        },
+        "description": "A method of binding subscribers to a particular group of RADIUS clients.",
+        "deprecated": true,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The identifier for the client-group",
+            "example": "group1"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "subscriber-group": {
+        "title": "subscriber-group",
+        "x-stoplight": {
+          "id": "8y76ggnb1sgil"
+        },
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "A unique identifier for the subscriber-group"
+          }
+        },
+        "description": "A group of subscribers, used to apply RADIUS attribute overrides to subsets of subscribers."
+      },
+      "service-profile": {
+        "title": "service-profile",
+        "x-stoplight": {
+          "id": "kprv79ox656ep"
+        },
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "INET1M",
+            "description": "A generic configuration applied to a subscriber"
+          },
+          "portBinding": {
+            "type": "boolean",
+            "description": "The default port binding state for any subscruber which uses this service-profile"
+          },
+          "generateCDR": {
+            "type": "boolean",
+            "description": "Generate Call Data Records for subscribers which use this subscriber-profile"
+          },
+          "allowSuspension": {
+            "type": "boolean",
+            "description": "Allow suspension for subscribers that use this service-profile.  If false, subscribers will be entirely disabled."
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "description": "The service a subscriber will receive.  Usually describes any ACLs and bandwidth restrictions to apply to the subscriber."
+      }
+    },
+    "parameters": {
+      "realmId": {
+        "name": "realmId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "example.org"
+        },
+        "description": "Realm this operation relates to"
+      }
+    }
+  }
+}
