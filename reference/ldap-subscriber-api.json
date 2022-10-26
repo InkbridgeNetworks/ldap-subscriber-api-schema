@@ -414,7 +414,7 @@
         }
       ],
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Return the definition of an accessMedia profile",
         "tags": [
           "Profile Management"
         ],
@@ -430,7 +430,7 @@
         }
       ],
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Return the",
         "tags": [
           "Profile Management"
         ],
@@ -562,11 +562,6 @@
             "description": "Must be set to the combination of subscriberID '+' serviceAccessMedia.  This uniquely identifies a subscriber object for a particular type of service, e.g. fixedLine vs wireless",
             "example": "123456789+fixedLine"
           },
-          "userPassword": {
-            "type": "string",
-            "description": "A password used to authenticate the subscriber. If no password has been explicitly specified for the user (auth via DHCP for example), the User-Password attribute will still be populated in, incoming Access-Requests.  We need to check its value to ensure the RADIUS shared-secret (of which it is reversibly encrypted with) is correct. If a User-Password has not been explicitly set, it will usually be the same as User-Name or Calling-Station-ID",
-            "example": "superSecret"
-          },
           "subscriberId": {
             "type": "string",
             "description": "A unique (within a realm) identifier for a subscriber",
@@ -582,6 +577,11 @@
             "format": "uri",
             "description": "The URI of a service profile object to apply to the subscriber",
             "example": "http://198.51.100.1/service-profiles/fixedLine/profiles/INETG1M"
+          },
+          "userPassword": {
+            "type": "string",
+            "description": "A password used to authenticate the subscriber. If no password has been explicitly specified for the user (auth via DHCP for example), the User-Password attribute will still be populated in, incoming Access-Requests.  We need to check its value to ensure the RADIUS shared-secret (of which it is reversibly encrypted with) is correct. If a User-Password has not been explicitly set, it will usually be the same as User-Name or Calling-Station-ID",
+            "example": "superSecret"
           },
           "serviceStatus": {
             "type": "string",
@@ -628,11 +628,16 @@
             "format": "uri",
             "description": "URI of the last client the subscriber authenticated via.  Primarily used for Change of Authorisation and disconnect messages.",
             "example": "http://198.51.100.1/clients/192.0.2.1"
+          },
+          "array": {
+            "type": "string"
+          },
+          "suspendServiceProfile": {
+            "type": "string"
           }
         },
         "required": [
           "id",
-          "userPassword",
           "subscriberId",
           "serviceAccessMedia",
           "serviceProfile"
@@ -796,7 +801,7 @@
         "required": true,
         "schema": {
           "type": "string",
-          "example": "123456789"
+          "example": "123456789+fixedLine"
         },
         "description": "A unique identifier for a subscriber"
       },
