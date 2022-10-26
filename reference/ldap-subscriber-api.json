@@ -25,7 +25,7 @@
       "get": {
         "summary": "List all realms",
         "tags": [
-          "realm-management"
+          "Realm Management"
         ],
         "responses": {
           "200": {
@@ -77,7 +77,7 @@
           "description": "The definition of the new realm"
         },
         "tags": [
-          "realm-management"
+          "Realm Management"
         ]
       }
     },
@@ -90,7 +90,7 @@
       "get": {
         "summary": "Retrieve a realm definition",
         "tags": [
-          "realm-management"
+          "Realm Management"
         ],
         "responses": {
           "200": {
@@ -147,7 +147,7 @@
           }
         },
         "tags": [
-          "realm-management"
+          "Realm Management"
         ]
       },
       "patch": {
@@ -178,7 +178,7 @@
           }
         },
         "tags": [
-          "realm-management"
+          "Realm Management"
         ]
       },
       "delete": {
@@ -202,7 +202,7 @@
         ],
         "description": "Delete realm definition",
         "tags": [
-          "realm-management"
+          "Realm Management"
         ]
       }
     },
@@ -222,7 +222,7 @@
       "get": {
         "summary": "List all subscribers in a realm",
         "tags": [
-          "subscriber-management"
+          "Subscriber Management"
         ],
         "responses": {
           "200": {
@@ -272,7 +272,7 @@
           }
         },
         "tags": [
-          "subscriber-management"
+          "Subscriber Management"
         ],
         "description": "Add a new subscriber definition"
       }
@@ -289,7 +289,7 @@
       "get": {
         "summary": "Retrieve a subscriber",
         "tags": [
-          "subscriber-management"
+          "Subscriber Management"
         ],
         "responses": {
           "200": {
@@ -343,7 +343,7 @@
         },
         "description": "Update specific subscriber definition for a given realm by replacing all the fields of the current object with the new values.",
         "tags": [
-          "subscriber-management"
+          "Subscriber Management"
         ]
       },
       "patch": {
@@ -373,7 +373,7 @@
           }
         },
         "tags": [
-          "subscriber-management"
+          "Subscriber Management"
         ],
         "description": "Update specific subscriber definition for a given realm by replacing only the provided attributes"
       },
@@ -393,14 +393,16 @@
         },
         "description": "Delete specific subscriber definition for a given realm.",
         "tags": [
-          "subscriber-management"
+          "Subscriber Management"
         ]
       }
     },
     "/service-profiles": {
       "get": {
         "summary": "List all configured service-profile access medias",
-        "tags": [],
+        "tags": [
+          "Profile Management"
+        ],
         "responses": {},
         "operationId": "get-service-profiles"
       }
@@ -413,7 +415,9 @@
       ],
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Profile Management"
+        ],
         "responses": {},
         "operationId": "get-service-profiles-serviceCategoryId",
         "description": ""
@@ -427,7 +431,9 @@
       ],
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Profile Management"
+        ],
         "responses": {},
         "operationId": "get-service-profiles-profiles",
         "description": ""
@@ -444,7 +450,9 @@
       ],
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Profile Management"
+        ],
         "responses": {},
         "operationId": "get-service-profiles-accessMediaId-profiles-abstractProfileId"
       }
@@ -460,7 +468,9 @@
       ],
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Profile Management"
+        ],
         "responses": {},
         "operationId": "get-service-profiles-accessMediaId-profiles-abstractProfileId-attributes"
       }
@@ -493,7 +503,9 @@
       ],
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "Profile Management"
+        ],
         "responses": {},
         "operationId": "get-service-profiles-serviceCategoryId3",
         "description": ""
@@ -896,10 +908,13 @@
   },
   "tags": [
     {
-      "name": "realm-management"
+      "name": "Profile Management"
     },
     {
-      "name": "subscriber-management"
+      "name": "Realm Management"
+    },
+    {
+      "name": "Subscriber Management"
     }
   ]
 }
