@@ -399,7 +399,7 @@
     },
     "/service-profiles": {
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "List all configured service-profile access medias",
         "tags": [],
         "responses": {},
         "operationId": "get-service-profiles"
@@ -422,14 +422,7 @@
     "/service-profiles/{accessMediaId}/profiles": {
       "parameters": [
         {
-          "name": "accessMediaId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "example": "fixedLine"
-          },
-          "description": "Identifier for a service profile category (maps to subscriberAccessMedia)"
+          "$ref": "#/components/parameters/accessMediaId"
         }
       ],
       "get": {
@@ -453,39 +446,23 @@
         "summary": "Your GET endpoint",
         "tags": [],
         "responses": {},
-        "operationId": "get-service-profiles-profiles-abstractProfileId",
-        "description": ""
+        "operationId": "get-service-profiles-accessMediaId-profiles-abstractProfileId"
       }
     },
     "/service-profiles/{accessMediaId}/profiles/{abstractProfileId}/attributes": {
       "parameters": [
         {
-          "name": "accessMediaId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "example": "fixedLine"
-          },
-          "description": "Identifier for a service profile category (maps to subscriberAccessMedia)"
+          "$ref": "#/components/parameters/accessMediaId"
         },
         {
-          "name": "abstractProfileId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "example": "INETG1M"
-          },
-          "description": "Identifier for an abstract class of service profile"
+          "$ref": "#/components/parameters/abstractProfileId"
         }
       ],
       "get": {
         "summary": "Your GET endpoint",
         "tags": [],
         "responses": {},
-        "operationId": "get-service-profiles-serviceCategoryId2",
-        "description": ""
+        "operationId": "get-service-profiles-accessMediaId-profiles-abstractProfileId-attributes"
       }
     },
     "/service-profiles/{accessMediaId}/profiles/{abstractProfileId}/attributes/{concreteProfileId}": {
@@ -511,12 +488,7 @@
           "description": "Identifier for an abstract class of service profile"
         },
         {
-          "schema": {
-            "type": "string"
-          },
-          "name": "concreteProfileId",
-          "in": "path",
-          "required": true
+          "$ref": "#/components/parameters/concreteProfileId"
         }
       ],
       "get": {
