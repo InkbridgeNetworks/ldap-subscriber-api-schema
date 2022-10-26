@@ -277,13 +277,27 @@
         "description": "Add a new subscriber definition"
       }
     },
-    "/realms/{realmId}/subscribers/{subscriberId}": {
+    "/realms/{realmId}/subscribers/{compoundSubscriberId}": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/realmId"
+          "name": "realmId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "example.org"
+          },
+          "description": "Realm this operation relates to"
         },
         {
-          "$ref": "#/components/parameters/subscriberId"
+          "name": "compoundSubscriberId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "123456789+fixedLine"
+          },
+          "description": "A combination of the subscriber's unique id and the accessMedia the account relates to"
         }
       ],
       "get": {
@@ -795,15 +809,15 @@
         },
         "description": "If true, delete any child objects, e.g. all the subscribers in a realm"
       },
-      "subscriberId": {
-        "name": "subscriberId",
+      "compoundSubscriberId": {
+        "name": "compoundSubscriberId",
         "in": "path",
         "required": true,
         "schema": {
           "type": "string",
           "example": "123456789+fixedLine"
         },
-        "description": "A unique identifier for a subscriber"
+        "description": "A combination of the subscriber's unique id and the accessMedia the account relates to"
       },
       "accessMediaId": {
         "name": "accessMediaId",
