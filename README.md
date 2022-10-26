@@ -1,6 +1,11 @@
-# ldap-subscriber-api
-The Network RADIUS LDAP standard subscriber API
+# NetworkRADIUS' LDAP based subscriber management API for Carriers (NRLSA)
 
-This API wraps an LDAP instance running the Network RADIUS ISP schema set to allow objects to be manipulated via a REST API.
+This API runs natively in OpenResty/NGINX to provide a high performance RESTful layer around an LDAP instance.
+The API should be mostly object agonistic, but has some special endpoints for managing specific object classes.
 
-This repository contains the Open API schema, in addition to the OpenLDAP schema files that describe the objects.
+## Contents
+- The Open API schema
+- OpenLDAP schema/ldif files for adding custom object definitions into OpenLDAP.
+
+## For ease of consumption
+A rendered version of the Open API schemas can be found [here](https://networkradius.stoplight.io/docs/ldap-subscriber-api)
