@@ -6,7 +6,7 @@
   "info": {
     "title": "NetworkRADIUS LDAP API for Carriers",
     "version": "1.0",
-    "summary": "A Lua based lightweight wrapper around OpenLDAP",
+    "summary": "A Lua-based, lightweight wrapper around OpenLDAP",
     "description": "This API runs natively in OpenResty/NGINX to provide a high performance restful layer around an LDAP instance.  It should be mostly object agonistic, but has some special endpoints.",
     "contact": {
       "name": "Arran Cudbard-Bell",
@@ -23,39 +23,46 @@
   "paths": {
     "/realms": {
       "get": {
-        "summary": "Your GET endpoint",
-        "tags": [],
-        "responses": {},
-        "operationId": "get-realms",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/realm"
+        "summary": "List all realms",
+        "tags": [
+          "realm-management"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/realm"
+                  }
                 }
               }
             }
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Return an array available realms"
+        "operationId": "get-realms",
+        "description": "Return an array of available realms"
       },
       "post": {
-        "summary": "",
+        "summary": "Create a realm",
         "operationId": "post-realms",
         "responses": {
           "201": {
-            "description": "Created"
+            "$ref": "#/components/responses/onCreate"
           },
           "400": {
-            "description": "Bad Request"
+            "$ref": "#/components/responses/onBadRequest"
           },
           "409": {
-            "description": "Conflict"
+            "$ref": "#/components/responses/onConflict"
           },
-          "503": {
-            "description": "Service Unavailable"
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
           }
         },
         "description": "Add a new realm",
@@ -68,7 +75,10 @@
             }
           },
           "description": "The definition of the new realm"
-        }
+        },
+        "tags": [
+          "realm-management"
+        ]
       }
     },
     "/realms/{realmId}": {
@@ -78,10 +88,443 @@
         }
       ],
       "get": {
+        "summary": "Retrieve a realm definition",
+        "tags": [
+          "realm-management"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-realms-realmId",
+        "description": "Get specific realm definition",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/realm"
+              }
+            }
+          },
+          "description": "Return an existing realm definition"
+        }
+      },
+      "put": {
+        "summary": "Replace a realm",
+        "operationId": "put-realms-realmId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Update given realm definition by replacing all the fields of the current object with the new values",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/realm"
+              }
+            }
+          }
+        },
+        "tags": [
+          "realm-management"
+        ]
+      },
+      "patch": {
+        "summary": "Update a realm",
+        "operationId": "patch-realms-realmId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Update given realm definition by replacing only the provided attributes",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/realm"
+              }
+            }
+          }
+        },
+        "tags": [
+          "realm-management"
+        ]
+      },
+      "delete": {
+        "summary": "Delete a realm",
+        "operationId": "delete-realms-realmId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/prune"
+          }
+        ],
+        "description": "Delete realm definition",
+        "tags": [
+          "realm-management"
+        ]
+      }
+    },
+    "/realms/{realmId}/subscribers": {
+      "parameters": [
+        {
+          "name": "realmId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "example.org"
+          },
+          "description": "Realm this operation relates to"
+        }
+      ],
+      "get": {
+        "summary": "List all subscribers in a realm",
+        "tags": [
+          "subscriber-management"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/subscriber"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-realms-realmId-subscriber",
+        "description": "Return an array of all subscriber objects in a realm"
+      },
+      "post": {
+        "summary": "Create a subscriber",
+        "operationId": "post-realms-realmId-subscribers",
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/onCreate"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "409": {
+            "$ref": "#/components/responses/onConflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscriber"
+              }
+            }
+          }
+        },
+        "tags": [
+          "subscriber-management"
+        ],
+        "description": "Add a new subscriber definition"
+      }
+    },
+    "/realms/{realmId}/subscribers/{subscriberId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/realmId"
+        },
+        {
+          "$ref": "#/components/parameters/subscriberId"
+        }
+      ],
+      "get": {
+        "summary": "Retrieve a subscriber",
+        "tags": [
+          "subscriber-management"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/subscriber"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-realms-realmId-subscribers-subscriberId",
+        "description": "Get specific subscriber definition for a given realm"
+      },
+      "put": {
+        "summary": "Replace a subscriber",
+        "operationId": "put-realms-realmId-subscribers-subscriberId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscriber"
+              }
+            }
+          }
+        },
+        "description": "Update specific subscriber definition for a given realm by replacing all the fields of the current object with the new values.",
+        "tags": [
+          "subscriber-management"
+        ]
+      },
+      "patch": {
+        "summary": "Update a subscriber",
+        "operationId": "patch-realms-realmId-subscribers-subscriberId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscriber"
+              }
+            }
+          }
+        },
+        "tags": [
+          "subscriber-management"
+        ],
+        "description": "Update specific subscriber definition for a given realm by replacing only the provided attributes"
+      },
+      "delete": {
+        "summary": "Delete a subscriber",
+        "operationId": "delete-realms-realmId-subscribers-subscriberId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Delete specific subscriber definition for a given realm.",
+        "tags": [
+          "subscriber-management"
+        ]
+      }
+    },
+    "/service-profiles": {
+      "get": {
         "summary": "Your GET endpoint",
         "tags": [],
         "responses": {},
-        "operationId": "get-realms-realmId"
+        "operationId": "get-service-profiles"
+      }
+    },
+    "/service-profiles/{accessMediaId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accessMediaId"
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-service-profiles-serviceCategoryId",
+        "description": ""
+      }
+    },
+    "/service-profiles/{accessMediaId}/profiles": {
+      "parameters": [
+        {
+          "name": "accessMediaId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "fixedLine"
+          },
+          "description": "Identifier for a service profile category (maps to subscriberAccessMedia)"
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-service-profiles-profiles",
+        "description": ""
+      }
+    },
+    "/service-profiles/{accessMediaId}/profiles/{abstractProfileId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accessMediaId"
+        },
+        {
+          "$ref": "#/components/parameters/abstractProfileId"
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-service-profiles-profiles-abstractProfileId",
+        "description": ""
+      }
+    },
+    "/service-profiles/{accessMediaId}/profiles/{abstractProfileId}/attributes": {
+      "parameters": [
+        {
+          "name": "accessMediaId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "fixedLine"
+          },
+          "description": "Identifier for a service profile category (maps to subscriberAccessMedia)"
+        },
+        {
+          "name": "abstractProfileId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "INETG1M"
+          },
+          "description": "Identifier for an abstract class of service profile"
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-service-profiles-serviceCategoryId2",
+        "description": ""
+      }
+    },
+    "/service-profiles/{accessMediaId}/profiles/{abstractProfileId}/attributes/{concreteProfileId}": {
+      "parameters": [
+        {
+          "name": "accessMediaId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "fixedLine"
+          },
+          "description": "Identifier for a service profile category (maps to subscriberAccessMedia)"
+        },
+        {
+          "name": "abstractProfileId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "INETG1M"
+          },
+          "description": "Identifier for an abstract class of service profile"
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "concreteProfileId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-service-profiles-serviceCategoryId3",
+        "description": ""
       }
     }
   },
@@ -118,7 +561,7 @@
             "type": "string",
             "format": "uri",
             "example": "http://192.168.0.1/service-profiles/fixedLine/profiles/INETG1M",
-            "description": "The URI of a service-profile object to apply to all subscribers in this realm.  The service-profile object must exist, and referential integrity will be enforced."
+            "description": "The URI of a serviceProfile object to apply to all subscribers in this realm.  The serviceProfile object must exist, and referential integrity will be enforced."
           }
         }
       },
@@ -145,6 +588,17 @@
             "description": "A unique (within a realm) identifier for a subscriber",
             "example": "123456789"
           },
+          "serviceAccessMedia": {
+            "type": "string",
+            "description": "The type of access media this subscriber object relates to, e.g. fixedLine, wireless etc... Must match a configured service category",
+            "example": "fixedLine"
+          },
+          "serviceProfile": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URI of a service profile object to apply to the subscriber",
+            "example": "http://198.51.100.1/service-profiles/fixedLine/profiles/INETG1M"
+          },
           "serviceStatus": {
             "type": "string",
             "enum": [
@@ -163,12 +617,6 @@
             "description": "If multiple subscriber objects match an incoming Access-Request, the first subscriber object with \"primary\" will be used.",
             "example": "primary"
           },
-          "serviceProfile": {
-            "type": "string",
-            "format": "uri",
-            "description": "The URI of a service profile object to apply to the subscriber",
-            "example": "http://198.51.100.1/service-profiles/fixedLine/profiles/INETG1M"
-          },
           "clientGroup": {
             "type": "string",
             "format": "uri",
@@ -180,7 +628,7 @@
             "type": "string",
             "format": "uri",
             "example": "http://198.51.100.1/subscriber-groups/groupA",
-            "description": "The URI of a subscriber-group object.  Used to apply common sets of RADIUS attributes or service-profiles to subscribers."
+            "description": "The URI of a subscriberGroup object.  Used to apply common sets of RADIUS attributes or serviceProfiles to subscribers."
           },
           "portBinding": {
             "type": "boolean",
@@ -196,17 +644,13 @@
             "format": "uri",
             "description": "URI of the last client the subscriber authenticated via.  Primarily used for Change of Authorisation and disconnect messages.",
             "example": "http://198.51.100.1/clients/192.0.2.1"
-          },
-          "generateCDR": {
-            "type": "boolean",
-            "description": "Generate CDRs for this subscriber, overrides generateCDR in the service-profile"
           }
         },
         "required": [
           "id",
           "userPassword",
           "subscriberId",
-          "servicePrecedence",
+          "serviceAccessMedia",
           "serviceProfile"
         ]
       },
@@ -253,9 +697,9 @@
           "id"
         ]
       },
-      "client-group": {
+      "clientGroup": {
         "type": "object",
-        "title": "client-group",
+        "title": "clientGroup",
         "x-stoplight": {
           "id": "5b9nnqawh4d41"
         },
@@ -264,7 +708,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "The identifier for the client-group",
+            "description": "The identifier for the clientGroup",
             "example": "group1"
           }
         },
@@ -272,8 +716,8 @@
           "id"
         ]
       },
-      "subscriber-group": {
-        "title": "subscriber-group",
+      "subscriberGroup": {
+        "title": "subscriberGroup",
         "x-stoplight": {
           "id": "8y76ggnb1sgil"
         },
@@ -281,13 +725,26 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "A unique identifier for the subscriber-group"
+            "description": "A unique identifier for the subscriberGroup"
           }
         },
         "description": "A group of subscribers, used to apply RADIUS attribute overrides to subsets of subscribers."
       },
-      "service-profile": {
-        "title": "service-profile",
+      "accessMedia": {
+        "title": "accessMedia",
+        "x-stoplight": {
+          "id": "ly2966j1k5o5v"
+        },
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "description": "Access media type e.g. fixedLine, wireless, cellular, matches subscriberAccess"
+      },
+      "concreteProfile": {
+        "title": "concreteProfile",
         "x-stoplight": {
           "id": "kprv79ox656ep"
         },
@@ -300,7 +757,7 @@
           },
           "portBinding": {
             "type": "boolean",
-            "description": "The default port binding state for any subscruber which uses this service-profile"
+            "description": "The default port binding state for any subscruber which uses this serviceProfile"
           },
           "generateCDR": {
             "type": "boolean",
@@ -308,13 +765,25 @@
           },
           "allowSuspension": {
             "type": "boolean",
-            "description": "Allow suspension for subscribers that use this service-profile.  If false, subscribers will be entirely disabled."
+            "description": "Allow suspension for subscribers that use this serviceProfile.  If false, subscribers will be entirely disabled."
           }
         },
         "required": [
           "id"
         ],
         "description": "The service a subscriber will receive.  Usually describes any ACLs and bandwidth restrictions to apply to the subscriber."
+      },
+      "abstractProfile": {
+        "title": "serviceProfileAbstract",
+        "x-stoplight": {
+          "id": "ebjv3rkkgvqou"
+        },
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
       }
     },
     "parameters": {
@@ -327,7 +796,138 @@
           "example": "example.org"
         },
         "description": "Realm this operation relates to"
+      },
+      "prune": {
+        "name": "prune",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "boolean"
+        },
+        "description": "If true, delete any child objects, e.g. all the subscribers in a realm"
+      },
+      "subscriberId": {
+        "name": "subscriberId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "123456789"
+        },
+        "description": "A unique identifier for a subscriber"
+      },
+      "accessMediaId": {
+        "name": "accessMediaId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "fixedLine"
+        },
+        "description": "Identifier for a service profile category (maps to subscriberAccessMedia)"
+      },
+      "abstractProfileId": {
+        "name": "abstractProfileId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "INETG1M"
+        },
+        "description": "Identifier for an abstract class of service profile"
+      },
+      "concreteProfileId": {
+        "name": "concreteProfileId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "myFirstNas"
+        },
+        "description": "Identifier for a concrete class of service profile"
+      }
+    },
+    "responses": {
+      "onCreate": {
+        "description": "Response on creating a new object",
+        "content": {
+          "application/json": {
+            "schema": {}
+          }
+        },
+        "headers": {
+          "Location": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "The URI of the resource that was just created"
+          }
+        }
+      },
+      "onInternalServerError": {
+        "description": "An internal error has occurred while talking to one of the backend (LDAP or Postgres). For instance, an attribute was missing when creating an object.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error_msg": {
+                  "type": "string",
+                  "description": "Raw error string from the service element which experienced the error."
+                }
+              }
+            }
+          }
+        }
+      },
+      "onSuccess": {
+        "description": "Response sent on a successful operation which did not create an object",
+        "content": {
+          "application/json": {
+            "schema": {}
+          }
+        }
+      },
+      "onNotFound": {
+        "description": "Specified resource not found",
+        "content": {
+          "application/json": {
+            "schema": {}
+          }
+        }
+      },
+      "onConflict": {
+        "description": "The requested operation conflicts with an existing resource (for instance, trying to create a duplicate resource) or you are trying to delete a node that has children.",
+        "content": {
+          "application/json": {
+            "schema": {}
+          }
+        }
+      },
+      "onNotAllowed": {
+        "description": "The requested operation is not allowed for the given resource",
+        "content": {
+          "application/json": {
+            "schema": {}
+          }
+        }
+      },
+      "onBadRequest": {
+        "description": "Can be any of the following:\n- The requested path doesn’t correspond to the schema\n- Missing or invalid data for POST or PUT operations. Data should always be valid\nJSON.\n- If data contains URL to another resource, the host part of the URL must be identical\nto the host data being created/modified.\n",
+        "content": {
+          "application/json": {
+            "schema": {}
+          }
+        }
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "realm-management"
+    },
+    {
+      "name": "subscriber-management"
+    }
+  ]
 }
