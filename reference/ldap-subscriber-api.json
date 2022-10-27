@@ -297,7 +297,7 @@
             "type": "string",
             "example": "123456789+fixedLine"
           },
-          "description": "A combination of the subscriber's unique id and the accessMedia the account relates to"
+          "description": "A combination of the subscriber's unique id and the service the account relates to"
         }
       ],
       "get": {
@@ -355,7 +355,7 @@
             }
           }
         },
-        "description": "Update specific subscriber definition for a given realm by replacing all the fields of the current object with the new values.",
+        "description": "Update specific subscriber definition for a given realm by replacing all the fields of the current object with the new values",
         "tags": [
           "Subscriber Management"
         ]
@@ -405,39 +405,39 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Delete specific subscriber definition for a given realm.",
+        "description": "Delete specific subscriber definition for a given realm",
         "tags": [
           "Subscriber Management"
         ]
       }
     },
-    "/service-profiles": {
+    "/service": {
       "get": {
         "summary": "List all configured service-profile access medias",
         "tags": [
           "Profile Management"
         ],
         "responses": {},
-        "operationId": "get-service-profiles"
+        "operationId": "get-service"
       }
     },
-    "/service-profiles/{accessMediaId}": {
+    "/service/{accessMediaId}": {
       "parameters": [
         {
           "$ref": "#/components/parameters/accessMediaId"
         }
       ],
       "get": {
-        "summary": "Return the definition of an accessMedia profile",
+        "summary": "Return the definition of an service profile",
         "tags": [
           "Profile Management"
         ],
         "responses": {},
-        "operationId": "get-service-profiles-serviceCategoryId",
+        "operationId": "get-service-accessMediaId",
         "description": ""
       }
     },
-    "/service-profiles/{accessMediaId}/profiles": {
+    "/service/{accessMediaId}/profile": {
       "parameters": [
         {
           "$ref": "#/components/parameters/accessMediaId"
@@ -449,17 +449,17 @@
           "Profile Management"
         ],
         "responses": {},
-        "operationId": "get-service-profiles-profiles",
+        "operationId": "get-service-accessMediaID-profile",
         "description": ""
       }
     },
-    "/service-profiles/{accessMediaId}/profiles/{abstractProfileId}": {
+    "/service/{accessMediaId}/profile/{profileId}": {
       "parameters": [
         {
           "$ref": "#/components/parameters/accessMediaId"
         },
         {
-          "$ref": "#/components/parameters/abstractProfileId"
+          "$ref": "#/components/parameters/profileId"
         }
       ],
       "get": {
@@ -468,28 +468,10 @@
           "Profile Management"
         ],
         "responses": {},
-        "operationId": "get-service-profiles-accessMediaId-profiles-abstractProfileId"
+        "operationId": "get-service-accessMediaId-profile-profileId"
       }
     },
-    "/service-profiles/{accessMediaId}/profiles/{abstractProfileId}/attributes": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/accessMediaId"
-        },
-        {
-          "$ref": "#/components/parameters/abstractProfileId"
-        }
-      ],
-      "get": {
-        "summary": "Your GET endpoint",
-        "tags": [
-          "Profile Management"
-        ],
-        "responses": {},
-        "operationId": "get-service-profiles-accessMediaId-profiles-abstractProfileId-attributes"
-      }
-    },
-    "/service-profiles/{accessMediaId}/profiles/{abstractProfileId}/attributes/{concreteProfileId}": {
+    "/service/{accessMediaId}/profile/{profileId}/policy": {
       "parameters": [
         {
           "name": "accessMediaId",
@@ -502,7 +484,39 @@
           "description": "Identifier for a service profile category (maps to subscriberAccessMedia)"
         },
         {
-          "name": "abstractProfileId",
+          "name": "profileId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "INETG1M"
+          },
+          "description": "Identifier for an abstract class of service profile"
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [
+          "Profile Management"
+        ],
+        "responses": {},
+        "operationId": "get-service-accessMediaId-profile-profileId-policy"
+      }
+    },
+    "/service/{accessMediaId}/profile/{profileId}/policy/{clientGroupId}": {
+      "parameters": [
+        {
+          "name": "accessMediaId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "fixedLine"
+          },
+          "description": "Identifier for a service profile category (maps to subscriberAccessMedia)"
+        },
+        {
+          "name": "profileId",
           "in": "path",
           "required": true,
           "schema": {
@@ -512,7 +526,14 @@
           "description": "Identifier for an abstract class of service profile"
         },
         {
-          "$ref": "#/components/parameters/concreteProfileId"
+          "name": "clientGroupId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "myFirstNas"
+          },
+          "description": "Identifier for a concrete class of service profile"
         }
       ],
       "get": {
@@ -521,7 +542,7 @@
           "Profile Management"
         ],
         "responses": {},
-        "operationId": "get-service-profiles-serviceCategoryId3",
+        "operationId": "get-service-accessMediaId-profile-profileId-policy-clientGroup-Id",
         "description": ""
       }
     }
@@ -558,7 +579,7 @@
           "serviceProfile": {
             "type": "string",
             "format": "uri",
-            "example": "http://192.168.0.1/service-profiles/fixedLine/profiles/INETG1M",
+            "example": "http://192.168.0.1/service/fixedLine/profile/INETG1M",
             "description": "The URI of a serviceProfile object to apply to all subscribers in this realm.  The serviceProfile object must exist, and referential integrity will be enforced."
           }
         }
@@ -590,12 +611,13 @@
             "type": "string",
             "format": "uri",
             "description": "The URI of a service profile object to apply to the subscriber",
-            "example": "http://198.51.100.1/service-profiles/fixedLine/profiles/INETG1M"
+            "example": "http://localhost:3000/service/fixedLine/profile/INETG1M"
           },
-          "userPassword": {
+          "serviceProfileSuspended": {
             "type": "string",
-            "description": "A password used to authenticate the subscriber. If no password has been explicitly specified for the user (auth via DHCP for example), the User-Password attribute will still be populated in, incoming Access-Requests.  We need to check its value to ensure the RADIUS shared-secret (of which it is reversibly encrypted with) is correct. If a User-Password has not been explicitly set, it will usually be the same as User-Name or Calling-Station-ID",
-            "example": "superSecret"
+            "description": "The URI of a service profile object to apply to the subscriber",
+            "format": "uri",
+            "example": "http://localhost:3000/service/fixedLine/profile/suspendedNonPayment"
           },
           "serviceStatus": {
             "type": "string",
@@ -605,6 +627,11 @@
               "suspended"
             ],
             "description": "Whether this subscriber can access the service"
+          },
+          "userPassword": {
+            "type": "string",
+            "description": "A password used to authenticate the subscriber. If no password has been explicitly specified for the user (auth via DHCP for example), the User-Password attribute will still be populated in, incoming Access-Requests.  We need to check its value to ensure the RADIUS shared-secret (of which it is reversibly encrypted with) is correct. If a User-Password has not been explicitly set, it will usually be the same as User-Name or Calling-Station-ID",
+            "example": "superSecret"
           },
           "servicePrecedence": {
             "type": "string",
@@ -618,15 +645,14 @@
           "clientGroup": {
             "type": "string",
             "format": "uri",
-            "description": "The URI of a client-group to bind the subscriber to.  The subscriber will only be able to authenticate via these RADIUS clients.",
-            "example": "http://198.51.100.1/client-groups/group1",
-            "deprecated": true
+            "description": "The URI of a clientGroup to restrict logins from.",
+            "example": "http://localhost:3000/policys/group1"
           },
           "subscriberGroup": {
             "type": "string",
             "format": "uri",
-            "example": "http://198.51.100.1/subscriber-groups/groupA",
-            "description": "The URI of a subscriberGroup object.  Used to apply common sets of RADIUS attributes or serviceProfiles to subscribers."
+            "example": "http://localhost:3000/subscriber-groups/groupA",
+            "description": "The URI of a subscriberGroup object.  Used to apply common sets of RADIUS attributes or serviceprofile to subscribers."
           },
           "portBinding": {
             "type": "boolean",
@@ -641,20 +667,15 @@
             "type": "string",
             "format": "uri",
             "description": "URI of the last client the subscriber authenticated via.  Primarily used for Change of Authorisation and disconnect messages.",
-            "example": "http://198.51.100.1/clients/192.0.2.1"
-          },
-          "array": {
-            "type": "string"
-          },
-          "suspendServiceProfile": {
-            "type": "string"
+            "example": "http://localhost:3000/clients/192.0.2.1"
           }
         },
         "required": [
           "id",
           "subscriberId",
           "serviceAccessMedia",
-          "serviceProfile"
+          "serviceProfile",
+          "serviceStatus"
         ]
       },
       "client": {
@@ -733,8 +754,8 @@
         },
         "description": "A group of subscribers, used to apply RADIUS attribute overrides to subsets of subscribers."
       },
-      "accessMedia": {
-        "title": "accessMedia",
+      "service": {
+        "title": "service",
         "x-stoplight": {
           "id": "ly2966j1k5o5v"
         },
@@ -746,8 +767,8 @@
         },
         "description": "Access media type e.g. fixedLine, wireless, cellular, matches subscriberAccess"
       },
-      "concreteProfile": {
-        "title": "concreteProfile",
+      "serviceProfile": {
+        "title": "serviceProfile",
         "x-stoplight": {
           "id": "kprv79ox656ep"
         },
@@ -774,10 +795,10 @@
         "required": [
           "id"
         ],
-        "description": "The service a subscriber will receive.  Usually describes any ACLs and bandwidth restrictions to apply to the subscriber."
+        "description": "The service a subscriber will receive.  This object holds non-FreeRADIUS attributes which controls how a control is authorized, and any additional logic that runs during authentication."
       },
-      "abstractProfile": {
-        "title": "serviceProfileAbstract",
+      "freeradusPolicy": {
+        "title": "freeradiusPolicy",
         "x-stoplight": {
           "id": "ebjv3rkkgvqou"
         },
@@ -786,7 +807,8 @@
           "id": {
             "type": "string"
           }
-        }
+        },
+        "description": "A set of FreeRADIUS AVPs which modify attributes in the current request, modifying request/control attributes and setting reply attributes.  A \"concrete\" implementation of a serviceProfile."
       }
     },
     "parameters": {
@@ -817,7 +839,7 @@
           "type": "string",
           "example": "123456789+fixedLine"
         },
-        "description": "A combination of the subscriber's unique id and the accessMedia the account relates to"
+        "description": "A combination of the subscriber's unique id and the service the account relates to"
       },
       "accessMediaId": {
         "name": "accessMediaId",
@@ -829,8 +851,8 @@
         },
         "description": "Identifier for a service profile category (maps to subscriberAccessMedia)"
       },
-      "abstractProfileId": {
-        "name": "abstractProfileId",
+      "profileId": {
+        "name": "profileId",
         "in": "path",
         "required": true,
         "schema": {
@@ -839,8 +861,8 @@
         },
         "description": "Identifier for an abstract class of service profile"
       },
-      "concreteProfileId": {
-        "name": "concreteProfileId",
+      "clientGroupId": {
+        "name": "clientGroupId",
         "in": "path",
         "required": true,
         "schema": {
