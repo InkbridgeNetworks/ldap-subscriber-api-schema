@@ -144,7 +144,8 @@
                 "$ref": "#/components/schemas/realm"
               }
             }
-          }
+          },
+          "description": "New definition of the realm"
         },
         "tags": [
           "Realm Management"
@@ -175,7 +176,8 @@
                 "$ref": "#/components/schemas/realm"
               }
             }
-          }
+          },
+          "description": "Partial definition of the realm"
         },
         "tags": [
           "Realm Management"
@@ -269,7 +271,8 @@
                 "$ref": "#/components/schemas/subscriber"
               }
             }
-          }
+          },
+          "description": "Definition of the subscriber to add"
         },
         "tags": [
           "Subscriber Management"
@@ -353,7 +356,8 @@
                 "$ref": "#/components/schemas/subscriber"
               }
             }
-          }
+          },
+          "description": "New definition of the subscriber"
         },
         "description": "Update specific subscriber definition for a given realm by replacing all the fields of the current object with the new values",
         "tags": [
@@ -384,7 +388,8 @@
                 "$ref": "#/components/schemas/subscriber"
               }
             }
-          }
+          },
+          "description": "Partial definition of the subscriber"
         },
         "tags": [
           "Subscriber Management"
@@ -408,17 +413,75 @@
         "description": "Delete specific subscriber definition for a given realm",
         "tags": [
           "Subscriber Management"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/prune"
+          }
         ]
       }
     },
     "/service": {
       "get": {
-        "summary": "List all configured service-profile access medias",
+        "summary": "List all configured services",
         "tags": [
           "Profile Management"
         ],
-        "responses": {},
-        "operationId": "get-service"
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/service"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-service",
+        "description": "Return an array of available service objects indexed by accessMedia"
+      },
+      "post": {
+        "summary": "Create a service",
+        "operationId": "post-service",
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/onCreate"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "409": {
+            "$ref": "#/components/responses/onConflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Add a service, a collection of profiles grouped by access media",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/service"
+              }
+            }
+          },
+          "description": "Definition of the service to add"
+        }
       }
     },
     "/service/{accessMediaId}": {
@@ -428,13 +491,113 @@
         }
       ],
       "get": {
-        "summary": "Return the definition of an service profile",
+        "summary": "Retrieve a service",
         "tags": [
           "Profile Management"
         ],
-        "responses": {},
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
         "operationId": "get-service-accessMediaId",
-        "description": ""
+        "description": "Get a specific service defintion"
+      },
+      "put": {
+        "summary": "Replace a service",
+        "operationId": "put-service-accessMediaId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Update specific service replacing all the fields of the current object with the new values",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          "description": "New definition of the service"
+        }
+      },
+      "patch": {
+        "summary": "Update a service",
+        "operationId": "patch-service-accessMediaId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/service"
+              }
+            }
+          },
+          "description": "Partial definition of the service"
+        },
+        "description": "Update specific service by replacing only the provided attributes"
+      },
+      "delete": {
+        "summary": "Delete a service",
+        "operationId": "delete-service-accessMediaId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Delete a specific service",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/prune"
+          }
+        ]
       }
     },
     "/service/{accessMediaId}/profile": {
@@ -444,13 +607,65 @@
         }
       ],
       "get": {
-        "summary": "Return the",
+        "summary": "Retrieve all serviceProfiles for a service",
         "tags": [
           "Profile Management"
         ],
-        "responses": {},
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/serviceProfile"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
         "operationId": "get-service-accessMediaID-profile",
-        "description": ""
+        "description": "Return an array of available serviceProfiles (abstract profiles) for a given service"
+      },
+      "post": {
+        "summary": "Create a serviceProfile",
+        "operationId": "post-service-accessMediaId-profile",
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/onCreate"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "409": {
+            "$ref": "#/components/responses/onConflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Definition of the serviceProfile (abstract profile) to add",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/serviceProfile"
+              }
+            }
+          },
+          "description": "Definition of the serviceProfile to add"
+        }
       }
     },
     "/service/{accessMediaId}/profile/{profileId}": {
@@ -463,12 +678,112 @@
         }
       ],
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Retrieve a specific serviceProfile for a service",
         "tags": [
           "Profile Management"
         ],
-        "responses": {},
-        "operationId": "get-service-accessMediaId-profile-profileId"
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serviceProfile"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-service-accessMediaId-profile-profileId",
+        "description": "Return a serviceProfile, an abstract profile describing a class of service"
+      },
+      "put": {
+        "summary": "Replace a serviceProfile",
+        "operationId": "put-service-accessMediaId-profile-profileId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Update a specific serviceProfile replacing all the fields of the current object with the new values",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/serviceProfile"
+              }
+            }
+          },
+          "description": "New definition of the serviceProfile"
+        }
+      },
+      "patch": {
+        "summary": "Update a serviceProfile",
+        "operationId": "patch-service-accessMediaId-profile-profileId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Update specific serviceProfile by replacing only the provided attributes",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/serviceProfile"
+              }
+            }
+          },
+          "description": "Partial definition of the serviceProfile"
+        }
+      },
+      "delete": {
+        "summary": "Delete a serviceProfile",
+        "operationId": "delete-service-accessMediaId-profile-profileId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Delete a specific serviceProfile",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/prune"
+          }
+        ]
       }
     },
     "/service/{accessMediaId}/profile/{profileId}/policy": {
@@ -495,12 +810,65 @@
         }
       ],
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "List all configured policies for a serviceProfile",
         "tags": [
           "Profile Management"
         ],
-        "responses": {},
-        "operationId": "get-service-accessMediaId-profile-profileId-policy"
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/freeradusPolicy"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-service-accessMediaId-profile-profileId-policy",
+        "description": "Return an array of policies (concrete profiles containing FreeRADIUS attributes) associated with a serviceProfile (an abstract profile)."
+      },
+      "post": {
+        "summary": "Create a freeradiusPolicy",
+        "operationId": "post-service-accessMediaId-profile-profileId-policy",
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/onCreate"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "409": {
+            "$ref": "#/components/responses/onConflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Definition of a policy (concrete profile) to add",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/freeradusPolicy"
+              }
+            }
+          },
+          "description": "Definition of a policy to add"
+        }
       }
     },
     "/service/{accessMediaId}/profile/{profileId}/policy/{clientGroupId}": {
@@ -537,13 +905,109 @@
         }
       ],
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Retrieve a specific policy for a serviceProfile",
         "tags": [
           "Profile Management"
         ],
-        "responses": {},
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/freeradusPolicy"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
         "operationId": "get-service-accessMediaId-profile-profileId-policy-clientGroup-Id",
-        "description": ""
+        "description": "Return a specific policy (a concrete profile)"
+      },
+      "put": {
+        "summary": "Replace a freeradiusPolicy",
+        "operationId": "put-service-accessMediaId-profile-profileId-policy-clientGroupId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Update a specific profile replacing all the fields of the current object with the new values",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/freeradusPolicy"
+              }
+            }
+          },
+          "description": "New definition of the policy"
+        }
+      },
+      "patch": {
+        "summary": "Update a freeradiusPolicy",
+        "operationId": "patch-service-accessMediaId-profile-profileId-policy-clientGroupId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Update specific freeradiusPolicy by replacing only the provided attributes",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/freeradusPolicy"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a freeradiusPolicy",
+        "operationId": "delete-service-accessMediaId-profile-profileId-policy-clientGroupId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Delete a specific freeradiusPolicy"
       }
     }
   },
@@ -668,6 +1132,9 @@
             "format": "uri",
             "description": "URI of the last client the subscriber authenticated via.  Primarily used for Change of Authorisation and disconnect messages.",
             "example": "http://localhost:3000/clients/192.0.2.1"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/freeradusPolicy"
           }
         },
         "required": [
@@ -734,6 +1201,9 @@
             "type": "string",
             "description": "The identifier for the clientGroup",
             "example": "group1"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/freeradusPolicy"
           }
         },
         "required": [
@@ -746,13 +1216,16 @@
           "id": "8y76ggnb1sgil"
         },
         "type": "object",
+        "description": "A group of subscribers, used to apply RADIUS attribute overrides to subsets of subscribers.",
         "properties": {
           "id": {
             "type": "string",
             "description": "A unique identifier for the subscriberGroup"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/freeradusPolicy"
           }
-        },
-        "description": "A group of subscribers, used to apply RADIUS attribute overrides to subsets of subscribers."
+        }
       },
       "service": {
         "title": "service",
@@ -765,7 +1238,7 @@
             "type": "string"
           }
         },
-        "description": "Access media type e.g. fixedLine, wireless, cellular, matches subscriberAccess"
+        "description": "Access media type e.g. fixedLine, wireless, cellular, matches subscriberAccessMedia"
       },
       "serviceProfile": {
         "title": "serviceProfile",
@@ -795,7 +1268,7 @@
         "required": [
           "id"
         ],
-        "description": "The service a subscriber will receive.  This object holds non-FreeRADIUS attributes which controls how a control is authorized, and any additional logic that runs during authentication."
+        "description": "An abstract definition of a class-of-service a subscriber would receive.  This object holds non-FreeRADIUS attributes which controls how a subscriber is authorized/authenticated, and enables/disables additional logic that runs as the subscriber's request is processed.\n\nThis object contains multiple freeradiusPolicy objects (as children) which are the concrete implementation of the serviceProfile.  These freeradiusPolicy objects are indexed by radiusGroupId, and describe how to implement a given serviceProfile for a type of RADIUS client."
       },
       "freeradusPolicy": {
         "title": "freeradiusPolicy",
@@ -808,7 +1281,7 @@
             "type": "string"
           }
         },
-        "description": "A set of FreeRADIUS AVPs which modify attributes in the current request, modifying request/control attributes and setting reply attributes.  A \"concrete\" implementation of a serviceProfile."
+        "description": "A set of FreeRADIUS attributes which modify attributes in the current request, modifying request/control attributes and setting reply attributes.  A \"concrete\" implementation of a serviceProfile, or a set of attributes associated with a subscriber or subscriberGroup."
       }
     },
     "parameters": {
