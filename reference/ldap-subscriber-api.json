@@ -45,8 +45,8 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Return an array of available realms",
-        "operationId": "get-realm"
+        "operationId": "get-realm",
+        "description": "Return an array of available realm"
       },
       "post": {
         "summary": "Create a realm",
@@ -423,7 +423,7 @@
     },
     "/group": {
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "List all subscriberGroups",
         "tags": [],
         "responses": {},
         "operationId": "get-group"
@@ -441,7 +441,7 @@
         }
       ],
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Retrieve a subscriberGroup",
         "tags": [],
         "responses": {},
         "operationId": "get-group-groupId"
@@ -1074,7 +1074,7 @@
     },
     "/client": {
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "List all radiusClients",
         "tags": [],
         "responses": {},
         "operationId": "get-client"
@@ -1092,7 +1092,7 @@
         }
       ],
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Retrieve a specific radiusClient",
         "tags": [],
         "responses": {},
         "operationId": "get-client-clientId"
@@ -1100,7 +1100,7 @@
     },
     "/client-group": {
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "List all clientGroups",
         "tags": [],
         "responses": {},
         "operationId": "get-client-group"
@@ -1118,7 +1118,7 @@
         }
       ],
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Retrieve a clientGroup",
         "tags": [],
         "responses": {},
         "operationId": "get-client-group-clientGroupId"
@@ -1133,17 +1133,17 @@
           "id": "or81e5rovv950"
         },
         "type": "object",
-        "description": "Holds a set of subscribers, and LDAP/RADIUS attributes associated with a given realm",
+        "description": "Holds a set of subscriber, and LDAP/RADIUS attributes associated with a given realm",
         "properties": {
           "id": {
             "type": "string",
-            "description": "The realm ID.  This may map directly with the domain portion in a user's NAI, and can be used to separate subscribers belonging to different areas of the business, or to external customers.",
+            "description": "The realm ID.  This may map directly with the domain portion in a user's NAI, and can be used to separate subscriber belonging to different areas of the business, or to external customers.",
             "example": "example.org"
           },
           "description": {
             "type": "string",
             "description": "A humanly readable description of the realm",
-            "example": "example.org subscribers are actually foo subscribers, who we are authenticating on behalf of bar"
+            "example": "example.org subscriber are actually foo subscriber, who we are authenticating on behalf of bar"
           },
           "servicePrecedence": {
             "type": "string",
@@ -1152,13 +1152,13 @@
               "secondary"
             ],
             "example": "primary",
-            "description": "If a subscriber did not authenticate using a qualified NAI, and appears in multiple realms, the first primary realm with take precedence."
+            "description": "If a subscriber did not authenticate using a qualified NAI, and appears in multiple realm, the first primary realm with take precedence."
           },
           "serviceProfile": {
             "type": "string",
             "format": "uri",
             "example": "http://192.168.0.1/service/fixedLine/profile/INETG1M",
-            "description": "The URI of a serviceProfile object to apply to all subscribers in this realm.  The serviceProfile object must exist, and referential integrity will be enforced."
+            "description": "The URI of a serviceProfile object to apply to all subscriber in this realm.  The serviceProfile object must exist, and referential integrity will be enforced."
           }
         }
       },
@@ -1223,7 +1223,8 @@
           "clientGroup": {
             "type": "array",
             "format": "uri",
-            "description": "The URI of a clientGroup to restrict logins from.",
+            "description": "The URI(s) of a clientGroup to restrict subscriber to.  Prevents subscriber from connecting RADIUS clients outside of this set of groups.",
+            "example": "http://localhost:3000/policys/group1",
             "uniqueItems": true,
             "items": {
               "type": "string",
@@ -1234,7 +1235,8 @@
           "subscriberGroup": {
             "type": "array",
             "format": "uri",
-            "description": "The URI of a subscriberGroup object.  Used to apply common sets of RADIUS attributes or serviceprofile to subscribers.",
+            "example": "http://localhost:3000/subscriber-groups/groupA",
+            "description": "The URI of a subscriberGroup object.  Used to apply common sets of RADIUS attributes or serviceProfiles to subscriber.",
             "uniqueItems": true,
             "items": {
               "type": "string"
@@ -1303,7 +1305,7 @@
           "radiusClientComment": {
             "type": "string",
             "description": "A humanly readable comment associated with the client",
-            "example": "This RADIUS client authenticates all subscribers in the foo region of bar"
+            "example": "This RADIUS client authenticates all subscriber in the foo region of bar"
           }
         },
         "required": [
@@ -1316,7 +1318,7 @@
         "x-stoplight": {
           "id": "5b9nnqawh4d41"
         },
-        "description": "A method of binding subscribers to a particular group of RADIUS clients.",
+        "description": "A method of binding subscriber to a particular group of RADIUS clients.",
         "deprecated": true,
         "properties": {
           "id": {
@@ -1338,7 +1340,7 @@
           "id": "8y76ggnb1sgil"
         },
         "type": "object",
-        "description": "A group of subscribers, used to apply RADIUS attribute overrides to subsets of subscribers.",
+        "description": "A group of subscriber, used to apply RADIUS attribute overrides to subsets of subscriber.",
         "properties": {
           "id": {
             "type": "string",
@@ -1380,11 +1382,11 @@
           },
           "generateCDR": {
             "type": "boolean",
-            "description": "Generate Call Data Records for subscribers which use this subscriber-profile"
+            "description": "Generate Call Data Records for subscriber which use this subscriber-profile"
           },
           "allowSuspension": {
             "type": "boolean",
-            "description": "Allow suspension for subscribers that use this serviceProfile.  If false, subscribers will be entirely disabled."
+            "description": "Allow suspension for subscriber that use this serviceProfile.  If false, subscriber will be entirely disabled."
           }
         },
         "required": [
@@ -1424,7 +1426,7 @@
         "schema": {
           "type": "boolean"
         },
-        "description": "If true, delete any child objects, e.g. all the subscribers in a realm"
+        "description": "If true, delete any child objects, e.g. all the subscriber in a realm"
       },
       "compoundSubscriberId": {
         "name": "compoundSubscriberId",
@@ -1465,6 +1467,15 @@
           "example": "myFirstNas"
         },
         "description": "Identifier for a concrete class of service profile"
+      },
+      "clientId": {
+        "name": "clientId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Unique identifier for a client (an IPv4/v6 address or prefix)"
       }
     },
     "responses": {
