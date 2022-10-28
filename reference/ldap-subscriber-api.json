@@ -21,7 +21,7 @@
     }
   ],
   "paths": {
-    "/realms": {
+    "/realm": {
       "get": {
         "summary": "List all realms",
         "tags": [
@@ -45,12 +45,12 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "operationId": "get-realms",
         "description": "Return an array of available realms"
+        "operationId": "get-realm",
       },
       "post": {
         "summary": "Create a realm",
-        "operationId": "post-realms",
+        "operationId": "post-realm",
         "responses": {
           "201": {
             "$ref": "#/components/responses/onCreate"
@@ -81,7 +81,7 @@
         ]
       }
     },
-    "/realms/{realmId}": {
+    "/realm/{realmId}": {
       "parameters": [
         {
           "$ref": "#/components/parameters/realmId"
@@ -106,7 +106,7 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "operationId": "get-realms-realmId",
+        "operationId": "get-realm-realmId",
         "description": "Get specific realm definition",
         "requestBody": {
           "content": {
@@ -121,7 +121,7 @@
       },
       "put": {
         "summary": "Replace a realm",
-        "operationId": "put-realms-realmId",
+        "operationId": "put-realm-realmId",
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
@@ -153,7 +153,7 @@
       },
       "patch": {
         "summary": "Update a realm",
-        "operationId": "patch-realms-realmId",
+        "operationId": "patch-realm-realmId",
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
@@ -185,7 +185,7 @@
       },
       "delete": {
         "summary": "Delete a realm",
-        "operationId": "delete-realms-realmId",
+        "operationId": "delete-realm-realmId",
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
@@ -208,7 +208,7 @@
         ]
       }
     },
-    "/realms/{realmId}/subscribers": {
+    "/realm/{realmId}/subscriber": {
       "parameters": [
         {
           "name": "realmId",
@@ -244,12 +244,12 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "operationId": "get-realms-realmId-subscriber",
+        "operationId": "get-realm-realmId-subscriber",
         "description": "Return an array of all subscriber objects in a realm"
       },
       "post": {
         "summary": "Create a subscriber",
-        "operationId": "post-realms-realmId-subscribers",
+        "operationId": "post-realm-realmId-subscriber",
         "responses": {
           "201": {
             "$ref": "#/components/responses/onCreate"
@@ -280,7 +280,7 @@
         "description": "Add a new subscriber definition"
       }
     },
-    "/realms/{realmId}/subscribers/{compoundSubscriberId}": {
+    "/realm/{realmId}/subscriber/{compoundSubscriberId}": {
       "parameters": [
         {
           "name": "realmId",
@@ -329,12 +329,12 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "operationId": "get-realms-realmId-subscribers-subscriberId",
+        "operationId": "get-realm-realmId-subscriber-subscriberId",
         "description": "Get specific subscriber definition for a given realm"
       },
       "put": {
         "summary": "Replace a subscriber",
-        "operationId": "put-realms-realmId-subscribers-subscriberId",
+        "operationId": "put-realm-realmId-subscriber-subscriberId",
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
@@ -366,7 +366,7 @@
       },
       "patch": {
         "summary": "Update a subscriber",
-        "operationId": "patch-realms-realmId-subscribers-subscriberId",
+        "operationId": "patch-realm-realmId-subscriber-subscriberId",
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
@@ -398,7 +398,7 @@
       },
       "delete": {
         "summary": "Delete a subscriber",
-        "operationId": "delete-realms-realmId-subscribers-subscriberId",
+        "operationId": "delete-realm-realmId-subscriber-subscriberId",
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
@@ -419,6 +419,32 @@
             "$ref": "#/components/parameters/prune"
           }
         ]
+      }
+    },
+    "/group": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-group"
+      }
+    },
+    "/group/{groupId}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "groupId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-group-groupId"
       }
     },
     "/service": {
@@ -1045,6 +1071,58 @@
           "Profile Management"
         ]
       }
+    },
+    "/client": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-client"
+      }
+    },
+    "/client/{clientId}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "clientId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-client-clientId"
+      }
+    },
+    "/client-group": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-client-group"
+      }
+    },
+    "/client-group/{clientGroupId}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "clientGroupId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-client-group-clientGroupId"
+      }
     }
   },
   "components": {
@@ -1143,16 +1221,26 @@
             "example": "primary"
           },
           "clientGroup": {
-            "type": "string",
+            "type": "array",
             "format": "uri",
             "description": "The URI of a clientGroup to restrict logins from.",
-            "example": "http://localhost:3000/policys/group1"
+            "example": "http://localhost:3000/policys/group1",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "example": "http://localhost:3000/client-groups/example.org-bngs",
+              "format": "uri"
+            }
           },
           "subscriberGroup": {
-            "type": "string",
+            "type": "array",
             "format": "uri",
             "example": "http://localhost:3000/subscriber-groups/groupA",
             "description": "The URI of a subscriberGroup object.  Used to apply common sets of RADIUS attributes or serviceprofile to subscribers."
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
           },
           "portBinding": {
             "type": "boolean",
