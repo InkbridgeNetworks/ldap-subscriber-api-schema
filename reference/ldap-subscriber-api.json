@@ -481,7 +481,10 @@
             }
           },
           "description": "Definition of the service to add"
-        }
+        },
+        "tags": [
+          "Profile Management"
+        ]
       }
     },
     "/service/{accessMediaId}": {
@@ -547,7 +550,10 @@
             }
           },
           "description": "New definition of the service"
-        }
+        },
+        "tags": [
+          "Profile Management"
+        ]
       },
       "patch": {
         "summary": "Update a service",
@@ -576,7 +582,10 @@
           },
           "description": "Partial definition of the service"
         },
-        "description": "Update specific service by replacing only the provided attributes"
+        "description": "Update specific service by replacing only the provided attributes",
+        "tags": [
+          "Profile Management"
+        ]
       },
       "delete": {
         "summary": "Delete a service",
@@ -597,6 +606,9 @@
           {
             "$ref": "#/components/parameters/prune"
           }
+        ],
+        "tags": [
+          "Profile Management"
         ]
       }
     },
@@ -665,7 +677,10 @@
             }
           },
           "description": "Definition of the serviceProfile to add"
-        }
+        },
+        "tags": [
+          "Profile Management"
+        ]
       }
     },
     "/service/{accessMediaId}/profile/{profileId}": {
@@ -733,7 +748,10 @@
             }
           },
           "description": "New definition of the serviceProfile"
-        }
+        },
+        "tags": [
+          "Profile Management"
+        ]
       },
       "patch": {
         "summary": "Update a serviceProfile",
@@ -762,7 +780,10 @@
             }
           },
           "description": "Partial definition of the serviceProfile"
-        }
+        },
+        "tags": [
+          "Profile Management"
+        ]
       },
       "delete": {
         "summary": "Delete a serviceProfile",
@@ -783,6 +804,9 @@
           {
             "$ref": "#/components/parameters/prune"
           }
+        ],
+        "tags": [
+          "Profile Management"
         ]
       }
     },
@@ -868,7 +892,10 @@
             }
           },
           "description": "Definition of a policy to add"
-        }
+        },
+        "tags": [
+          "Profile Management"
+        ]
       }
     },
     "/service/{accessMediaId}/profile/{profileId}/policy/{clientGroupId}": {
@@ -960,7 +987,10 @@
             }
           },
           "description": "New definition of the policy"
-        }
+        },
+        "tags": [
+          "Profile Management"
+        ]
       },
       "patch": {
         "summary": "Update a freeradiusPolicy",
@@ -988,7 +1018,10 @@
               }
             }
           }
-        }
+        },
+        "tags": [
+          "Profile Management"
+        ]
       },
       "delete": {
         "summary": "Delete a freeradiusPolicy",
@@ -1007,7 +1040,10 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Delete a specific freeradiusPolicy"
+        "description": "Delete a specific freeradiusPolicy",
+        "tags": [
+          "Profile Management"
+        ]
       }
     }
   },
