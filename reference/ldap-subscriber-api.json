@@ -25,7 +25,7 @@
       "get": {
         "summary": "List all realms",
         "tags": [
-          "Realm Management"
+          "Realm management"
         ],
         "responses": {
           "200": {
@@ -77,7 +77,7 @@
           "description": "The definition of the new realm"
         },
         "tags": [
-          "Realm Management"
+          "Realm management"
         ]
       }
     },
@@ -90,7 +90,7 @@
       "get": {
         "summary": "Retrieve a realm definition",
         "tags": [
-          "Realm Management"
+          "Realm management"
         ],
         "responses": {
           "200": {
@@ -148,7 +148,7 @@
           "description": "New definition of the realm"
         },
         "tags": [
-          "Realm Management"
+          "Realm management"
         ]
       },
       "patch": {
@@ -180,7 +180,7 @@
           "description": "Partial definition of the realm"
         },
         "tags": [
-          "Realm Management"
+          "Realm management"
         ]
       },
       "delete": {
@@ -204,7 +204,7 @@
         ],
         "description": "Delete realm definition",
         "tags": [
-          "Realm Management"
+          "Realm management"
         ]
       }
     },
@@ -224,7 +224,7 @@
       "get": {
         "summary": "List all subscribers in a realm",
         "tags": [
-          "Subscriber Management"
+          "Subscriber management"
         ],
         "responses": {
           "200": {
@@ -275,7 +275,7 @@
           "description": "Definition of the subscriber to add"
         },
         "tags": [
-          "Subscriber Management"
+          "Subscriber management"
         ],
         "description": "Add a new subscriber definition"
       }
@@ -306,7 +306,7 @@
       "get": {
         "summary": "Retrieve a subscriber",
         "tags": [
-          "Subscriber Management"
+          "Subscriber management"
         ],
         "responses": {
           "200": {
@@ -361,7 +361,7 @@
         },
         "description": "Update specific subscriber definition for a given realm by replacing all the fields of the current object with the new values",
         "tags": [
-          "Subscriber Management"
+          "Subscriber management"
         ]
       },
       "patch": {
@@ -392,7 +392,7 @@
           "description": "Partial definition of the subscriber"
         },
         "tags": [
-          "Subscriber Management"
+          "Subscriber management"
         ],
         "description": "Update specific subscriber definition for a given realm by replacing only the provided attributes"
       },
@@ -412,7 +412,7 @@
         },
         "description": "Delete specific subscriber definition for a given realm",
         "tags": [
-          "Subscriber Management"
+          "Subscriber management"
         ],
         "parameters": [
           {
@@ -424,7 +424,9 @@
     "/group": {
       "get": {
         "summary": "List all subscriberGroups",
-        "tags": [],
+        "tags": [
+          "Subscriber group management"
+        ],
         "responses": {},
         "operationId": "get-group"
       }
@@ -442,7 +444,9 @@
       ],
       "get": {
         "summary": "Retrieve a subscriberGroup",
-        "tags": [],
+        "tags": [
+          "Subscriber group management"
+        ],
         "responses": {},
         "operationId": "get-group-groupId"
       }
@@ -451,7 +455,7 @@
       "get": {
         "summary": "List all configured services",
         "tags": [
-          "Profile Management"
+          "Profile management"
         ],
         "responses": {
           "200": {
@@ -509,7 +513,7 @@
           "description": "Definition of the service to add"
         },
         "tags": [
-          "Profile Management"
+          "Profile management"
         ]
       }
     },
@@ -522,7 +526,7 @@
       "get": {
         "summary": "Retrieve a service",
         "tags": [
-          "Profile Management"
+          "Profile management"
         ],
         "responses": {
           "200": {
@@ -578,7 +582,7 @@
           "description": "New definition of the service"
         },
         "tags": [
-          "Profile Management"
+          "Profile management"
         ]
       },
       "patch": {
@@ -610,7 +614,7 @@
         },
         "description": "Update specific service by replacing only the provided attributes",
         "tags": [
-          "Profile Management"
+          "Profile management"
         ]
       },
       "delete": {
@@ -634,7 +638,7 @@
           }
         ],
         "tags": [
-          "Profile Management"
+          "Profile management"
         ]
       }
     },
@@ -647,7 +651,7 @@
       "get": {
         "summary": "Retrieve all serviceProfiles for a service",
         "tags": [
-          "Profile Management"
+          "Profile management"
         ],
         "responses": {
           "200": {
@@ -705,7 +709,7 @@
           "description": "Definition of the serviceProfile to add"
         },
         "tags": [
-          "Profile Management"
+          "Profile management"
         ]
       }
     },
@@ -721,7 +725,7 @@
       "get": {
         "summary": "Retrieve a specific serviceProfile for a service",
         "tags": [
-          "Profile Management"
+          "Profile management"
         ],
         "responses": {
           "200": {
@@ -776,7 +780,7 @@
           "description": "New definition of the serviceProfile"
         },
         "tags": [
-          "Profile Management"
+          "Profile management"
         ]
       },
       "patch": {
@@ -808,7 +812,7 @@
           "description": "Partial definition of the serviceProfile"
         },
         "tags": [
-          "Profile Management"
+          "Profile management"
         ]
       },
       "delete": {
@@ -832,7 +836,7 @@
           }
         ],
         "tags": [
-          "Profile Management"
+          "Profile management"
         ]
       }
     },
@@ -862,7 +866,7 @@
       "get": {
         "summary": "List all configured freeradiusPolicies for a serviceProfile",
         "tags": [
-          "Profile Management"
+          "Profile management"
         ],
         "responses": {
           "200": {
@@ -920,7 +924,7 @@
           "description": "Definition of a policy to add"
         },
         "tags": [
-          "Profile Management"
+          "Profile management"
         ]
       }
     },
@@ -960,7 +964,7 @@
       "get": {
         "summary": "Retrieve a specific freeradiusPolicy for a serviceProfile",
         "tags": [
-          "Profile Management"
+          "Profile management"
         ],
         "responses": {
           "200": {
@@ -1015,7 +1019,7 @@
           "description": "New definition of the policy"
         },
         "tags": [
-          "Profile Management"
+          "Profile management"
         ]
       },
       "patch": {
@@ -1046,7 +1050,7 @@
           }
         },
         "tags": [
-          "Profile Management"
+          "Profile management"
         ]
       },
       "delete": {
@@ -1068,14 +1072,16 @@
         },
         "description": "Delete a specific freeradiusPolicy",
         "tags": [
-          "Profile Management"
+          "Profile management"
         ]
       }
     },
     "/client": {
       "get": {
         "summary": "List all radiusClients",
-        "tags": [],
+        "tags": [
+          "Client management"
+        ],
         "responses": {},
         "operationId": "get-client"
       }
@@ -1093,7 +1099,9 @@
       ],
       "get": {
         "summary": "Retrieve a specific radiusClient",
-        "tags": [],
+        "tags": [
+          "Client management"
+        ],
         "responses": {},
         "operationId": "get-client-clientId"
       }
@@ -1101,7 +1109,9 @@
     "/client-group": {
       "get": {
         "summary": "List all clientGroups",
-        "tags": [],
+        "tags": [
+          "Client group management"
+        ],
         "responses": {},
         "operationId": "get-client-group"
       }
@@ -1119,7 +1129,9 @@
       ],
       "get": {
         "summary": "Retrieve a clientGroup",
-        "tags": [],
+        "tags": [
+          "Client group management"
+        ],
         "responses": {},
         "operationId": "get-client-group-clientGroupId"
       }
@@ -1555,13 +1567,22 @@
   },
   "tags": [
     {
-      "name": "Profile Management"
+      "name": "Client group management"
     },
     {
-      "name": "Realm Management"
+      "name": "Client management"
     },
     {
-      "name": "Subscriber Management"
+      "name": "Profile management"
+    },
+    {
+      "name": "Realm management"
+    },
+    {
+      "name": "Subscriber group management"
+    },
+    {
+      "name": "Subscriber management"
     }
   ]
 }
