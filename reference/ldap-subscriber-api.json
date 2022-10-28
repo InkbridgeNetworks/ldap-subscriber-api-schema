@@ -45,8 +45,8 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Return an array of available realms"
-        "operationId": "get-realm",
+        "description": "Return an array of available realms",
+        "operationId": "get-realm"
       },
       "post": {
         "summary": "Create a realm",
@@ -1224,7 +1224,6 @@
             "type": "array",
             "format": "uri",
             "description": "The URI of a clientGroup to restrict logins from.",
-            "example": "http://localhost:3000/policys/group1",
             "uniqueItems": true,
             "items": {
               "type": "string",
@@ -1235,8 +1234,7 @@
           "subscriberGroup": {
             "type": "array",
             "format": "uri",
-            "example": "http://localhost:3000/subscriber-groups/groupA",
-            "description": "The URI of a subscriberGroup object.  Used to apply common sets of RADIUS attributes or serviceprofile to subscribers."
+            "description": "The URI of a subscriberGroup object.  Used to apply common sets of RADIUS attributes or serviceprofile to subscribers.",
             "uniqueItems": true,
             "items": {
               "type": "string"
