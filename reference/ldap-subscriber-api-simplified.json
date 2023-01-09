@@ -1,0 +1,296 @@
+{
+  "openapi": "3.1.0",
+  "x-stoplight": {
+    "id": "y0ubu7vaf80gv"
+  },
+  "info": {
+    "title": "Simplified LDAP based subscriber management API",
+    "version": "1.0",
+    "description": "A simplified version of the LDAP subscriber API for integration with limited BSS/OSS systems",
+    "summary": "Simplified LDAP API",
+    "contact": {
+      "name": " Network RADIUS support",
+      "url": "http://www.networkradius.com",
+      "email": "support@networkradius.com"
+    },
+    "license": {
+      "name": "Network RADIUS commercial license",
+      "url": "https://support.networkradius.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/realms/subscribers": {
+      "post": {
+        "summary": "Create a subscriber",
+        "operationId": "post-realms-subscribers",
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "409": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/statusResponse"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscriber",
+                "description": "A complete subscriber object"
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "subscriberId": "A123456789",
+                    "serviceProfile": "INET_500M_500M",
+                    "serviceStatus": "suspended",
+                    "serviceProfileSuspend": "nonPaymentSuspend",
+                    "staticIp": [
+                      {
+                        "ipType": "ipv4",
+                        "ipAddress": "192.158.1.38"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "description": "A subscriber object definition"
+        },
+        "description": "Add a new subscriber."
+      }
+    },
+    "/realms/{realmId}/subscribers/{subscriberId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/realmId"
+        },
+        {
+          "$ref": "#/components/parameters/subscriberId"
+        }
+      ],
+      "get": {
+        "summary": "Retrieve a subscriber",
+        "operationId": "get-realms-realmId-subscribers-subscriberId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/subscriber",
+                  "description": "A subscriber object"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "subscriberId": "A123456789",
+                      "serviceProfile": "INET_500M_500M",
+                      "serviceStatus": "suspended",
+                      "serviceProfileSuspend": "nonPaymentSuspend",
+                      "staticIp": [
+                        {
+                          "ipType": "ipv4",
+                          "ipAddress": "192.158.1.38"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/statusResponse"
+          }
+        },
+        "description": "Return a subscriber in a specified realm."
+      },
+      "patch": {
+        "summary": "Update a subscriber",
+        "operationId": "patch-realms-realmId-subscribers-subscriberId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/statusResponse"
+          }
+        },
+        "description": "Update a subscriber for a given realm by replacing only the provided attributes.  If an attribute is null, it will be removed.\n\nFor multi-valued and nested attributes the complete set of values must be provided, and will replace all existing values.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscriber",
+                "description": "A partial subscriber object"
+              }
+            }
+          },
+          "description": "Attributes to update."
+        }
+      },
+      "delete": {
+        "summary": "Delete a subscriber",
+        "operationId": "delete-realms-realmId-subscribers-subscriberId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/statusResponse"
+          }
+        },
+        "description": "Delete a subscriber from a given realm."
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "subscriber": {
+        "title": "subscriber",
+        "x-stoplight": {
+          "id": "7ckq4rvykpv6w"
+        },
+        "type": "object",
+        "description": "A subscriber - A user authenticating via the RADIUS service",
+        "properties": {
+          "subscriberId": {
+            "type": "string",
+            "description": "Unique identifier for the subscriber",
+            "example": "A123456789"
+          },
+          "serviceProfile": {
+            "type": "string",
+            "description": "Service profile the subscriber is assigned",
+            "example": "INET_500M_500M"
+          },
+          "serviceStatus": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "suspended"
+            ],
+            "description": "What state the subscriber's account is in",
+            "default": "enabled",
+            "example": "suspended"
+          },
+          "serviceProfileSuspend": {
+            "type": "string",
+            "enum": [
+              "nonPaymentSuspend",
+              "vacationSupend",
+              "forceSuspend",
+              "Calea"
+            ],
+            "description": "Why the subscriber is in the suspend state",
+            "example": "nonPaymentSuspend"
+          },
+          "staticIp": {
+            "type": "array",
+            "description": "Subscriber's static IP address assignments.  For updates the complete set of IP addresses must be provided",
+            "items": {
+              "$ref": "#/components/schemas/subscriber-static-ip"
+            }
+          }
+        }
+      },
+      "subscriber-static-ip": {
+        "title": "subscriber-static-ip",
+        "x-stoplight": {
+          "id": "dcurmfui4vdwg"
+        },
+        "type": "object",
+        "description": "A static IP address assignment for a subscriber",
+        "properties": {
+          "ipType": {
+            "type": "string",
+            "enum": [
+              "ipv4",
+              "ipv6"
+            ],
+            "example": "ipv4",
+            "description": "The address family of the static IP"
+          },
+          "ipAddress": {
+            "type": "string",
+            "example": "192.158.1.38",
+            "description": "An IPv4 or IPv6 address to assign to a subscriber"
+          }
+        },
+        "required": [
+          "ipType",
+          "ipAddress"
+        ]
+      }
+    },
+    "responses": {
+      "statusResponse": {
+        "description": "A response containing the operation status and message",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "description": "HTTP status code as provided by NGINX"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Descriptive error message as provided by NGINX"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "realmId": {
+        "name": "realmId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Unique identifier for a realm"
+      },
+      "subscriberId": {
+        "name": "subscriberId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Unique identifier for a subscriber"
+      }
+    }
+  },
+  "x-internal": false
+}

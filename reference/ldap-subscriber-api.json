@@ -4,16 +4,19 @@
     "id": "j70spdn4dvy7p"
   },
   "info": {
-    "title": "NetworkRADIUS' LDAP based subscriber management API for Carriers",
+    "title": "NetworkRADIUS - LDAP subscriber management API for carriers",
     "version": "1.0",
     "summary": "A Lua-based, lightweight wrapper around OpenLDAP",
-    "description": "This API runs natively in OpenResty/NGINX to provide a high performance restful layer around an LDAP instance.  It should be mostly object agonistic, but has some special endpoints.",
+    "description": "This API runs natively in OpenResty/NGINX to provide a high performance restful layer around an LDAP instance.  It should be mostly object agonistic, but has some special endpoints",
     "contact": {
-      "name": "Arran Cudbard-Bell",
+      "name": " Network RADIUS support",
       "url": "http://www.networkradius.com",
       "email": "support@networkradius.com"
     },
-    "license": {}
+    "license": {
+      "name": "Network RADIUS commercial license",
+      "url": "https://support.networkradius.com"
+    }
   },
   "servers": [
     {
@@ -23,7 +26,6 @@
   "paths": {
     "/realm": {
       "get": {
-        "summary": "List all realms",
         "tags": [
           "Realm management"
         ],
@@ -46,10 +48,10 @@
           }
         },
         "operationId": "get-realm",
-        "description": "Return an array of available realm"
+        "description": "Return an array of available realms",
+        "summary": "List available realms"
       },
       "post": {
-        "summary": "Create a realm",
         "operationId": "post-realm",
         "responses": {
           "201": {
@@ -78,7 +80,8 @@
         },
         "tags": [
           "Realm management"
-        ]
+        ],
+        "summary": "Add a new realm"
       }
     },
     "/realm/{realmId}": {
@@ -88,16 +91,12 @@
         }
       ],
       "get": {
-        "summary": "Retrieve a realm definition",
         "tags": [
           "Realm management"
         ],
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
-          },
-          "400": {
-            "$ref": "#/components/responses/onBadRequest"
           },
           "404": {
             "$ref": "#/components/responses/onNotFound"
@@ -107,7 +106,7 @@
           }
         },
         "operationId": "get-realm-realmId",
-        "description": "Get specific realm definition",
+        "description": "Get metadata for a realm",
         "requestBody": {
           "content": {
             "application/json": {
@@ -117,10 +116,10 @@
             }
           },
           "description": "Return an existing realm definition"
-        }
+        },
+        "summary": "Return a specific realm"
       },
       "put": {
-        "summary": "Replace a realm",
         "operationId": "put-realm-realmId",
         "responses": {
           "200": {
@@ -136,7 +135,7 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Update given realm definition by replacing all the fields of the current object with the new values",
+        "description": "Update realm metadata by replacing all the fields of the current object with the new values",
         "requestBody": {
           "content": {
             "application/json": {
@@ -149,10 +148,10 @@
         },
         "tags": [
           "Realm management"
-        ]
+        ],
+        "summary": "Replace a realm"
       },
       "patch": {
-        "summary": "Update a realm",
         "operationId": "patch-realm-realmId",
         "responses": {
           "200": {
@@ -168,7 +167,7 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Update given realm definition by replacing only the provided attributes",
+        "description": "Update realm metdata by replacing only the provided attributes.\n\nAttributes with a null value will be removed.\n\nMulti-valued attributes will have all values replaced",
         "requestBody": {
           "content": {
             "application/json": {
@@ -177,14 +176,14 @@
               }
             }
           },
-          "description": "Partial definition of the realm"
+          "description": "Partial definition of a realm"
         },
         "tags": [
           "Realm management"
-        ]
+        ],
+        "summary": "Update a realm"
       },
       "delete": {
-        "summary": "Delete a realm",
         "operationId": "delete-realm-realmId",
         "responses": {
           "200": {
@@ -202,27 +201,20 @@
             "$ref": "#/components/parameters/prune"
           }
         ],
-        "description": "Delete realm definition",
+        "description": "Delete a realm.  The prune param must be true if the realm contains subscribers",
         "tags": [
           "Realm management"
-        ]
+        ],
+        "summary": "Delete a realm"
       }
     },
     "/realm/{realmId}/subscriber": {
       "parameters": [
         {
-          "name": "realmId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "example": "example.org"
-          },
-          "description": "Realm this operation relates to"
+          "$ref": "#/components/parameters/realmId"
         }
       ],
       "get": {
-        "summary": "List all subscribers in a realm",
         "tags": [
           "Subscriber management"
         ],
@@ -245,10 +237,10 @@
           }
         },
         "operationId": "get-realm-realmId-subscriber",
-        "description": "Return an array of all subscriber objects in a realm"
+        "description": "Return an array of all subscribers in a realm",
+        "summary": "List subscribers in a realm"
       },
       "post": {
-        "summary": "Create a subscriber",
         "operationId": "post-realm-realmId-subscriber",
         "responses": {
           "201": {
@@ -277,34 +269,20 @@
         "tags": [
           "Subscriber management"
         ],
-        "description": "Add a new subscriber definition"
+        "description": "Add a new subscriber",
+        "summary": "Add a subscriber to a realm"
       }
     },
     "/realm/{realmId}/subscriber/{compoundSubscriberId}": {
       "parameters": [
         {
-          "name": "realmId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "example": "example.org"
-          },
-          "description": "Realm this operation relates to"
+          "$ref": "#/components/parameters/realmId"
         },
         {
-          "name": "compoundSubscriberId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "example": "123456789+fixedLine"
-          },
-          "description": "A combination of the subscriber's unique id and the service the account relates to"
+          "$ref": "#/components/parameters/compoundSubscriberId"
         }
       ],
       "get": {
-        "summary": "Retrieve a subscriber",
         "tags": [
           "Subscriber management"
         ],
@@ -319,9 +297,6 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/onBadRequest"
-          },
           "404": {
             "$ref": "#/components/responses/onNotFound"
           },
@@ -330,10 +305,10 @@
           }
         },
         "operationId": "get-realm-realmId-subscriber-subscriberId",
-        "description": "Get specific subscriber definition for a given realm"
+        "description": "Get specific subscriber for a given realm",
+        "summary": "Return a subscriber"
       },
       "put": {
-        "summary": "Replace a subscriber",
         "operationId": "put-realm-realmId-subscriber-subscriberId",
         "responses": {
           "200": {
@@ -359,13 +334,13 @@
           },
           "description": "New definition of the subscriber"
         },
-        "description": "Update specific subscriber definition for a given realm by replacing all the fields of the current object with the new values",
+        "description": "Replace an existing subscriber in a given realm",
         "tags": [
           "Subscriber management"
-        ]
+        ],
+        "summary": "Replace a subscriber"
       },
       "patch": {
-        "summary": "Update a subscriber",
         "operationId": "patch-realm-realmId-subscriber-subscriberId",
         "responses": {
           "200": {
@@ -389,15 +364,15 @@
               }
             }
           },
-          "description": "Partial definition of the subscriber"
+          "description": "Partial definition of a subscriber"
         },
         "tags": [
           "Subscriber management"
         ],
-        "description": "Update specific subscriber definition for a given realm by replacing only the provided attributes"
+        "description": "Update a subscriber in a given realm by replacing only the provided attributes.\n\nAttributes with a null value will be removed.\n\nMulti-valued attributes will have all values replaced",
+        "summary": "Update a subscriber"
       },
       "delete": {
-        "summary": "Delete a subscriber",
         "operationId": "delete-realm-realmId-subscriber-subscriberId",
         "responses": {
           "200": {
@@ -410,7 +385,7 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Delete specific subscriber definition for a given realm",
+        "description": "Delete a subscriber in a given realm",
         "tags": [
           "Subscriber management"
         ],
@@ -418,45 +393,179 @@
           {
             "$ref": "#/components/parameters/prune"
           }
-        ]
+        ],
+        "summary": "Delete a subscriber"
       }
     },
     "/group": {
       "get": {
-        "summary": "List all subscriberGroups",
         "tags": [
           "Subscriber group management"
         ],
-        "responses": {},
-        "operationId": "get-group"
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/subscriberGroup"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-group",
+        "description": "Return an array of available subscriber groups",
+        "summary": "List available subscriberGroups"
+      },
+      "parameters": [],
+      "post": {
+        "operationId": "post-group",
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/onCreate"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscriberGroup"
+              }
+            }
+          },
+          "description": "Definition of the subscriber group to add"
+        },
+        "description": "Add a new subscriber group",
+        "tags": [
+          "Subscriber group management"
+        ],
+        "summary": "Add a subscriberGroup"
       }
     },
-    "/group/{groupId}": {
+    "/group/{subscriberGroupId}": {
       "parameters": [
         {
-          "schema": {
-            "type": "string"
-          },
-          "name": "groupId",
-          "in": "path",
-          "required": true
+          "$ref": "#/components/parameters/subscriberGroupId"
         }
       ],
       "get": {
-        "summary": "Retrieve a subscriberGroup",
+        "operationId": "get-group-subscriberGroupId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/subscriberGroup"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Get a subscriber group definition",
         "tags": [
           "Subscriber group management"
         ],
-        "responses": {},
-        "operationId": "get-group-groupId"
+        "summary": "Return a subscriberGroup"
+      },
+      "put": {
+        "operationId": "put-group-subscriberGroupId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscriberGroup"
+              }
+            }
+          },
+          "description": "New definition of the subscriber"
+        },
+        "description": "Replace subscriber group metadata.  Will not affect group membership",
+        "tags": [
+          "Subscriber group management"
+        ],
+        "summary": "Replace a subscriberGroup"
+      },
+      "patch": {
+        "operationId": "patch-group-subscriberGroupId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscriberGroup"
+              }
+            }
+          },
+          "description": "Partial definition of a subscriber group"
+        },
+        "description": "Update a subscriber group's metadata by replacing only the provided attributes.\n\nAttributes with a null value will be removed.\n\nMulti-valued attributes will have all values replaced",
+        "tags": [
+          "Subscriber group management"
+        ],
+        "summary": "Update a subscriberGroup"
+      },
+      "delete": {
+        "operationId": "delete-group-subscriberGroupId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Delete a subscriber group",
+        "tags": [
+          "Subscriber group management"
+        ],
+        "summary": "Delete a subscriberGroup",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/prune"
+          }
+        ]
       }
     },
     "/service": {
       "get": {
-        "summary": "List all configured services",
-        "tags": [
-          "Profile management"
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -471,9 +580,6 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/onBadRequest"
-          },
           "404": {
             "$ref": "#/components/responses/onNotFound"
           },
@@ -482,10 +588,13 @@
           }
         },
         "operationId": "get-service",
-        "description": "Return an array of available service objects indexed by accessMedia"
+        "description": "Return an array of available services",
+        "summary": "List available services",
+        "tags": [
+          "Service management"
+        ]
       },
       "post": {
-        "summary": "Create a service",
         "operationId": "post-service",
         "responses": {
           "201": {
@@ -501,7 +610,7 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Add a service, a collection of profiles grouped by access media",
+        "description": "Add a new service",
         "requestBody": {
           "content": {
             "application/json": {
@@ -512,22 +621,19 @@
           },
           "description": "Definition of the service to add"
         },
+        "summary": "Add a new service",
         "tags": [
-          "Profile management"
+          "Service management"
         ]
       }
     },
-    "/service/{accessMediaId}": {
+    "/service/{serviceId}": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/accessMediaId"
+          "$ref": "#/components/parameters/serviceId"
         }
       ],
       "get": {
-        "summary": "Retrieve a service",
-        "tags": [
-          "Profile management"
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -539,9 +645,6 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/onBadRequest"
-          },
           "404": {
             "$ref": "#/components/responses/onNotFound"
           },
@@ -549,12 +652,15 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "operationId": "get-service-accessMediaId",
-        "description": "Get a specific service defintion"
+        "operationId": "get-service-serviceId",
+        "description": "Get service metadata",
+        "summary": "Return a service",
+        "tags": [
+          "Service management"
+        ]
       },
       "put": {
-        "summary": "Replace a service",
-        "operationId": "put-service-accessMediaId",
+        "operationId": "put-service-serviceId",
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
@@ -569,25 +675,24 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Update specific service replacing all the fields of the current object with the new values",
+        "description": "Replace service metadata",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {}
+                "$ref": "#/components/schemas/service"
               }
             }
           },
           "description": "New definition of the service"
         },
+        "summary": "Replace a service",
         "tags": [
-          "Profile management"
+          "Service management"
         ]
       },
       "patch": {
-        "summary": "Update a service",
-        "operationId": "patch-service-accessMediaId",
+        "operationId": "patch-service-serviceId",
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
@@ -610,16 +715,16 @@
               }
             }
           },
-          "description": "Partial definition of the service"
+          "description": "Partial definition of a service"
         },
-        "description": "Update specific service by replacing only the provided attributes",
+        "description": "Update service metadata by replacing only the provided attributes.\n\nAttributes with a null value will be removed.\n\nMulti-valued attributes will have all values replaced",
+        "summary": "Update a service",
         "tags": [
-          "Profile management"
+          "Service management"
         ]
       },
       "delete": {
-        "summary": "Delete a service",
-        "operationId": "delete-service-accessMediaId",
+        "operationId": "delete-service-serviceId",
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
@@ -631,28 +736,24 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Delete a specific service",
+        "description": "Delete a service",
         "parameters": [
           {
             "$ref": "#/components/parameters/prune"
           }
         ],
         "tags": [
-          "Profile management"
+          "Service management"
         ]
       }
     },
-    "/service/{accessMediaId}/profile": {
+    "/service/{serviceId}/profile": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/accessMediaId"
+          "$ref": "#/components/parameters/serviceId"
         }
       ],
       "get": {
-        "summary": "Retrieve all serviceProfiles for a service",
-        "tags": [
-          "Profile management"
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -667,9 +768,6 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/onBadRequest"
-          },
           "404": {
             "$ref": "#/components/responses/onNotFound"
           },
@@ -677,12 +775,15 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "operationId": "get-service-accessMediaID-profile",
-        "description": "Return an array of available serviceProfiles (abstract profiles) for a given service"
+        "operationId": "get-service-serviceId-profile",
+        "description": "Return an array of available serviceProfiles (abstract profiles) for a given service",
+        "summary": "List serviceProfiles in a service",
+        "tags": [
+          "Abstract profile (serviceProfile) management"
+        ]
       },
       "post": {
-        "summary": "Create a serviceProfile",
-        "operationId": "post-service-accessMediaId-profile",
+        "operationId": "post-service-serviceId-profile",
         "responses": {
           "201": {
             "$ref": "#/components/responses/onCreate"
@@ -697,7 +798,7 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Definition of the serviceProfile (abstract profile) to add",
+        "description": "Add a new serviceProfile (abstract profile)",
         "requestBody": {
           "content": {
             "application/json": {
@@ -706,27 +807,24 @@
               }
             }
           },
-          "description": "Definition of the serviceProfile to add"
+          "description": "Definition of the serviceProfile (abstract profile) to add"
         },
+        "summary": "Add a serviceProfile to a service",
         "tags": [
-          "Profile management"
+          "Abstract profile (serviceProfile) management"
         ]
       }
     },
-    "/service/{accessMediaId}/profile/{profileId}": {
+    "/service/{serviceId}/profile/{profileId}": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/accessMediaId"
+          "$ref": "#/components/parameters/serviceId"
         },
         {
           "$ref": "#/components/parameters/profileId"
         }
       ],
       "get": {
-        "summary": "Retrieve a specific serviceProfile for a service",
-        "tags": [
-          "Profile management"
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -738,9 +836,6 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/onBadRequest"
-          },
           "404": {
             "$ref": "#/components/responses/onNotFound"
           },
@@ -748,12 +843,15 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "operationId": "get-service-accessMediaId-profile-profileId",
-        "description": "Return a serviceProfile, an abstract profile describing a class of service"
+        "operationId": "get-service-serviceId-profile-profileId",
+        "description": "Return a serviceProfile i.e. an abstract profile describing a class of service",
+        "summary": "Return a serviceProfile",
+        "tags": [
+          "Abstract profile (serviceProfile) management"
+        ]
       },
       "put": {
-        "summary": "Replace a serviceProfile",
-        "operationId": "put-service-accessMediaId-profile-profileId",
+        "operationId": "put-service-serviceId-profile-profileId",
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
@@ -768,7 +866,7 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Update a specific serviceProfile replacing all the fields of the current object with the new values",
+        "description": "Replace a serviceProfile",
         "requestBody": {
           "content": {
             "application/json": {
@@ -779,13 +877,13 @@
           },
           "description": "New definition of the serviceProfile"
         },
+        "summary": "Replace a serviceProfile",
         "tags": [
-          "Profile management"
+          "Abstract profile (serviceProfile) management"
         ]
       },
       "patch": {
-        "summary": "Update a serviceProfile",
-        "operationId": "patch-service-accessMediaId-profile-profileId",
+        "operationId": "patch-service-serviceId-profile-profileId",
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
@@ -800,7 +898,7 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Update specific serviceProfile by replacing only the provided attributes",
+        "description": "Update a serviceProfile by replacing only the provided attributes.\n\nAttributes with a null value will be removed.\n\nMulti-valued attributes will have all values replaced",
         "requestBody": {
           "content": {
             "application/json": {
@@ -809,15 +907,15 @@
               }
             }
           },
-          "description": "Partial definition of the serviceProfile"
+          "description": "Partial definition of a serviceProfile"
         },
+        "summary": "Update a serviceProfile",
         "tags": [
-          "Profile management"
+          "Abstract profile (serviceProfile) management"
         ]
       },
       "delete": {
-        "summary": "Delete a serviceProfile",
-        "operationId": "delete-service-accessMediaId-profile-profileId",
+        "operationId": "delete-service-serviceId-profile-profileId",
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
@@ -829,45 +927,28 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Delete a specific serviceProfile",
+        "description": "Delete a serviceProfile",
         "parameters": [
           {
             "$ref": "#/components/parameters/prune"
           }
         ],
+        "summary": "Delete a serviceProfile",
         "tags": [
-          "Profile management"
+          "Abstract profile (serviceProfile) management"
         ]
       }
     },
-    "/service/{accessMediaId}/profile/{profileId}/policy": {
+    "/service/{serviceId}/profile/{profileId}/policy": {
       "parameters": [
         {
-          "name": "accessMediaId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "example": "fixedLine"
-          },
-          "description": "Identifier for a service profile category (maps to subscriberAccessMedia)"
+          "$ref": "#/components/parameters/serviceId"
         },
         {
-          "name": "profileId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "example": "INETG1M"
-          },
-          "description": "Identifier for an abstract class of service profile"
+          "$ref": "#/components/parameters/profileId"
         }
       ],
       "get": {
-        "summary": "List all configured freeradiusPolicies for a serviceProfile",
-        "tags": [
-          "Profile management"
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -882,9 +963,6 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/onBadRequest"
-          },
           "404": {
             "$ref": "#/components/responses/onNotFound"
           },
@@ -892,12 +970,15 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "operationId": "get-service-accessMediaId-profile-profileId-policy",
-        "description": "Return an array of policies (concrete profiles containing FreeRADIUS attributes) associated with a serviceProfile (an abstract profile)."
+        "operationId": "get-service-serviceId-profile-profileId-policy",
+        "description": "Return an array of policies (concrete profiles containing FreeRADIUS attributes) associated with a serviceProfile (an abstract profile)",
+        "summary": "List freeradiusPolicies in a serviceProfile",
+        "tags": [
+          "Concrete profile (freeradiusProfile) management"
+        ]
       },
       "post": {
-        "summary": "Create a freeradiusPolicy",
-        "operationId": "post-service-accessMediaId-profile-profileId-policy",
+        "operationId": "post-service-serviceId-profile-profileId-policy",
         "responses": {
           "201": {
             "$ref": "#/components/responses/onCreate"
@@ -923,15 +1004,16 @@
           },
           "description": "Definition of a policy to add"
         },
+        "summary": "Add a freeradiusProfile to a serviceProfile",
         "tags": [
-          "Profile management"
+          "Concrete profile (freeradiusProfile) management"
         ]
       }
     },
-    "/service/{accessMediaId}/profile/{profileId}/policy/{clientGroupId}": {
+    "/service/{serviceId}/profile/{profileId}/policy/{clientGroupId}": {
       "parameters": [
         {
-          "name": "accessMediaId",
+          "name": "serviceId",
           "in": "path",
           "required": true,
           "schema": {
@@ -962,10 +1044,6 @@
         }
       ],
       "get": {
-        "summary": "Retrieve a specific freeradiusPolicy for a serviceProfile",
-        "tags": [
-          "Profile management"
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -973,6 +1051,401 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/freeradusPolicy"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-service-serviceId-profile-profileId-policy-clientGroup-Id",
+        "description": "Return a freeradiusPolicy (a concrete profile)",
+        "summary": "Return a freeradiusProfile associated with a serviceProfile",
+        "tags": [
+          "Concrete profile (freeradiusProfile) management"
+        ]
+      },
+      "put": {
+        "operationId": "put-service-serviceId-profile-profileId-policy-clientGroupId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Replace a freeradiusPolicy",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/freeradusPolicy"
+              }
+            }
+          },
+          "description": "New definition of the policy"
+        },
+        "summary": "Replace a freeradiusProfile",
+        "tags": [
+          "Concrete profile (freeradiusProfile) management"
+        ]
+      },
+      "patch": {
+        "operationId": "patch-service-serviceId-profile-profileId-policy-clientGroupId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Update a freeradiusPolicy by replacing only the provided attributes.\n\nAttributes with a null value will be removed.\n\nMulti-valued attributes will have all values replaced",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/freeradusPolicy"
+              }
+            }
+          },
+          "description": "Partial definition of a freeradiusPolicy"
+        },
+        "summary": "Update a freeradiusProfile",
+        "tags": [
+          "Concrete profile (freeradiusProfile) management"
+        ]
+      },
+      "delete": {
+        "operationId": "delete-service-serviceId-profile-profileId-policy-clientGroupId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/onSuccess"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Delete a freeradiusPolicy",
+        "summary": "Delete a freeradiusProfile",
+        "tags": [
+          "Concrete profile (freeradiusProfile) management"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/prune"
+          }
+        ]
+      }
+    },
+    "/client": {
+      "get": {
+        "tags": [
+          "Client management"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/client"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-client",
+        "description": "Return an array of clients",
+        "summary": "List clients"
+      },
+      "post": {
+        "operationId": "post-client",
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/onCreate"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "409": {
+            "$ref": "#/components/responses/onConflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Add a new client",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/client"
+              }
+            }
+          },
+          "description": "Definition of an client to add"
+        },
+        "tags": [
+          "Client management"
+        ],
+        "summary": "Add an client"
+      }
+    },
+    "/client/{clientId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/clientId"
+        }
+      ],
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/client"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-client-clientId",
+        "description": "Return an client",
+        "tags": [
+          "Client management"
+        ],
+        "summary": "Return an client"
+      },
+      "put": {
+        "operationId": "put-client-clientId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Replace an client",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/client"
+              }
+            }
+          },
+          "description": "New definition of the client"
+        },
+        "tags": [
+          "Client management"
+        ],
+        "summary": "Replace an client"
+      },
+      "patch": {
+        "operationId": "patch-client-clientId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Update an client replacing only the provided attributes.\n\nAttributes with a null value will be removed.\n\nMulti-valued attributes will have all values replaced.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/client"
+              }
+            }
+          },
+          "description": "Partial definition of an client"
+        },
+        "tags": [
+          "Client management"
+        ],
+        "summary": "Update an client"
+      },
+      "delete": {
+        "operationId": "delete-client-clientId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Delete an client",
+        "tags": [
+          "Client management"
+        ],
+        "summary": "Delete an client",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/prune"
+          }
+        ]
+      }
+    },
+    "/clientGroup": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/clientGroup"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "operationId": "get-client-group",
+        "description": "Return an array of clientGroups",
+        "tags": [
+          "Client group management"
+        ],
+        "summary": "List clientGroups"
+      },
+      "post": {
+        "operationId": "post-clientGroup",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "409": {
+            "$ref": "#/components/responses/onConflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Add a new clientGroup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/clientGroup"
+              }
+            }
+          },
+          "description": "Definition of the clientGroup to add"
+        },
+        "tags": [
+          "Client group management"
+        ],
+        "summary": "Add an clientGroup"
+      }
+    },
+    "/clientGroup/{clientGroupId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/clientGroupId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Client group management"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/clientGroup"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-client-group-clientGroupId",
+        "description": "Return an clientGroup",
+        "summary": "Return an clientGroup"
+      },
+      "put": {
+        "operationId": "put-clientGroup-clientGroupId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/client"
                 }
               }
             }
@@ -987,47 +1460,17 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "operationId": "get-service-accessMediaId-profile-profileId-policy-clientGroup-Id",
-        "description": "Return a specific policy (a concrete profile)"
-      },
-      "put": {
-        "summary": "Replace a freeradiusPolicy",
-        "operationId": "put-service-accessMediaId-profile-profileId-policy-clientGroupId",
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/onSuccess"
-          },
-          "400": {
-            "$ref": "#/components/responses/onBadRequest"
-          },
-          "404": {
-            "$ref": "#/components/responses/onNotFound"
-          },
-          "500": {
-            "$ref": "#/components/responses/onInternalServerError"
-          }
-        },
-        "description": "Update a specific profile replacing all the fields of the current object with the new values",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/freeradusPolicy"
-              }
-            }
-          },
-          "description": "New definition of the policy"
-        },
+        "description": "Replace an clientGroup metadata and profiles.  Does not affect group membership",
         "tags": [
-          "Profile management"
-        ]
+          "Client group management"
+        ],
+        "summary": "Replace an clientGroup"
       },
       "patch": {
-        "summary": "Update a freeradiusPolicy",
-        "operationId": "patch-service-accessMediaId-profile-profileId-policy-clientGroupId",
+        "operationId": "patch-clientGroup-clientGroupId",
         "responses": {
           "200": {
-            "$ref": "#/components/responses/onSuccess"
+            "description": "OK"
           },
           "400": {
             "$ref": "#/components/responses/onBadRequest"
@@ -1039,29 +1482,27 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Update specific freeradiusPolicy by replacing only the provided attributes",
+        "description": "Update an clientGroup replacing only the provided attributes.\n\nAttributes with a null value will be removed.\n\nMulti-valued attributes will have all values replaced",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/freeradusPolicy"
+                "$ref": "#/components/schemas/clientGroup"
               }
             }
-          }
+          },
+          "description": "Partial definition of an clientGroup"
         },
         "tags": [
-          "Profile management"
-        ]
+          "Client group management"
+        ],
+        "summary": "Update an clientGroup"
       },
       "delete": {
-        "summary": "Delete a freeradiusPolicy",
-        "operationId": "delete-service-accessMediaId-profile-profileId-policy-clientGroupId",
+        "operationId": "delete-clientGroup-clientGroupId",
         "responses": {
           "200": {
-            "$ref": "#/components/responses/onSuccess"
-          },
-          "400": {
-            "$ref": "#/components/responses/onBadRequest"
+            "description": "OK"
           },
           "404": {
             "$ref": "#/components/responses/onNotFound"
@@ -1070,70 +1511,16 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Delete a specific freeradiusPolicy",
+        "description": "Delete an clientGroup",
         "tags": [
-          "Profile management"
+          "Client group management"
+        ],
+        "summary": "Delete an clientGroup",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/prune"
+          }
         ]
-      }
-    },
-    "/client": {
-      "get": {
-        "summary": "List all radiusClients",
-        "tags": [
-          "Client management"
-        ],
-        "responses": {},
-        "operationId": "get-client"
-      }
-    },
-    "/client/{clientId}": {
-      "parameters": [
-        {
-          "schema": {
-            "type": "string"
-          },
-          "name": "clientId",
-          "in": "path",
-          "required": true
-        }
-      ],
-      "get": {
-        "summary": "Retrieve a specific radiusClient",
-        "tags": [
-          "Client management"
-        ],
-        "responses": {},
-        "operationId": "get-client-clientId"
-      }
-    },
-    "/client-group": {
-      "get": {
-        "summary": "List all clientGroups",
-        "tags": [
-          "Client group management"
-        ],
-        "responses": {},
-        "operationId": "get-client-group"
-      }
-    },
-    "/client-group/{clientGroupId}": {
-      "parameters": [
-        {
-          "schema": {
-            "type": "string"
-          },
-          "name": "clientGroupId",
-          "in": "path",
-          "required": true
-        }
-      ],
-      "get": {
-        "summary": "Retrieve a clientGroup",
-        "tags": [
-          "Client group management"
-        ],
-        "responses": {},
-        "operationId": "get-client-group-clientGroupId"
       }
     }
   },
@@ -1149,7 +1536,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "The realm ID.  This may map directly with the domain portion in a user's NAI, and can be used to separate subscriber belonging to different areas of the business, or to external customers.",
+            "description": "The realm ID.  This may map directly with the domain portion in a user's NAI, and can be used to separate subscriber belonging to different areas of the business, or to external customers",
             "example": "example.org"
           },
           "description": {
@@ -1164,13 +1551,13 @@
               "secondary"
             ],
             "example": "primary",
-            "description": "If a subscriber did not authenticate using a qualified NAI, and appears in multiple realm, the first primary realm with take precedence."
+            "description": "If a subscriber did not authenticate using a qualified NAI, and appears in multiple realm, the first primary realm with take precedence"
           },
           "serviceProfile": {
             "type": "string",
             "format": "uri",
             "example": "http://192.168.0.1/service/fixedLine/profile/INETG1M",
-            "description": "The URI of a serviceProfile object to apply to all subscriber in this realm.  The serviceProfile object must exist, and referential integrity will be enforced."
+            "description": "The URI of a serviceProfile object to apply to all subscriber in this realm.  The serviceProfile object must exist, and referential integrity will be enforced"
           }
         }
       },
@@ -1192,10 +1579,32 @@
             "description": "A unique (within a realm) identifier for a subscriber",
             "example": "123456789"
           },
-          "serviceAccessMedia": {
+          "serviceStatus": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "suspended"
+            ],
+            "description": "Whether this subscriber can access the service"
+          },
+          "statusReason": {
+            "type": "string",
+            "description": "Why the subscriber's service was disabled or suspended"
+          },
+          "serviceId": {
             "type": "string",
             "description": "The type of access media this subscriber object relates to, e.g. fixedLine, wireless etc... Must match a configured service category",
             "example": "fixedLine"
+          },
+          "servicePrecedence": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "secondary"
+            ],
+            "description": "If multiple subscriber objects match an incoming Access-Request, the first subscriber object with \"primary\" will be used",
+            "example": "primary"
           },
           "serviceProfile": {
             "type": "string",
@@ -1209,34 +1618,10 @@
             "format": "uri",
             "example": "http://localhost:3000/service/fixedLine/profile/suspendedNonPayment"
           },
-          "serviceStatus": {
-            "type": "string",
-            "enum": [
-              "enabled",
-              "disabled",
-              "suspended"
-            ],
-            "description": "Whether this subscriber can access the service"
-          },
-          "userPassword": {
-            "type": "string",
-            "description": "A password used to authenticate the subscriber. If no password has been explicitly specified for the user (auth via DHCP for example), the User-Password attribute will still be populated in, incoming Access-Requests.  We need to check its value to ensure the RADIUS shared-secret (of which it is reversibly encrypted with) is correct. If a User-Password has not been explicitly set, it will usually be the same as User-Name or Calling-Station-ID",
-            "example": "superSecret"
-          },
-          "servicePrecedence": {
-            "type": "string",
-            "enum": [
-              "primary",
-              "secondary"
-            ],
-            "description": "If multiple subscriber objects match an incoming Access-Request, the first subscriber object with \"primary\" will be used.",
-            "example": "primary"
-          },
           "clientGroup": {
             "type": "array",
             "format": "uri",
-            "description": "The URI(s) of a clientGroup to restrict subscriber to.  Prevents subscriber from connecting RADIUS clients outside of this set of groups.",
-            "example": "http://localhost:3000/policys/group1",
+            "description": "The URI(s) of a clientGroup to restrict subscriber to.  Prevents subscriber from connecting RADIUS clients outside of this set of groups",
             "uniqueItems": true,
             "items": {
               "type": "string",
@@ -1247,39 +1632,60 @@
           "subscriberGroup": {
             "type": "array",
             "format": "uri",
-            "example": "http://localhost:3000/subscriber-groups/groupA",
-            "description": "The URI of a subscriberGroup object.  Used to apply common sets of RADIUS attributes or serviceProfiles to subscriber.",
+            "description": "The URI of a subscriberGroup object.  Used to apply common sets of RADIUS attributes or serviceProfiles to subscriber",
             "uniqueItems": true,
             "items": {
-              "type": "string"
+              "type": "string",
+              "format": "uri"
             }
           },
-          "portBinding": {
-            "type": "boolean",
-            "description": "If true, the subscriber will be unabled to authenticate via any other circuit than the one we learned the first time the subscriber authenticated."
+          "portBindingclient": {
+            "type": "string",
+            "format": "uri",
+            "description": "URI of the last client the subscriber authenticated via.  Primarily used for Change of Authorisation and disconnect messages",
+            "example": "http://localhost:3000/clients/192.0.2.1"
           },
           "portBindingIdentifier": {
             "type": "string",
             "example": "DSLAM03-D6-KTP atm 0/0/0/44:0.35",
-            "description": "The subscriber's unique circuit ID, either learned or pre-provisioned."
+            "description": "The subscriber's unique circuit ID, either learned or pre-provisioned"
           },
-          "lastRadiusClient": {
+          "portBindingModified": {
             "type": "string",
-            "format": "uri",
-            "description": "URI of the last client the subscriber authenticated via.  Primarily used for Change of Authorisation and disconnect messages.",
-            "example": "http://localhost:3000/clients/192.0.2.1"
+            "format": "date-time",
+            "description": "When port binding details were last updated",
+            "readOnly": true
           },
-          "policy": {
-            "$ref": "#/components/schemas/freeradusPolicy"
+          "portBinding": {
+            "type": "boolean",
+            "description": "If true, the subscriber will be unabled to authenticate via any other circuit than the one we learned the first time the subscriber authenticated"
           }
         },
         "required": [
           "id",
           "subscriberId",
-          "serviceAccessMedia",
-          "serviceProfile",
-          "serviceStatus"
+          "serviceStatus",
+          "serviceId",
+          "servicePrecedence",
+          "serviceProfile"
         ]
+      },
+      "subscriberGroup": {
+        "title": "subscriberGroup",
+        "x-stoplight": {
+          "id": "8y76ggnb1sgil"
+        },
+        "type": "object",
+        "description": "A group of subscriber, used to apply RADIUS attribute overrides to subsets of subscriber",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "A unique identifier for the subscriberGroup"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/freeradusPolicy"
+          }
+        }
       },
       "client": {
         "title": "client",
@@ -1287,37 +1693,37 @@
           "id": "zhddk66aypm1a"
         },
         "type": "object",
-        "description": "A RADIUS client that is authorized to communicate with the RADIUS service.",
+        "description": "An client that is authorized to communicate with the RADIUS service",
         "properties": {
           "id": {
             "type": "string",
             "example": "192.0.2.1",
             "description": "An IP address or subnet (cidr format) that uniquely identifies the RADIUS client"
           },
-          "radiusClientSecret": {
-            "type": "string",
-            "example": "testing123",
-            "description": "The shared secret (pre-shared-key) the RADIUS client will use to communicate with the RADIUS service.",
-            "format": "password"
-          },
-          "radiusClientShortname": {
+          "freeradiusClientShortname": {
             "type": "string",
             "example": "my-test-client",
             "description": "A friendly name that will be shown in logs"
           },
-          "radiusClientType": {
+          "freeradiusClientType": {
             "type": "string",
             "description": "What the RADIUS client is (type/make/model)",
             "example": "myFirstNAS"
           },
-          "radiusClientRequireMa": {
-            "type": "boolean",
-            "description": "Whether we requires the Message-Authenticator attribute in Access-Requests from this client."
-          },
-          "radiusClientComment": {
+          "freeradiusClientComment": {
             "type": "string",
             "description": "A humanly readable comment associated with the client",
             "example": "This RADIUS client authenticates all subscriber in the foo region of bar"
+          },
+          "radiusClientSecret": {
+            "type": "string",
+            "example": "testing123",
+            "description": "The shared secret (pre-shared-key) the RADIUS client will use to communicate with the RADIUS service",
+            "format": "password"
+          },
+          "radiusClientRequireMa": {
+            "type": "boolean",
+            "description": "Whether we requires the Message-Authenticator attribute in Access-Requests from this client"
           }
         },
         "required": [
@@ -1330,38 +1736,18 @@
         "x-stoplight": {
           "id": "5b9nnqawh4d41"
         },
-        "description": "A method of binding subscriber to a particular group of RADIUS clients.",
+        "description": "A method of binding subscriber to a particular group of RADIUS clients",
         "deprecated": true,
         "properties": {
           "id": {
             "type": "string",
             "description": "The identifier for the clientGroup",
             "example": "group1"
-          },
-          "policy": {
-            "$ref": "#/components/schemas/freeradusPolicy"
           }
         },
         "required": [
           "id"
         ]
-      },
-      "subscriberGroup": {
-        "title": "subscriberGroup",
-        "x-stoplight": {
-          "id": "8y76ggnb1sgil"
-        },
-        "type": "object",
-        "description": "A group of subscriber, used to apply RADIUS attribute overrides to subsets of subscriber.",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "A unique identifier for the subscriberGroup"
-          },
-          "policy": {
-            "$ref": "#/components/schemas/freeradusPolicy"
-          }
-        }
       },
       "service": {
         "title": "service",
@@ -1369,12 +1755,28 @@
           "id": "ly2966j1k5o5v"
         },
         "type": "object",
+        "description": "ISPs and carriers often provide multiple services for their subscribers.  In addition to fixed line boardband, ISPs or carriers may provide VoIP, metro wireless or cellular data.\n\nA service object contains one or more serviceProfiles for a given service.  Each serviceProfile describes a different class-of-service a subscriber cam receive.  Common differentiations between serviceProfiles are upload/download speed restrictions, permitted hours of service, and permitted data transfer quotas.\n",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Identifier for a service.  Matches accessMedia in subscriber definitions"
+          },
+          "portBinding": {
+            "type": "boolean",
+            "description": "The default port binding state for any subscriber which uses this serviceProfile"
+          },
+          "generateCDR": {
+            "type": "boolean",
+            "description": "Generate Call Data Records for subscriber which use this subscriberProfile"
+          },
+          "allowSuspension": {
+            "type": "boolean",
+            "description": "Allow suspension for subscriber that use this serviceProfile.  If false, subscriber will be entirely disabled"
           }
         },
-        "description": "Access media type e.g. fixedLine, wireless, cellular, matches subscriberAccessMedia"
+        "required": [
+          "id"
+        ]
       },
       "serviceProfile": {
         "title": "serviceProfile",
@@ -1382,15 +1784,16 @@
           "id": "kprv79ox656ep"
         },
         "type": "object",
+        "description": "An abstract definition of a class-of-service a subscriber would receive.  This object holds non-FreeRADIUS attributes which control how a subscriber is authorized/authenticated, and enables/disables additional logic that runs as the subscriber's request is processed.\n\nThis object contains multiple freeradiusPolicy objects (as children) which are the concrete implementation of the serviceProfile.  These freeradiusPolicy objects are indexed by clientGroup and describe how to implement a given serviceProfile for a type of client.",
         "properties": {
           "id": {
             "type": "string",
             "example": "INET1M",
-            "description": "A generic configuration applied to a subscriber"
+            "description": "Identifier for the serviceProfile"
           },
           "portBinding": {
             "type": "boolean",
-            "description": "The default port binding state for any subscruber which uses this serviceProfile"
+            "description": "The default port binding state for any subscriber which uses this serviceProfile"
           },
           "generateCDR": {
             "type": "boolean",
@@ -1398,13 +1801,12 @@
           },
           "allowSuspension": {
             "type": "boolean",
-            "description": "Allow suspension for subscriber that use this serviceProfile.  If false, subscriber will be entirely disabled."
+            "description": "Allow suspension for subscriber that use this serviceProfile.  If false, subscriber will be entirely disabled"
           }
         },
         "required": [
           "id"
-        ],
-        "description": "An abstract definition of a class-of-service a subscriber would receive.  This object holds non-FreeRADIUS attributes which controls how a subscriber is authorized/authenticated, and enables/disables additional logic that runs as the subscriber's request is processed.\n\nThis object contains multiple freeradiusPolicy objects (as children) which are the concrete implementation of the serviceProfile.  These freeradiusPolicy objects are indexed by radiusGroupId, and describe how to implement a given serviceProfile for a type of RADIUS client."
+        ]
       },
       "freeradusPolicy": {
         "title": "freeradiusPolicy",
@@ -1417,58 +1819,28 @@
             "type": "string"
           }
         },
-        "description": "A set of FreeRADIUS attributes which modify attributes in the current request, modifying request/control attributes and setting reply attributes.  A \"concrete\" implementation of a serviceProfile, or a set of attributes associated with a subscriber or subscriberGroup."
+        "description": "A set of FreeRADIUS attributes and assigment rules which modify attributes in the current request.  A freeradiusPolicy is can be a \"concrete\" implementation of a serviceProfile.  freeradiusPolicies may also be assigned to individual subscribers or subscriberGroups."
       }
     },
     "parameters": {
-      "realmId": {
-        "name": "realmId",
-        "in": "path",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "example": "example.org"
-        },
-        "description": "Realm this operation relates to"
-      },
-      "prune": {
-        "name": "prune",
-        "in": "query",
-        "required": false,
-        "schema": {
-          "type": "boolean"
-        },
-        "description": "If true, delete any child objects, e.g. all the subscriber in a realm"
-      },
-      "compoundSubscriberId": {
-        "name": "compoundSubscriberId",
-        "in": "path",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "example": "123456789+fixedLine"
-        },
-        "description": "A combination of the subscriber's unique id and the service the account relates to"
-      },
-      "accessMediaId": {
-        "name": "accessMediaId",
+      "serviceId": {
+        "name": "serviceId",
         "in": "path",
         "required": true,
         "schema": {
           "type": "string",
           "example": "fixedLine"
         },
-        "description": "Identifier for a service profile category (maps to subscriberAccessMedia)"
+        "description": "Identifier for a service profile category (maps to a service)"
       },
-      "profileId": {
-        "name": "profileId",
+      "clientId": {
+        "name": "clientId",
         "in": "path",
         "required": true,
         "schema": {
-          "type": "string",
-          "example": "INETG1M"
+          "type": "string"
         },
-        "description": "Identifier for an abstract class of service profile"
+        "description": "Unique identifier for a client (an IPv4/v6 address or prefix)"
       },
       "clientGroupId": {
         "name": "clientGroupId",
@@ -1480,14 +1852,54 @@
         },
         "description": "Identifier for a concrete class of service profile"
       },
-      "clientId": {
-        "name": "clientId",
+      "realmId": {
+        "name": "realmId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "example.org"
+        },
+        "description": "Realm this operation relates to"
+      },
+      "compoundSubscriberId": {
+        "name": "compoundSubscriberId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "123456789+fixedLine"
+        },
+        "description": "A combination of the subscriber's unique id and the service the account relates to"
+      },
+      "profileId": {
+        "name": "profileId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "INETG1M"
+        },
+        "description": "Identifier for an abstract class of service profile"
+      },
+      "subscriberGroupId": {
+        "name": "subscriberGroupId",
         "in": "path",
         "required": true,
         "schema": {
           "type": "string"
         },
-        "description": "Unique identifier for a client (an IPv4/v6 address or prefix)"
+        "description": "Identifier for a group of subscribers"
+      },
+      "prune": {
+        "name": "prune",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "default": false
+        },
+        "description": "If true, delete any child objects, e.g. all the subscriber in a realm"
       }
     },
     "responses": {
@@ -1508,7 +1920,7 @@
         }
       },
       "onInternalServerError": {
-        "description": "An internal error has occurred while talking to one of the backend (LDAP or Postgres). For instance, an attribute was missing when creating an object.",
+        "description": "An internal error has occurred while talking to one of the backend (LDAP or Postgres). For instance, an attribute was missing when creating an object",
         "content": {
           "application/json": {
             "schema": {
@@ -1516,7 +1928,7 @@
               "properties": {
                 "error_msg": {
                   "type": "string",
-                  "description": "Raw error string from the service element which experienced the error."
+                  "description": "Raw error string from the service element which experienced the error"
                 }
               }
             }
@@ -1540,7 +1952,7 @@
         }
       },
       "onConflict": {
-        "description": "The requested operation conflicts with an existing resource (for instance, trying to create a duplicate resource) or you are trying to delete a node that has children.",
+        "description": "The requested operation conflicts with an existing resource (for instance, trying to create a duplicate resource) or you are trying to delete a node that has children",
         "content": {
           "application/json": {
             "schema": {}
@@ -1556,33 +1968,48 @@
         }
       },
       "onBadRequest": {
-        "description": "Can be any of the following:\n- The requested path doesn’t correspond to the schema\n- Missing or invalid data for POST or PUT operations. Data should always be valid\nJSON.\n- If data contains URL to another resource, the host part of the URL must be identical\nto the host data being created/modified.\n",
+        "description": "Can be any of the following:\n- The requested path doesn’t correspond to the schema.\n- Missing or invalid data for POST or PUT operations. Data should always be valid JSON.\n- If data contains URL to another resource, the host part of the URL must be identical to the host data being created/modified.\n",
         "content": {
           "application/json": {
             "schema": {}
           }
         }
       }
-    }
+    },
+    "securitySchemes": {}
   },
   "tags": [
     {
-      "name": "Client group management"
+      "name": "Realm management",
+      "description": "Realms group subscribers by company or business unit"
     },
     {
-      "name": "Client management"
+      "name": "Subscriber management",
+      "description": "A subscriber is an end user of the service"
     },
     {
-      "name": "Profile management"
+      "name": "Subscriber group management",
+      "description": "Subscriber groups allow profiles to be applied to similar subscribers"
     },
     {
-      "name": "Realm management"
+      "name": "Service management",
+      "description": "Services describe a type of service provided by the ISP or carrier, e.g fixedLine, cellular etc.."
     },
     {
-      "name": "Subscriber group management"
+      "name": "Abstract profile (serviceProfile) management",
+      "description": "Service profiles describe a class-of-service a subscriber should be receive"
     },
     {
-      "name": "Subscriber management"
+      "name": "Concrete profile (freeradiusProfile) management",
+      "description": "Freeradius profiles contain a concrete set of attributes to assign to a user"
+    },
+    {
+      "name": "Client management",
+      "description": "clients describe a device which can communicate with the FreeRADIUS daemon"
+    },
+    {
+      "name": "Client group management",
+      "description": "clientGroups allow an appropriate freeradiusProfile too be selected for a type of client for a given service"
     }
   ]
 }
