@@ -4,7 +4,7 @@
     "id": "j70spdn4dvy7p"
   },
   "info": {
-    "title": "NetworkRADIUS - LDAP subscriber management API for carriers",
+    "title": "LDAP subscriber management API for carriers and ISPs",
     "version": "1.0",
     "summary": "A Lua-based, lightweight wrapper around OpenLDAP",
     "description": "This API runs natively in OpenResty/NGINX to provide a high performance restful layer around an LDAP instance.  It should be mostly object agonistic, but has some special endpoints",
