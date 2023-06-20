@@ -90,7 +90,7 @@
           }
         },
         "operationId": "get-accountingSession",
-        "description": "Return one or more sessions matching the specified query parameters",
+        "description": "Return one or more sessions matching the specified query parameters.  Query parameters are AND'",
         "parameters": [
           {
             "$ref": "#/components/parameters/brief"
@@ -223,7 +223,7 @@
           }
         },
         "operationId": "get-networkAccessServer-sessions",
-        "description": "Return sessions associated with this Access Server",
+        "description": "Return sessions associated with this Access Server.  Query parameters are AND'",
         "parameters": [
           {
             "$ref": "#/components/parameters/brief"
