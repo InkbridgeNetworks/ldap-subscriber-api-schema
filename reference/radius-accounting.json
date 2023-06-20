@@ -4,7 +4,7 @@
     "id": "62y7xoxcmry40"
   },
   "info": {
-    "title": "radius-accounting",
+    "title": "Simplified RADIUS Accounting API",
     "version": "1.0",
     "description": "Basic RADIUS accounting API for NOC tools and general supportability",
     "contact": {
@@ -46,7 +46,10 @@
           }
         },
         "operationId": "get-users-userId",
-        "description": "Return a specific session by its globally and temporaly unique session ID"
+        "description": "Return a specific session by its globally and temporaly unique session ID",
+        "tags": [
+          "Accounting Sessions"
+        ]
       }
     },
     "/session": {
@@ -96,6 +99,9 @@
           {
             "$ref": "#/components/parameters/sessionState"
           }
+        ],
+        "tags": [
+          "Accounting Sessions"
         ]
       },
       "parameters": []
@@ -214,6 +220,10 @@
           {
             "$ref": "#/components/parameters/sessionState"
           }
+        ],
+        "tags": [
+          "Access Servers",
+          "Accounting Sessions"
         ]
       },
       "parameters": [
