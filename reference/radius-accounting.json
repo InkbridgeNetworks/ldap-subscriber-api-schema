@@ -172,7 +172,7 @@
     },
     "/accessServer/{nasIdentifier}/session": {
       "get": {
-        "summary": "Sessions by Access Server",
+        "summary": "Search for sessions by Access Server",
         "responses": {
           "200": {
             "description": "OK",
