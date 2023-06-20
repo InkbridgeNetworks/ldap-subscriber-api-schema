@@ -26,7 +26,7 @@
         }
       ],
       "get": {
-        "summary": "Session by acctUniqueSessionId",
+        "summary": "Retrieve session by acctUniqueSessionId",
         "responses": {
           "200": {
             "description": "A session object matching the specified acctUniqueSessionId",
@@ -54,7 +54,7 @@
     },
     "/session": {
       "get": {
-        "summary": "Sessions by query parameters",
+        "summary": "Search for sessions",
         "responses": {
           "200": {
             "description": "An array of sessions or session IDs",
