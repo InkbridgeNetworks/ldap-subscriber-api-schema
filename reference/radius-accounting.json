@@ -636,7 +636,7 @@
           "format": "hostname",
           "example": "mantnclab-asm000.gobrightspeed.net"
         },
-        "description": "FQDN of the BNG or BRAS on which the subscriber i"
+        "description": "FQDN of the BNG or BRAS on which the subscriber is connected"
       },
       "brief": {
         "name": "brief",
