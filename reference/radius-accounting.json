@@ -49,6 +49,11 @@
         "description": "Return a specific session by its globally and temporaly unique session ID",
         "tags": [
           "Accounting Sessions"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/dataTransferMax"
+          }
         ]
       }
     },
@@ -107,6 +112,9 @@
           },
           {
             "$ref": "#/components/parameters/sessionStop"
+          },
+          {
+            "$ref": "#/components/parameters/dataTransferMax"
           }
         ],
         "tags": [
@@ -237,6 +245,9 @@
           },
           {
             "$ref": "#/components/parameters/sessionStop"
+          },
+          {
+            "$ref": "#/components/parameters/dataTransferMax"
           }
         ],
         "tags": [
@@ -680,6 +691,15 @@
           "pattern": "^[0-9]+"
         },
         "description": "Unique identifier of the subscriber"
+      },
+      "dataTransferMax": {
+        "name": "dataTransferMax",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer"
+        },
+        "description": "Limit the number of transfer stats entries to the N most recent"
       }
     },
     "responses": {
