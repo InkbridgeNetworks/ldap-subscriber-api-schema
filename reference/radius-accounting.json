@@ -91,6 +91,9 @@
             "$ref": "#/components/parameters/brief"
           },
           {
+            "$ref": "#/components/parameters/subscriberId"
+          },
+          {
             "$ref": "#/components/parameters/framedIpAddress"
           },
           {
@@ -98,6 +101,12 @@
           },
           {
             "$ref": "#/components/parameters/sessionState"
+          },
+          {
+            "$ref": "#/components/parameters/sessionStart"
+          },
+          {
+            "$ref": "#/components/parameters/sessionStop"
           }
         ],
         "tags": [
@@ -212,6 +221,9 @@
             "$ref": "#/components/parameters/brief"
           },
           {
+            "$ref": "#/components/parameters/subscriberId"
+          },
+          {
             "$ref": "#/components/parameters/framedIpAddress"
           },
           {
@@ -219,6 +231,12 @@
           },
           {
             "$ref": "#/components/parameters/sessionState"
+          },
+          {
+            "$ref": "#/components/parameters/sessionStart"
+          },
+          {
+            "$ref": "#/components/parameters/sessionStop"
           }
         ],
         "tags": [
@@ -632,6 +650,36 @@
           "default": "all"
         },
         "description": "Only return sessions in this state"
+      },
+      "sessionStart": {
+        "name": "sessionStart",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "When a session started.  May be combined with sessionStop to restrict return sessions in a time range.  Does not filter active sessions"
+      },
+      "sessionStop": {
+        "name": "sessionStop",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "When a session stopped.  May be combined with sessionSart to restrict return sessions in a time range.  Does not filter active sessions"
+      },
+      "subscriberId": {
+        "name": "subscriberId",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "minLength": 9,
+          "maxLength": 10,
+          "pattern": "^[0-9]+"
+        },
+        "description": "Unique identifier of the subscriber"
       }
     },
     "responses": {
