@@ -1819,7 +1819,13 @@
             "type": "string"
           }
         },
-        "description": "A set of FreeRADIUS attributes and assigment rules which modify attributes in the current request.  A freeradiusPolicy is can be a \"concrete\" implementation of a serviceProfile.  freeradiusPolicies may also be assigned to individual subscribers or subscriberGroups.\n\nNote: The attributes listed in the definition of the object are a subset of the attributes available.\n\nAny attribute that's available in the relevant LDAP schema (freeradius-radius.schema, freeradius-dhcpv4.schema, freeradius-dhcpv6.schema, etc...) for the protocol, can be included in POST, PATCH, PUT actions, including generic attributes such as `radiusAttribute`.  Generic attributes take the format `<attribute> <op> <quote><value><quote>` e.g. `Reply-Message := \"Welcome user %{User-Name}\"`, and can be used to add any attribute allowed in the protocol dictionary."
+        "description": "A set of FreeRADIUS attributes and assigment rules which modify attributes in the current request.  A freeradiusPolicy is can be a \"concrete\" implementation of a serviceProfile.  freeradiusPolicies may also be assigned to individual subscribers or subscriberGroups.\n\nNote: The attributes listed in the definition of the object are a subset of the attributes available.\n\nAny attribute that's available in the relevant LDAP schema (freeradius-radius.schema, freeradius-dhcpv4.schema, freeradius-dhcpv6.schema, etc...) for the protocol, can be included in POST, PATCH, PUT actions, including generic attributes such as `radiusAttribute`.  Generic attributes take the format `<attribute> <op> <quote><value><quote>` e.g. `Reply-Message := \"Welcome user %{User-Name}\"`, and can be used to add any attribute allowed in the protocol dictionary.",
+        "examples": [
+          {
+            "id": "alcatel7750",
+            "radiusAttribute": "reply.Vendor-Specific.Nokia-SR.Subsc-ID-Str = \"%{User-Name}@example.org\""
+          }
+        ]
       }
     },
     "parameters": {
