@@ -1567,7 +1567,7 @@
           "id": "39i82q1wb1101"
         },
         "type": "object",
-        "description": "A subscriber - A user authenticating via the RADIUS service",
+        "description": "A subscriber - A user authenticating via the RADIUS service.\n\nNote: The attributes listed in the definition of the object are a subset of the attributes available.\n\nAny attribute that's available in the relevant LDAP schema (freeradius-radius.schema, freeradius-dhcpv4.schema, dhcpv6-schema.schema, etc...) for the protocol, can be included in POST, PATCH, PUT actions, including generic attributes such as `radiusAttribute`.  Generic attributes take the format `<attribute> <op> <quote><value><quote>` e.g. `&Reply-Message := \"Welcome user %{User-Name}\"`.",
         "properties": {
           "id": {
             "type": "string",
@@ -1819,7 +1819,7 @@
             "type": "string"
           }
         },
-        "description": "A set of FreeRADIUS attributes and assigment rules which modify attributes in the current request.  A freeradiusPolicy is can be a \"concrete\" implementation of a serviceProfile.  freeradiusPolicies may also be assigned to individual subscribers or subscriberGroups."
+        "description": "A set of FreeRADIUS attributes and assigment rules which modify attributes in the current request.  A freeradiusPolicy is can be a \"concrete\" implementation of a serviceProfile.  freeradiusPolicies may also be assigned to individual subscribers or subscriberGroups.\n\nNote: The attributes listed in the definition of the object are a subset of the attributes available.\n\nAny attribute that's available in the relevant LDAP schema (freeradius-radius.schema, freeradius-dhcpv4.schema, dhcpv6-schema.schema, etc...) for the protocol, can be included in POST, PATCH, PUT actions, including generic attributes such as `radiusAttribute`.  Generic attributes take the format `<attribute> <op> <quote><value><quote>` e.g. `&Reply-Message := \"Welcome user %{User-Name}\"`."
       }
     },
     "parameters": {
