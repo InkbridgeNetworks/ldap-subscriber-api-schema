@@ -1020,7 +1020,7 @@
             "type": "string",
             "example": "fixedLine"
           },
-          "description": "Identifier for a service profile category (maps to subscriberAccessMedia)"
+          "description": "Identifier for a type of service provided by the ISP or carrier, e.g fixedLine, cellular etc.."
         },
         {
           "name": "profileId",
@@ -1571,7 +1571,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "Must be set to the combination of subscriberID '+' serviceAccessMedia.  This uniquely identifies a subscriber object for a particular type of service, e.g. fixedLine vs wireless",
+            "description": "Must be set to the combination of subscriberID '+' serviceId.  This uniquely identifies a subscriber object for a particular type of service, e.g. fixedLine vs wireless",
             "example": "123456789+fixedLine"
           },
           "subscriberId": {
@@ -1759,7 +1759,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "Identifier for a service.  Matches accessMedia in subscriber definitions"
+            "description": "Globally unique identifier for a service"
           },
           "portBinding": {
             "type": "boolean",
@@ -1982,7 +1982,8 @@
         }
       }
     },
-    "securitySchemes": {}
+    "securitySchemes": {},
+    "examples": {}
   },
   "tags": [
     {
