@@ -2497,7 +2497,7 @@
             "type": "integer",
             "maximum": 4096,
             "minimum": 0,
-            "description": "QinQ ctag value",
+            "description": "QinQ cvlan tag",
             "example": 0
           },
           "remoteAssociation": {
