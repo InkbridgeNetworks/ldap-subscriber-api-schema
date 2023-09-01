@@ -2497,10 +2497,10 @@
             "minimum": 0,
             "description": "QinQ ctag value"
           },
-          "remoteDevice": {
-            "type": "string",
+          "remoteAssociation": {
             "format": "uri",
-            "description": "A reference to the remote device, an accessDevice sending QinQ traffic matching the svlan and cvlan"
+            "description": "A reference to a client, accessDevice, or subscriber, that exchanges traffic with the specified cvlan and svlan",
+            "type": "string"
           }
         }
       },
@@ -2526,10 +2526,10 @@
             "example": "2/1/1",
             "description": "Identifier for the physical port"
           },
-          "remoteDevice": {
+          "remoteAssociation": {
             "type": "string",
             "format": "uri",
-            "description": "accessDevice or client, that this port connects to)"
+            "description": "A reference to an accessDevice, client or subscriber, that this port connects to."
           }
         }
       }
