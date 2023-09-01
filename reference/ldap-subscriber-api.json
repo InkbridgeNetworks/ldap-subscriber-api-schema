@@ -2500,7 +2500,8 @@
           "remoteAssociation": {
             "format": "uri",
             "description": "A reference to a client, accessDevice, or subscriber, that exchanges traffic with the specified cvlan and svlan",
-            "type": "string"
+            "type": "string",
+            "example": "http://example.com/accessDevices/olt1"
           }
         }
       },
@@ -2529,7 +2530,8 @@
           "remoteAssociation": {
             "type": "string",
             "format": "uri",
-            "description": "A reference to an accessDevice, client or subscriber, that this port connects to."
+            "description": "A reference to an accessDevice, client or subscriber, that this port connects to.",
+            "example": "http://example.com/realms/example.com/subscriber/123456"
           }
         }
       }
