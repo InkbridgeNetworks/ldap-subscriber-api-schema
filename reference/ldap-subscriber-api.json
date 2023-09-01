@@ -2496,7 +2496,8 @@
             "type": "integer",
             "maximum": 4096,
             "minimum": 0,
-            "description": "QinQ ctag value"
+            "description": "QinQ ctag value",
+            "example": 0
           },
           "remoteAssociation": {
             "format": "uri",
