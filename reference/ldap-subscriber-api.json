@@ -1381,7 +1381,7 @@
         },
         "operationId": "get-client-port",
         "description": "Return an array of ports associated with an client",
-        "summary": "List clients"
+        "summary": "List ports associated with a client"
       },
       "post": {
         "operationId": "post-client-port",
@@ -1413,7 +1413,7 @@
         "tags": [
           "Client management"
         ],
-        "summary": "Add an client"
+        "summary": "Add a port associated with a client"
       },
       "parameters": [
         {
@@ -1461,7 +1461,7 @@
         "tags": [
           "Client management"
         ],
-        "summary": "Return an client"
+        "summary": "Return a port associated with a client"
       },
       "put": {
         "operationId": "put-client-portId",
@@ -1493,7 +1493,7 @@
         "tags": [
           "Client management"
         ],
-        "summary": "Replace an client"
+        "summary": "Replace a port associated with a client"
       },
       "patch": {
         "operationId": "patch-client-portId",
@@ -1525,7 +1525,7 @@
         "tags": [
           "Client management"
         ],
-        "summary": "Update an client"
+        "summary": "Update a port associated with a client"
       },
       "delete": {
         "operationId": "delete-client-portd",
@@ -1956,7 +1956,7 @@
         },
         "operationId": "get-accessDevice-port",
         "description": "Return an array of ports associated with an accessDevice",
-        "summary": "List accessDevices"
+        "summary": "List ports associated with an accessDevice"
       },
       "post": {
         "operationId": "post-accessDevice-port",
@@ -1988,7 +1988,7 @@
         "tags": [
           "accessDevice management"
         ],
-        "summary": "Add an accessDevice"
+        "summary": "Add a port associated with an accessDevice"
       },
       "parameters": [
         {
@@ -2036,7 +2036,7 @@
         "tags": [
           "accessDevice management"
         ],
-        "summary": "Return an accessDevice"
+        "summary": "Return a port associated with an accessDevice"
       },
       "put": {
         "operationId": "put-accessDevice-portId",
@@ -2068,7 +2068,7 @@
         "tags": [
           "accessDevice management"
         ],
-        "summary": "Replace an accessDevice"
+        "summary": "Replace a port associated with an accessDevice"
       },
       "patch": {
         "operationId": "patch-accessDevice-portId",
@@ -2100,7 +2100,7 @@
         "tags": [
           "accessDevice management"
         ],
-        "summary": "Update an accessDevice"
+        "summary": "Update a port associated with an accessDevice"
       },
       "delete": {
         "operationId": "delete-accessDevice-portd",
@@ -2119,7 +2119,7 @@
         "tags": [
           "accessDevice management"
         ],
-        "summary": "Delete an accessDevice",
+        "summary": "Delete a port associated with a client",
         "parameters": [
           {
             "$ref": "#/components/parameters/prune"
