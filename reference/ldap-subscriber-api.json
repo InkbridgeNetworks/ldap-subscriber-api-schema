@@ -2482,7 +2482,8 @@
           },
           "id": {
             "type": "string",
-            "description": "A combination of svlan+cvlan used to create the RDN for this port."
+            "description": "A combination of svlan+cvlan used to create the RDN for this port.",
+            "example": "100+0"
           },
           "svlan": {
             "type": "integer",
