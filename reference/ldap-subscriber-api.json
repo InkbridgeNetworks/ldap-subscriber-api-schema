@@ -2478,7 +2478,8 @@
               "qinq"
             ],
             "pattern": "^qinq$",
-            "example": "qinq"
+            "example": "qinq",
+            "description": "Port type must be 'QinQ'"
           },
           "id": {
             "type": "string",
