@@ -1342,6 +1342,216 @@
         ]
       }
     },
+    "/client/{clientId}/port": {
+      "get": {
+        "tags": [
+          "Client management"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/portQinQ"
+                          },
+                          {
+                            "$ref": "#/components/schemas/portPhysical"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-client-port",
+        "description": "Return an array of ports associated with an client",
+        "summary": "List clients"
+      },
+      "post": {
+        "operationId": "post-client-port",
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/onCreate"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "409": {
+            "$ref": "#/components/responses/onConflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Add a new client",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/client"
+              }
+            }
+          },
+          "description": "Definition of an client to add"
+        },
+        "tags": [
+          "Client management"
+        ],
+        "summary": "Add an client"
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/clientId"
+        }
+      ]
+    },
+    "/client/{clientId}/port/{portId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/clientId"
+        },
+        {
+          "$ref": "#/components/parameters/portId"
+        }
+      ],
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/portQinQ"
+                    },
+                    {
+                      "$ref": "#/components/schemas/portPhysical"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-client-portId",
+        "description": "Return a port associated with an access deivce",
+        "tags": [
+          "Client management"
+        ],
+        "summary": "Return an client"
+      },
+      "put": {
+        "operationId": "put-client-portId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Replace a port",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/client"
+              }
+            }
+          },
+          "description": "New definition of the client"
+        },
+        "tags": [
+          "Client management"
+        ],
+        "summary": "Replace an client"
+      },
+      "patch": {
+        "operationId": "patch-client-portId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Update a port",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/client"
+              }
+            }
+          },
+          "description": "Partial definition of an client"
+        },
+        "tags": [
+          "Client management"
+        ],
+        "summary": "Update an client"
+      },
+      "delete": {
+        "operationId": "delete-client-portd",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Delete a port",
+        "tags": [
+          "Client management"
+        ],
+        "summary": "Delete an client",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/prune"
+          }
+        ]
+      }
+    },
     "/clientGroup": {
       "get": {
         "responses": {
@@ -1516,6 +1726,400 @@
           "Client group management"
         ],
         "summary": "Delete an clientGroup",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/prune"
+          }
+        ]
+      }
+    },
+    "/accessDevice": {
+      "get": {
+        "tags": [
+          "accessDevice management"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/accessDevice"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-accessDevice",
+        "description": "Return an array of accessDevices",
+        "summary": "List accessDevices"
+      },
+      "post": {
+        "operationId": "post-accessDevice",
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/onCreate"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "409": {
+            "$ref": "#/components/responses/onConflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Add a new accessDevice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/accessDevice"
+              }
+            }
+          },
+          "description": "Definition of an accessDevice to add"
+        },
+        "tags": [
+          "accessDevice management"
+        ],
+        "summary": "Add an accessDevice"
+      }
+    },
+    "/accessDevice/{accessDeviceId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accessDeviceId"
+        }
+      ],
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/accessDevice"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-accessDevice-accessDeviceId",
+        "description": "Return an accessDevice",
+        "tags": [
+          "accessDevice management"
+        ],
+        "summary": "Return an accessDevice"
+      },
+      "put": {
+        "operationId": "put-accessDevice-accessDeviceId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Replace an accessDevice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/accessDevice"
+              }
+            }
+          },
+          "description": "New definition of the accessDevice"
+        },
+        "tags": [
+          "accessDevice management"
+        ],
+        "summary": "Replace an accessDevice"
+      },
+      "patch": {
+        "operationId": "patch-accessDevice-accessDeviceId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Update an accessDevice replacing only the provided attributes.\n\nAttributes with a null value will be removed.\n\nMulti-valued attributes will have all values replaced.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/accessDevice"
+              }
+            }
+          },
+          "description": "Partial definition of an accessDevice"
+        },
+        "tags": [
+          "accessDevice management"
+        ],
+        "summary": "Update an accessDevice"
+      },
+      "delete": {
+        "operationId": "delete-accessDevice-accessDeviceId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Delete an accessDevice",
+        "tags": [
+          "accessDevice management"
+        ],
+        "summary": "Delete an accessDevice",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/prune"
+          }
+        ]
+      }
+    },
+    "/accessDevice/{accessDeviceId}/port": {
+      "get": {
+        "tags": [
+          "accessDevice management"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/portQinQ"
+                          },
+                          {
+                            "$ref": "#/components/schemas/portPhysical"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-accessDevice-port",
+        "description": "Return an array of ports associated with an accessDevice",
+        "summary": "List accessDevices"
+      },
+      "post": {
+        "operationId": "post-accessDevice-port",
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/onCreate"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "409": {
+            "$ref": "#/components/responses/onConflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Add a new accessDevice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/accessDevice"
+              }
+            }
+          },
+          "description": "Definition of an accessDevice to add"
+        },
+        "tags": [
+          "accessDevice management"
+        ],
+        "summary": "Add an accessDevice"
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accessDeviceId"
+        }
+      ]
+    },
+    "/accessDevice/{accessDeviceId}/port/{portId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accessDeviceId"
+        },
+        {
+          "$ref": "#/components/parameters/portId"
+        }
+      ],
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/portQinQ"
+                    },
+                    {
+                      "$ref": "#/components/schemas/portPhysical"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "operationId": "get-accessDevice-portId",
+        "description": "Return a port associated with an access deivce",
+        "tags": [
+          "accessDevice management"
+        ],
+        "summary": "Return an accessDevice"
+      },
+      "put": {
+        "operationId": "put-accessDevice-portId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Replace a port",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/accessDevice"
+              }
+            }
+          },
+          "description": "New definition of the accessDevice"
+        },
+        "tags": [
+          "accessDevice management"
+        ],
+        "summary": "Replace an accessDevice"
+      },
+      "patch": {
+        "operationId": "patch-accessDevice-portId",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/onBadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Update a port",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/accessDevice"
+              }
+            }
+          },
+          "description": "Partial definition of an accessDevice"
+        },
+        "tags": [
+          "accessDevice management"
+        ],
+        "summary": "Update an accessDevice"
+      },
+      "delete": {
+        "operationId": "delete-accessDevice-portd",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "$ref": "#/components/responses/onNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/onInternalServerError"
+          }
+        },
+        "description": "Delete a port",
+        "tags": [
+          "accessDevice management"
+        ],
+        "summary": "Delete an accessDevice",
         "parameters": [
           {
             "$ref": "#/components/parameters/prune"
@@ -1730,6 +2334,39 @@
           "id"
         ]
       },
+      "accessDevice": {
+        "title": "accessDevice",
+        "type": "object",
+        "description": "An accessDevice known to the RADIUS service",
+        "x-stoplight": {
+          "id": "ba9992bc8d39a"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "192.0.2.1",
+            "description": "An IP address or subnet (cidr format) that uniquely identifies the RADIUS client"
+          },
+          "freeradiusaAccessDeviceShortname": {
+            "type": "string",
+            "example": "my-test-client",
+            "description": "A friendly name that will be shown in logs"
+          },
+          "freeradiusAccessDeviceType": {
+            "type": "string",
+            "description": "What the RADIUS client is (type/make/model)",
+            "example": "myFirstNAS"
+          },
+          "freeradiusAccessDeviceComment": {
+            "type": "string",
+            "description": "A humanly readable comment associated with the client",
+            "example": "This RADIUS client authenticates all subscriber in the foo region of bar"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
       "clientGroup": {
         "type": "object",
         "title": "clientGroup",
@@ -1826,6 +2463,75 @@
             "radiusAttribute": "reply.Vendor-Specific.Nokia-SR.Subsc-ID-Str = \"%{User-Name}@example.org\""
           }
         ]
+      },
+      "portQinQ": {
+        "title": "portQinQ",
+        "x-stoplight": {
+          "id": "fca8d7c555fbe"
+        },
+        "type": "object",
+        "description": "A representation of a QinQ SVLAN/CVLAN virtual port",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "qinq"
+            ],
+            "pattern": "^qinq$",
+            "example": "qinq"
+          },
+          "id": {
+            "type": "string",
+            "description": "A combination of svlan+cvlan used to create the RDN for this port."
+          },
+          "svlan": {
+            "type": "integer",
+            "maximum": 4096,
+            "example": 100,
+            "minimum": 0,
+            "description": "QinQ svlan tag"
+          },
+          "cvlan": {
+            "type": "integer",
+            "maximum": 4096,
+            "minimum": 0,
+            "description": "QinQ ctag value"
+          },
+          "remoteDevice": {
+            "type": "string",
+            "format": "uri",
+            "description": "A reference to the remote device, an accessDevice sending QinQ traffic matching the svlan and cvlan"
+          }
+        }
+      },
+      "portPhysical": {
+        "title": "portPhysical",
+        "type": "object",
+        "description": "A representation of a QinQ SVLAN/CVLAN virtual port",
+        "x-stoplight": {
+          "id": "c02278ad36343"
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "pattern": "^physical$",
+            "example": "physical",
+            "description": "Port type, must be 'physical'",
+            "enum": [
+              "physical"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "example": "2/1/1",
+            "description": "Identifier for the physical port"
+          },
+          "remoteDevice": {
+            "type": "string",
+            "format": "uri",
+            "description": "accessDevice or client, that this port connects to)"
+          }
+        }
       }
     },
     "parameters": {
@@ -1906,6 +2612,24 @@
           "default": false
         },
         "description": "If true, delete any child objects, e.g. all the subscriber in a realm"
+      },
+      "accessDeviceId": {
+        "name": "accessDeviceId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Unique identifier for a an accessDevice"
+      },
+      "portId": {
+        "name": "portId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Unique identifier for a port, within a client or accessDevice"
       }
     },
     "responses": {
@@ -1987,36 +2711,40 @@
   },
   "tags": [
     {
-      "name": "Realm management",
-      "description": "Realms group subscribers by company or business unit"
-    },
-    {
-      "name": "Subscriber management",
-      "description": "A subscriber is an end user of the service"
-    },
-    {
-      "name": "Subscriber group management",
-      "description": "Subscriber groups allow profiles to be applied to similar subscribers"
-    },
-    {
-      "name": "Service management",
-      "description": "Services describe a type of service provided by the ISP or carrier, e.g fixedLine, cellular etc.."
-    },
-    {
       "name": "Abstract profile (serviceProfile) management",
-      "description": "Service profiles describe a class-of-service a subscriber should be receive"
+      "description": "Endpoints for managing service definitions, i.e. speed tiers or bandwidth caps."
     },
     {
-      "name": "Concrete profile (freeradiusProfile) management",
-      "description": "Freeradius profiles contain a concrete set of attributes to assign to a user"
-    },
-    {
-      "name": "Client management",
-      "description": "clients describe a device which can communicate with the FreeRADIUS daemon"
+      "name": "accessDevice management",
+      "description": "Endpoints for managing accessDevices.  Network elements with policies associated that do not communicate directly with the RADIUS service."
     },
     {
       "name": "Client group management",
-      "description": "clientGroups allow an appropriate freeradiusProfile too be selected for a type of client for a given service"
+      "description": "Endpoints for managing groups or categories of client."
+    },
+    {
+      "name": "Client management",
+      "description": "Endpoints for managing clients.  Network elements that communicate directly with the service."
+    },
+    {
+      "name": "Concrete profile (freeradiusProfile) management",
+      "description": "Endpoints for managing concrete profiles, i.e. sets of attributes which will be returned to the NAS."
+    },
+    {
+      "name": "Realm management",
+      "description": "Endpoints for managing realms.  Groups of subscribers based on virtual service."
+    },
+    {
+      "name": "Service management",
+      "description": "Endpoints for managing broad categories of service, i.e. 'GPON', 'Wireless802.11', ADSL..."
+    },
+    {
+      "name": "Subscriber group management",
+      "description": "Endpoints for managing groups of subscribers."
+    },
+    {
+      "name": "Subscriber management",
+      "description": "Endpoints for managing subscribers."
     }
   ]
 }
