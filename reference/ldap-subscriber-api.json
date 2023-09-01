@@ -1330,7 +1330,7 @@
             "$ref": "#/components/responses/onInternalServerError"
           }
         },
-        "description": "Delete an client",
+        "description": "Delete a client",
         "tags": [
           "Client management"
         ],
