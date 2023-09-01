@@ -1218,7 +1218,7 @@
         "tags": [
           "Client management"
         ],
-        "summary": "Add an client"
+        "summary": "Add a client"
       }
     },
     "/client/{clientId}": {
@@ -1251,7 +1251,7 @@
         "tags": [
           "Client management"
         ],
-        "summary": "Return an client"
+        "summary": "Return a client"
       },
       "put": {
         "operationId": "put-client-clientId",
@@ -1283,7 +1283,7 @@
         "tags": [
           "Client management"
         ],
-        "summary": "Replace an client"
+        "summary": "Replace a client"
       },
       "patch": {
         "operationId": "patch-client-clientId",
@@ -1315,7 +1315,7 @@
         "tags": [
           "Client management"
         ],
-        "summary": "Update an client"
+        "summary": "Update a client"
       },
       "delete": {
         "operationId": "delete-client-clientId",
