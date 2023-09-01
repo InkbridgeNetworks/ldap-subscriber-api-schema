@@ -1404,7 +1404,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/client"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/portQinQ"
+                  },
+                  {
+                    "$ref": "#/components/schemas/portPhysical"
+                  }
+                ]
               }
             }
           },
@@ -1484,7 +1491,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/client"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/portQinQ"
+                  },
+                  {
+                    "$ref": "#/components/schemas/portPhysical"
+                  }
+                ]
               }
             }
           },
@@ -1516,7 +1530,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/client"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/portQinQ"
+                  },
+                  {
+                    "$ref": "#/components/schemas/portPhysical"
+                  }
+                ]
               }
             }
           },
@@ -1979,7 +2000,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/accessDevice"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/portQinQ"
+                  },
+                  {
+                    "$ref": "#/components/schemas/portPhysical"
+                  }
+                ]
               }
             }
           },
@@ -2059,7 +2087,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/accessDevice"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/portQinQ"
+                  },
+                  {
+                    "$ref": "#/components/schemas/portPhysical"
+                  }
+                ]
               }
             }
           },
@@ -2091,7 +2126,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/accessDevice"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/portQinQ"
+                  },
+                  {
+                    "$ref": "#/components/schemas/portPhysical"
+                  }
+                ]
               }
             }
           },
@@ -2309,10 +2351,11 @@
             "example": "my-test-client",
             "description": "A friendly name that will be shown in logs"
           },
-          "freeradiusClientType": {
+          "freeradiusClientGroup": {
             "type": "string",
             "description": "What the RADIUS client is (type/make/model)",
-            "example": "myFirstNAS"
+            "example": "http://example.com/clientGroup/nokia7750",
+            "format": "uri"
           },
           "freeradiusClientComment": {
             "type": "string",
