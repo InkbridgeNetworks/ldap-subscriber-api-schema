@@ -2520,7 +2520,7 @@
             "type": "string",
             "pattern": "^physical$",
             "example": "physical",
-            "description": "Port type, must be 'physical'",
+            "description": "Port type must be 'physical'",
             "enum": [
               "physical"
             ]
