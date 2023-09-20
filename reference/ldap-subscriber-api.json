@@ -2380,7 +2380,7 @@
       "accessDevice": {
         "title": "accessDevice",
         "type": "object",
-        "description": "An accessDevice known to the RADIUS service",
+        "description": "An accessDevice known to the RADIUS service.  Identical to clients but cannot communicate directly with the RADIUS service.",
         "x-stoplight": {
           "id": "ba9992bc8d39a"
         },
@@ -2390,17 +2390,17 @@
             "example": "192.0.2.1",
             "description": "An IP address or subnet (cidr format) that uniquely identifies the RADIUS client"
           },
-          "freeradiusaAccessDeviceShortname": {
+          "freeradiusaClientShortname": {
             "type": "string",
             "example": "my-test-client",
             "description": "A friendly name that will be shown in logs"
           },
-          "freeradiusAccessDeviceType": {
+          "freeradiusClientType": {
             "type": "string",
             "description": "What the RADIUS client is (type/make/model)",
             "example": "myFirstNAS"
           },
-          "freeradiusAccessDeviceComment": {
+          "freeradiusClientComment": {
             "type": "string",
             "description": "A humanly readable comment associated with the client",
             "example": "This RADIUS client authenticates all subscriber in the foo region of bar"
