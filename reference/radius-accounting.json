@@ -133,10 +133,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/nasStatistics"
-                  }
+                  "$ref": "#/components/schemas/nasStatisticsAggregate"
                 }
               }
             }
@@ -146,7 +143,7 @@
           }
         },
         "operationId": "get-networkAccessServer",
-        "description": "Return an array of nasStatistics objects, showing basic statistics per nasIdentifier",
+        "description": "Return totals for the number of active sessions in the system",
         "tags": [
           "Access Servers"
         ]
@@ -589,6 +586,42 @@
         },
         "required": [
           "nasIdentifier",
+          "activeSessionCount",
+          "archiveSessionCount",
+          "oldestArchiveSession",
+          "lastSessionUpdate"
+        ]
+      },
+      "nasStatisticsAggregate": {
+        "title": "nasStatisticsAggregate",
+        "type": "object",
+        "description": "Session statistics for multiple BNGs or BRAS",
+        "x-stoplight": {
+          "id": "a009db3cfdee7"
+        },
+        "properties": {
+          "activeSessionCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "How many active subscriber sessions are currently on this NAS"
+          },
+          "archiveSessionCount": {
+            "type": "integer",
+            "format": "int64",
+            "description": "How many archived subscriber sessions are currently running on this NAS"
+          },
+          "oldestArchiveSession": {
+            "type": "string",
+            "description": "The timestamp of the oldest archived session",
+            "format": "date-time"
+          },
+          "lastSessionUpdate": {
+            "type": "string",
+            "description": "Timestamp for the last Accounting-Request received from this NAS",
+            "format": "date-time"
+          }
+        },
+        "required": [
           "activeSessionCount",
           "archiveSessionCount",
           "oldestArchiveSession",
