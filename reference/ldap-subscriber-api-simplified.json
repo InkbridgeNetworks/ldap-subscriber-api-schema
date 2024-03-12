@@ -5,7 +5,7 @@
   },
   "info": {
     "title": "Simplified LDAP based subscriber management API",
-    "version": "1.0",
+    "version": "1.1",
     "description": "A simplified version of the LDAP subscriber API for integration with limited BSS/OSS systems",
     "summary": "Simplified LDAP API",
     "contact": {
@@ -264,13 +264,32 @@
             "type": "array",
             "description": "Subscriber's static IP address assignments.  For updates the complete set of IP addresses must be provided",
             "items": {
-              "$ref": "#/components/schemas/subscriber-static-ip"
+              "$ref": "#/components/schemas/subscriberStaticIp"
             }
+          },
+          "pppCredentials": {
+            "$ref": "#/components/schemas/pppCredentials",
+            "x-stoplight": {
+              "id": "bz9fnhaxmfsh0"
+            },
+            "description": "Optional PPP credentials for the subscriber"
+          },
+          "portBinding": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "gr3ty7jgogcbt"
+            },
+            "format": "uri",
+            "example": "http://example.org/accessDevice/exampleBras/port/100+0",
+            "description": "An optional reference to a port which should be associated with this subscriber"
           }
-        }
+        },
+        "required": [
+          "subscriberId"
+        ]
       },
-      "subscriber-static-ip": {
-        "title": "subscriber-static-ip",
+      "subscriberStaticIp": {
+        "title": "subscriberStaticIp",
         "x-stoplight": {
           "id": "dcurmfui4vdwg"
         },
@@ -295,6 +314,36 @@
         "required": [
           "ipType",
           "ipAddress"
+        ]
+      },
+      "pppCredentials": {
+        "title": "pppCredentials",
+        "x-stoplight": {
+          "id": "a5dixautteqd4"
+        },
+        "type": "object",
+        "description": "PPPoE credentials for a subscriber",
+        "properties": {
+          "username": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "r0bi03xomiyud"
+            },
+            "description": "The PPPoE username",
+            "example": "bob"
+          },
+          "password": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "9ewnf97cfan4g"
+            },
+            "description": "The PPPoE password",
+            "example": "superSecret"
+          }
+        },
+        "required": [
+          "username",
+          "password"
         ]
       }
     },
