@@ -27,7 +27,7 @@
         }
       ],
       "post": {
-        "summary": "",
+        "summary": "Initiate a new request",
         "operationId": "post-request-protocol",
         "responses": {
           "200": {
@@ -37,37 +37,32 @@
                 "schema": {
                   "anyOf": [
                     {
+                      "type": "integer",
                       "x-stoplight": {
-                        "id": "8tump6eki183y"
+                        "id": "izt71e8cf1imz"
                       },
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer",
-                          "x-stoplight": {
-                            "id": "z3uk9ie26rja9"
-                          },
-                          "description": "Returned in asynchronous mode.  The ID of the request."
-                        }
-                      }
+                      "description": "Returned in asynchronous mode.  The identifier of the request, used for polling."
                     },
                     {
                       "$ref": "#/components/schemas/ResponsePacket",
                       "x-stoplight": {
                         "id": "fz1bd9izm0jwx"
                       },
-                      "description": "Returned in synchronous mode.  The response we received."
-                    },
-                    {
-                      "$ref": "#/components/schemas/ResponseError",
-                      "x-stoplight": {
-                        "id": "s4cebx28x33ry"
-                      }
+                      "description": "Returned in synchronous mode.  The response we received"
                     }
                   ]
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/invalidRequestResponse"
+          },
+          "408": {
+            "$ref": "#/components/responses/timeoutResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/internalErrorResponse"
           }
         },
         "description": "Initiate a new request with the given protocol.",
@@ -88,7 +83,10 @@
             }
           },
           "description": "The request packet to send"
-        }
+        },
+        "tags": [
+          "request"
+        ]
       }
     },
     "/request/{protocol}/id/{requestId}": {
@@ -97,21 +95,93 @@
           "$ref": "#/components/parameters/protocol"
         },
         {
-          "schema": {
-            "type": "string"
-          },
-          "name": "requestId",
-          "in": "path",
-          "required": true,
-          "description": "The asynchronous request ID"
+          "$ref": "#/components/parameters/requestId"
         }
       ],
       "get": {
         "summary": "Retrieve an asychronous request",
         "tags": [],
-        "responses": {},
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponsePacket"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/notFoundResponse"
+          },
+          "408": {
+            "$ref": "#/components/responses/timeoutResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/internalErrorResponse"
+          }
+        },
         "operationId": "get-request-protocol-id-requestId",
-        "description": "Retrieve the result of an asynchronous request."
+        "description": "Retrieve the result of an asynchronous request",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/delete"
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete an asynchronous request",
+        "operationId": "delete-request-protocol-id-requestId",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFoundResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/internalErrorResponse"
+          }
+        },
+        "description": "Delete an asynchronous request, cancelling any requests in progress"
+      }
+    },
+    "/request/{protocol}/id": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/protocol"
+        }
+      ],
+      "get": {
+        "summary": "Get an array of completed responses",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "Array of completed responses",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponsePacket",
+                    "x-stoplight": {
+                      "id": "f9mjjvowe8ef1"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-request-protocol-id",
+        "description": "Returns an array of the IDs for any outstanding requests",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/delete"
+          }
+        ]
       }
     }
   },
@@ -179,14 +249,92 @@
           "dst"
         ]
       },
-      "PacketAttributes": {
-        "title": "PacketAttributes",
+      "ResponsePacketAttributes": {
+        "title": "ResponsePacketAttributes",
         "x-stoplight": {
           "id": "2jiobclrfqsvx"
         },
         "type": "object",
-        "description": "A JSON representation of a protocol packet.  May contain any attributes found in the protocol specific dictionary.\n\nhttps://github.com/FreeRADIUS/freeradius-server/tree/master/share/dictionary\n\nExample attributes below are for RADIUS.  Actual fields allowed are not limited to this Open API specification.  Multiple values may be provided as an array.",
+        "description": "A JSON representation of a protocol packet.  May contain any attributes found in the protocol specific dictionary.\n\nhttps://github.com/FreeRADIUS/freeradius-server/tree/master/share/dictionary\n\nExample attributes below are for RADIUS.  Actual fields allowed are not limited to this Open API specification.  Where needed, multiple values (or multiple instances of the same attribute) are provided as an array.",
+        "examples": [
+          {
+            "User-Name": "bob",
+            "User-Password": "SuperSecret",
+            "Vendor-Specific": {
+              "Nokia-SR": {
+                "SLA-Prof-Str": "My-First-SLA-Profile"
+              }
+            },
+            "EAP-Message": [
+              "0x01020304"
+            ]
+          }
+        ],
         "properties": {
+          "Packet-Type": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "7zbio2beq8vwy"
+            },
+            "example": "Access-Accept",
+            "description": "The type of response packet received",
+            "enum": [
+              "Access-Accept",
+              "Access-Reject",
+              "Access-Challenge",
+              "Accounting-Response",
+              "Disconnect-ACK",
+              "Disconnect-NAK",
+              "CoA-ACK",
+              "CoA-NAK"
+            ]
+          },
+          "Reply-Message": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "zwrovdsveunp4"
+            }
+          }
+        }
+      },
+      "RequestPacketAttributes": {
+        "title": "RequestPacketAttributes",
+        "x-stoplight": {
+          "id": "5v596s8xt54c2"
+        },
+        "type": "object",
+        "description": "A JSON representation of a protocol packet.  May contain any attributes found in the protocol specific dictionary.\n\nhttps://github.com/FreeRADIUS/freeradius-server/tree/master/share/dictionary\n\nExample attributes below are for RADIUS.  Actual fields allowed are not limited to this Open API specification.  Multiple values may be provided as an array.",
+        "examples": [
+          {
+            "User-Name": "bob",
+            "User-Password": "SuperSecret",
+            "Vendor-Specific": {
+              "Nokia-SR": {
+                "SLA-Prof-Str": "My-First-SLA-Profile"
+              }
+            },
+            "EAP-Message": [
+              "0x01020304"
+            ]
+          }
+        ],
+        "properties": {
+          "Packet-Type": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "7zbio2beq8vwy"
+            },
+            "enum": [
+              "Access-Request",
+              "Accounting-Request",
+              "CoA-Request",
+              "Status-Request",
+              "DM-Request"
+            ],
+            "default": "Access-Request",
+            "example": "Access-Request",
+            "description": "The type of packet being sent"
+          },
           "User-Name": {
             "type": "string",
             "x-stoplight": {
@@ -243,21 +391,7 @@
               "example": "0x01020304"
             }
           }
-        },
-        "examples": [
-          {
-            "User-Name": "bob",
-            "User-Password": "SuperSecret",
-            "Vendor-Specific": {
-              "Nokia-SR": {
-                "SLA-Prof-Str": "My-First-SLA-Profile"
-              }
-            },
-            "EAP-Message": [
-              "0x01020304"
-            ]
-          }
-        ]
+        }
       },
       "RequestPacket": {
         "title": "RequestPacket",
@@ -265,6 +399,7 @@
           "id": "mhzux416sobwr"
         },
         "type": "object",
+        "description": "A request packet",
         "properties": {
           "net": {
             "$ref": "#/components/schemas/PacketHeader",
@@ -274,7 +409,7 @@
             "description": "Where to send the request"
           },
           "attributes": {
-            "$ref": "#/components/schemas/PacketAttributes",
+            "$ref": "#/components/schemas/RequestPacketAttributes",
             "x-stoplight": {
               "id": "q8eui2r7pa98d"
             },
@@ -288,8 +423,7 @@
             "example": "testing123",
             "description": "An optional share-secret, for protocols like RADIUS, which require one"
           }
-        },
-        "description": "A request packet"
+        }
       },
       "ResponsePacket": {
         "title": "ResponsePacket",
@@ -307,35 +441,11 @@
             "description": "IP header information from the response"
           },
           "attributes": {
-            "$ref": "#/components/schemas/PacketAttributes",
+            "$ref": "#/components/schemas/ResponsePacketAttributes",
             "x-stoplight": {
               "id": "q8eui2r7pa98d"
             },
             "description": "Attributes received in the response"
-          }
-        }
-      },
-      "ResponseError": {
-        "title": "ResponseError",
-        "x-stoplight": {
-          "id": "0tx3kyrjsl26y"
-        },
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "x-stoplight": {
-              "id": "ks5mtp6v60n0g"
-            },
-            "format": "int32",
-            "description": "A HTTP response code"
-          },
-          "message": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "hw83ssn3zv0cw"
-            },
-            "description": "A detailed description of the error"
           }
         }
       }
@@ -353,7 +463,8 @@
             "dhcpv6",
             "dns"
           ]
-        }
+        },
+        "description": "Which protocol to use to send the request"
       },
       "timeout": {
         "name": "timeout",
@@ -377,6 +488,113 @@
           "default": true
         },
         "description": "If true, the API server will not respond until a timeout occurs or a response is received, if false, the API server will respond with a request ID which can be used to retrieve the response via polling"
+      },
+      "delete": {
+        "name": "delete",
+        "in": "query",
+        "schema": {
+          "type": "boolean",
+          "default": true
+        },
+        "description": "Delete request when the response has been retrieved"
+      },
+      "requestId": {
+        "name": "requestId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        },
+        "description": "The request to retrieve the asynchronous response for"
+      }
+    },
+    "responses": {
+      "notFoundResponse": {
+        "description": "Returned when an asychronous request doesn't exist",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "7pmhqprdbal4z"
+                  },
+                  "example": "No pending request with ID 0 found",
+                  "description": "A description of the error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "invalidRequestResponse": {
+        "description": "Response on an invalid request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "4bjw08x7j4c9j"
+                  },
+                  "example": "Invalid value for attribute X",
+                  "description": "A description of the error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "internalErrorResponse": {
+        "description": "Response on server internal error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "7mv1myv8x8kr2"
+                  },
+                  "example": "An internal error ocured",
+                  "description": "A description of the error"
+                }
+              }
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "code": 500,
+                  "message": "An internal error ocured"
+                }
+              }
+            }
+          }
+        }
+      },
+      "timeoutResponse": {
+        "description": "Response when a request timed out",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "alq1k25be4049"
+                  },
+                  "description": "A description of the error"
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
