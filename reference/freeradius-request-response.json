@@ -83,10 +83,7 @@
             }
           },
           "description": "The request packet to send"
-        },
-        "tags": [
-          "request"
-        ]
+        }
       }
     },
     "/request/{protocol}/id/{requestId}": {
