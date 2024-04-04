@@ -196,7 +196,9 @@
             "type": "string",
             "x-stoplight": {
               "id": "zcbgomt0rsbc5"
-            }
+            },
+            "description": "An IPv4 or IPv6 address",
+            "example": "10.0.0.1"
           },
           "port": {
             "type": "integer",
@@ -206,7 +208,8 @@
             "format": "int32",
             "example": 1812,
             "maximum": 65535,
-            "minimum": 1
+            "minimum": 1,
+            "description": "A TCP or UDP port"
           }
         }
       },
@@ -244,6 +247,19 @@
         },
         "required": [
           "dst"
+        ],
+        "examples": [
+          {
+            "src": {
+              "ip": "string",
+              "port": 1812
+            },
+            "dst": {
+              "ip": "string",
+              "port": 1812
+            },
+            "timestamp": "2024-04-03T20:06:22Z"
+          }
         ]
       },
       "ResponsePacketAttributes": {
@@ -420,7 +436,22 @@
             "example": "testing123",
             "description": "An optional share-secret, for protocols like RADIUS, which require one"
           }
-        }
+        },
+        "examples": [
+          {
+            "net": {
+              "dst": {
+                "ip": "string",
+                "port": 1812
+              }
+            },
+            "attributes": {
+              "User-Name": "bob",
+              "User-Password": "SuperSecret"
+            },
+            "secret": "testing123"
+          }
+        ]
       },
       "ResponsePacket": {
         "title": "ResponsePacket",
@@ -444,7 +475,34 @@
             },
             "description": "Attributes received in the response"
           }
-        }
+        },
+        "examples": [
+          {
+            "net": {
+              "src": {
+                "ip": "string",
+                "port": 1812
+              },
+              "dst": {
+                "ip": "string",
+                "port": 1812
+              },
+              "timestamp": "2024-04-03T20:06:22Z"
+            },
+            "attributes": {
+              "User-Name": "bob",
+              "User-Password": "SuperSecret",
+              "Vendor-Specific": {
+                "Nokia-SR": {
+                  "SLA-Prof-Str": "My-First-SLA-Profile"
+                }
+              },
+              "EAP-Message": [
+                "0x01020304"
+              ]
+            }
+          }
+        ]
       }
     },
     "parameters": {
