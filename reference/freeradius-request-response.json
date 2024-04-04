@@ -65,7 +65,7 @@
             "$ref": "#/components/responses/internalErrorResponse"
           }
         },
-        "description": "Initiate a new request with the given protocol.",
+        "description": "Initiate a new request with the given protocol.\n\nThe attributes section of the request may contain any attributes found in the dictionary matching {protocol}.  The fields of the attribute table must match an attribute name in the protocol dictionary.  The values can either be an object (a nested attribute), an array (multiple values), a string matching the format of the attribute e.g. \"127.0.0.1\" for ipv4addr type attributes, an integer (for integer types), a float (for float types), or a boolean.\n\nSee here for all protocol dictionaries: https://github.com/FreeRADIUS/freeradius-server/tree/master/share/dictionary\n\nNo validation is performed to ensure that the protocol ",
         "parameters": [
           {
             "$ref": "#/components/parameters/synchronous"
@@ -628,14 +628,15 @@
                   "x-stoplight": {
                     "id": "alq1k25be4049"
                   },
-                  "description": "A description of the error"
+                  "description": "A description of the error",
+                  "example": "Response timed out"
                 }
               }
             },
             "examples": {
               "Example 1": {
                 "value": {
-                  "message": "string"
+                  "message": "Response timed out"
                 }
               }
             }
