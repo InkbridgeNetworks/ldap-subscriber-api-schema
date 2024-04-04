@@ -4,7 +4,7 @@
     "id": "vzir83tvacnxe"
   },
   "info": {
-    "title": "freeradius-request-response",
+    "title": "FreeRADIUS generic request/response API",
     "version": "1.0",
     "summary": "An extremely simple request/response API that implements multiple network protocols",
     "description": "This API is intended to be used as the backend for applications which need to send test packets.  This should be a test framework, a client, or something more complex such as a load simulator.",
