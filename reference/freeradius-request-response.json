@@ -212,12 +212,7 @@
             "description": "A TCP or UDP port"
           }
         },
-        "examples": [
-          {
-            "ip": "10.0.0.1",
-            "port": 1812
-          }
-        ]
+        "examples": []
       },
       "PacketHeader": {
         "title": "PacketHeader",
@@ -254,19 +249,7 @@
         "required": [
           "dst"
         ],
-        "examples": [
-          {
-            "src": {
-              "ip": "10.0.0.2",
-              "port": 10895
-            },
-            "dst": {
-              "ip": "10.0.0.1",
-              "port": 1812
-            },
-            "timestamp": "2024-04-03T20:06:22Z"
-          }
-        ]
+        "examples": []
       },
       "ResponsePacketAttributes": {
         "title": "ResponsePacketAttributes",
