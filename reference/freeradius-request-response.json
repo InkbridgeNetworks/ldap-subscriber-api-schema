@@ -211,7 +211,13 @@
             "minimum": 1,
             "description": "A TCP or UDP port"
           }
-        }
+        },
+        "examples": [
+          {
+            "ip": "10.0.0.1",
+            "port": 1812
+          }
+        ]
       },
       "PacketHeader": {
         "title": "PacketHeader",
@@ -251,11 +257,11 @@
         "examples": [
           {
             "src": {
-              "ip": "string",
-              "port": 1812
+              "ip": "10.0.0.2",
+              "port": 10895
             },
             "dst": {
-              "ip": "string",
+              "ip": "10.0.0.1",
               "port": 1812
             },
             "timestamp": "2024-04-03T20:06:22Z"
@@ -271,16 +277,11 @@
         "description": "A JSON representation of a protocol packet.  May contain any attributes found in the protocol specific dictionary.\n\nhttps://github.com/FreeRADIUS/freeradius-server/tree/master/share/dictionary\n\nExample attributes below are for RADIUS.  Actual fields allowed are not limited to this Open API specification.  Where needed, multiple values (or multiple instances of the same attribute) are provided as an array.",
         "examples": [
           {
-            "User-Name": "bob",
-            "User-Password": "SuperSecret",
             "Vendor-Specific": {
               "Nokia-SR": {
                 "SLA-Prof-Str": "My-First-SLA-Profile"
               }
-            },
-            "EAP-Message": [
-              "0x01020304"
-            ]
+            }
           }
         ],
         "properties": {
@@ -320,15 +321,7 @@
         "examples": [
           {
             "User-Name": "bob",
-            "User-Password": "SuperSecret",
-            "Vendor-Specific": {
-              "Nokia-SR": {
-                "SLA-Prof-Str": "My-First-SLA-Profile"
-              }
-            },
-            "EAP-Message": [
-              "0x01020304"
-            ]
+            "User-Password": "SuperSecret"
           }
         ],
         "properties": {
@@ -441,7 +434,7 @@
           {
             "net": {
               "dst": {
-                "ip": "string",
+                "ip": "10.0.0.1",
                 "port": 1812
               }
             },
@@ -480,26 +473,21 @@
           {
             "net": {
               "src": {
-                "ip": "string",
-                "port": 1812
+                "ip": "10.0.0.2",
+                "port": 10875
               },
               "dst": {
-                "ip": "string",
+                "ip": "10.0.0.1",
                 "port": 1812
               },
               "timestamp": "2024-04-03T20:06:22Z"
             },
             "attributes": {
-              "User-Name": "bob",
-              "User-Password": "SuperSecret",
               "Vendor-Specific": {
                 "Nokia-SR": {
                   "SLA-Prof-Str": "My-First-SLA-Profile"
                 }
-              },
-              "EAP-Message": [
-                "0x01020304"
-              ]
+              }
             }
           }
         ]
@@ -580,6 +568,13 @@
                   "description": "A description of the error"
                 }
               }
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "message": "No pending request with ID 0 found"
+                }
+              }
             }
           }
         }
@@ -598,6 +593,13 @@
                   },
                   "example": "Invalid value for attribute X",
                   "description": "A description of the error"
+                }
+              }
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "message": "Invalid value for attribute X"
                 }
               }
             }
@@ -645,6 +647,13 @@
                     "id": "alq1k25be4049"
                   },
                   "description": "A description of the error"
+                }
+              }
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "message": "string"
                 }
               }
             }
