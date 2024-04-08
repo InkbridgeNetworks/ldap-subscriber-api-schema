@@ -231,7 +231,7 @@
             "default": "enabled",
             "example": "suspended"
           },
-          "serviceProfileSuspend": {
+          "serviceProfileSuspended": {
             "type": "string",
             "enum": [
               "nonPaymentSuspend",
@@ -240,7 +240,10 @@
               "Calea"
             ],
             "description": "Why the subscriber is in the suspend state",
-            "example": "nonPaymentSuspend"
+            "example": "nonPaymentSuspend",
+            "x-stoplight": {
+              "id": "fz2htbygwtiz3"
+            }
           },
           "serviceSpeedUpload": {
             "type": "string",
