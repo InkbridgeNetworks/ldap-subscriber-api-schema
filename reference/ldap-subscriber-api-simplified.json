@@ -250,18 +250,18 @@
             "x-stoplight": {
               "id": "26plowtbpqbel"
             },
-            "pattern": "^[0-9]{1,5}(.[0-9]{1,5})?[GMK]$",
+            "pattern": "^[0-9]{1,5}(.[0-9]{1,5})?[BKMGTE]$",
             "example": "500M",
-            "description": "Upload speed with unit suffix"
+            "description": "Upload speed with unit suffix.  Floats are allowed but will be normalised to integers.  For example 1.5M will be returned as 1536K"
           },
           "serviceSpeedDownload": {
             "type": "string",
             "x-stoplight": {
               "id": "sa0sd8wfnzdvi"
             },
-            "pattern": "^[0-9]{1,5}(.[0-9]{1,5})?[GMK]$",
+            "pattern": "^[0-9]{1,5}(.[0-9]{1,5})?[BKMGTE]$",
             "example": "25.5M",
-            "description": "Download speed with unit suffix"
+            "description": "Download speed with unit suffix.  Floats are allowed but will be normalised to integers.  For example 1.5M will be returned as 1536K"
           },
           "staticIp": {
             "type": "array",
