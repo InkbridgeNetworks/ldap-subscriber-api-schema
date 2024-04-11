@@ -251,7 +251,7 @@
             },
             "pattern": "^[0-9]{1,5}(.[0-9]{1,5})?[BKMGTE]$",
             "example": "500M",
-            "description": "Upload speed with unit suffix.  Floats are allowed but will be normalised to integers.  For example 1.5M will be returned as 1536K. Note: This value will not be processed by the RADIUS service automatically.  It must be referenced in a concrete serviceProfile"
+            "description": "Upload speed with unit suffix.  Floats are allowed but will be normalised to integers.  For example 1.5M will be returned as 1536K. Note: This value will not be processed by the RADIUS service automatically.  It must be referenced in a policy"
           },
           "serviceSpeedDownload": {
             "type": "string",
@@ -260,7 +260,7 @@
             },
             "pattern": "^[0-9]{1,5}(.[0-9]{1,5})?[BKMGTE]$",
             "example": "25.5M",
-            "description": "Download speed with unit suffix.  Floats are allowed but will be normalised to integers.  For example 1.5M will be returned as 1536K. 536K. Note: This value will not be processed by the RADIUS service automatically.  It must be referenced in a concrete service profile"
+            "description": "Download speed with unit suffix.  Floats are allowed but will be normalised to integers.  For example 1.5M will be returned as 1536K. 536K. Note: This value will not be processed by the RADIUS service automatically.  It must be referenced in a policy"
           },
           "staticIp": {
             "type": "array",
