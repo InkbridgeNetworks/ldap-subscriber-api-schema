@@ -186,10 +186,9 @@
           {
             "subscriberId": "A123456789",
             "serviceProfile": [
-              "port25Enabled"
+              "dynamicSpeed"
             ],
-            "serviceStatus": "suspended",
-            "serviceProfileSuspend": "nonPaymentSuspend",
+            "serviceStatus": "enabled",
             "serviceSpeedUpload": "500M",
             "serviceSpeedDownload": "500M",
             "staticIp": [
@@ -252,7 +251,7 @@
             },
             "pattern": "^[0-9]{1,5}(.[0-9]{1,5})?[BKMGTE]$",
             "example": "500M",
-            "description": "Upload speed with unit suffix.  Floats are allowed but will be normalised to integers.  For example 1.5M will be returned as 1536K"
+            "description": "Upload speed with unit suffix.  Floats are allowed but will be normalised to integers.  For example 1.5M will be returned as 1536K. Note: This value will not be processed by the RADIUS service automatically.  It must be referenced in a concrete serviceProfile"
           },
           "serviceSpeedDownload": {
             "type": "string",
@@ -261,7 +260,7 @@
             },
             "pattern": "^[0-9]{1,5}(.[0-9]{1,5})?[BKMGTE]$",
             "example": "25.5M",
-            "description": "Download speed with unit suffix.  Floats are allowed but will be normalised to integers.  For example 1.5M will be returned as 1536K"
+            "description": "Download speed with unit suffix.  Floats are allowed but will be normalised to integers.  For example 1.5M will be returned as 1536K. 536K. Note: This value will not be processed by the RADIUS service automatically.  It must be referenced in a concrete service profile"
           },
           "staticIp": {
             "type": "array",
