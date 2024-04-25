@@ -302,7 +302,9 @@
             "type": "string",
             "enum": [
               "ipv4",
-              "ipv6"
+              "ipv6",
+              "ipv4prefix",
+              "ipv6prefix"
             ],
             "example": "ipv4",
             "description": "The address family of the static IP"
