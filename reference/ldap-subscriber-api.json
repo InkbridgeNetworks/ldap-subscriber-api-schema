@@ -1363,6 +1363,12 @@
                           },
                           {
                             "$ref": "#/components/schemas/portPhysical"
+                          },
+                          {
+                            "$ref": "#/components/schemas/portPhysStag",
+                            "x-stoplight": {
+                              "id": "8nu0jewp9xoj2"
+                            }
                           }
                         ]
                       }
@@ -1959,6 +1965,12 @@
                           },
                           {
                             "$ref": "#/components/schemas/portPhysical"
+                          },
+                          {
+                            "$ref": "#/components/schemas/portPhysStag",
+                            "x-stoplight": {
+                              "id": "te15kztsdqslv"
+                            }
                           }
                         ]
                       }
@@ -2524,11 +2536,6 @@
             "example": "qinq",
             "description": "Port type must be 'QinQ'"
           },
-          "id": {
-            "type": "string",
-            "description": "A combination of svlan+cvlan used to create the RDN for this port.",
-            "example": "100+0"
-          },
           "svlan": {
             "type": "integer",
             "maximum": 4096,
@@ -2568,16 +2575,65 @@
               "physical"
             ]
           },
-          "id": {
+          "port": {
             "type": "string",
             "example": "2/1/1",
-            "description": "Identifier for the physical port"
+            "description": "Identifier for the physical port",
+            "x-stoplight": {
+              "id": "v6eqp8ruallel"
+            }
           },
           "remoteAssociation": {
             "type": "string",
             "format": "uri",
             "description": "A reference to an accessDevice, client or subscriber, that this port connects to.",
             "example": "http://example.com/realms/example.com/subscriber/123456"
+          }
+        }
+      },
+      "portPhysStag": {
+        "title": "portPhysStag",
+        "x-stoplight": {
+          "id": "bcd1szjaaavwb"
+        },
+        "type": "object",
+        "description": "A combination of a physical port identifier and QinQ Stag value",
+        "properties": {
+          "type": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "z52ttxx8bdrq9"
+            },
+            "description": "Port type must be 'physStag'",
+            "enum": [
+              "physStag"
+            ]
+          },
+          "port": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "y2klzm801t2sk"
+            },
+            "description": "Identifier for the physical port"
+          },
+          "svlan": {
+            "type": "integer",
+            "x-stoplight": {
+              "id": "onrx2d7xh72ms"
+            },
+            "description": "QinQ svlan tag",
+            "example": 1,
+            "minimum": 1,
+            "maximum": 4096
+          },
+          "remoteAssociation": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "y86p1ghln7zpd"
+            },
+            "description": "A reference to an accessDevice, client or subscriber, that this port connects to.",
+            "example": "http://example.com/realms/example.com/subscriber/123456",
+            "format": "uri"
           }
         }
       }
