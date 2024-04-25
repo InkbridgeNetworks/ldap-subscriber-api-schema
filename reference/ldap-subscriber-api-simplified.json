@@ -60,8 +60,8 @@
                     "serviceProfileSuspend": "nonPaymentSuspend",
                     "staticIp": [
                       {
-                        "ipType": "ipv4",
-                        "ipAddress": "192.158.1.38"
+                        "ipType": "ipv4prefix",
+                        "ipAddress": "192.158.1.0/29"
                       }
                     ]
                   }
@@ -311,7 +311,7 @@
           },
           "ipAddress": {
             "type": "string",
-            "example": "192.158.1.38",
+            "example": "192.158.1.0/29",
             "description": "An IPv4 or IPv6 address to assign to a subscriber"
           }
         },
