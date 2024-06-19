@@ -281,8 +281,7 @@
             "x-stoplight": {
               "id": "gr3ty7jgogcbt"
             },
-            "format": "uri",
-            "example": "http://example.org/accessDevice/exampleBras/port/100+0",
+            "example": "client/192.168.2.0/portPhysical/6%2F%1%2F1/portQinQ/102%2B101",
             "description": "An optional reference to a port which should be associated with this subscriber"
           }
         },
