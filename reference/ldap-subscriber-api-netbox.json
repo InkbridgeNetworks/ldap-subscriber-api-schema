@@ -51,7 +51,7 @@
                     "serviceStatus": "enabled",
                     "serviceId": "GPON",
                     "servicePrecedence": "primary",
-                    "serviceProfile": "http://localhost:3000/service/fixedLine/profile/INETG1M",
+                    "serviceProfile": "http://localhost:3000/service/GPON/profile/INETG1M",
                     "netboxGroup": "aNetboxGroup",
                     "netboxCo": "coId",
                     "radiusFramedIPAddress": [
