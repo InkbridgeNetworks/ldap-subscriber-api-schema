@@ -92,7 +92,7 @@
         }
       ],
       "get": {
-        "summary": "Get a subscriber",
+        "summary": "Return a subscriber",
         "responses": {
           "200": {
             "description": "OK",
@@ -173,7 +173,7 @@
         "description": "Retrieve a subscriber object."
       },
       "patch": {
-        "summary": "Patch a subscriber",
+        "summary": "Update a subscriber",
         "operationId": "patch-users-userId",
         "responses": {
           "200": {
