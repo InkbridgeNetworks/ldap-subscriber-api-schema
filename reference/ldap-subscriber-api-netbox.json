@@ -196,7 +196,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/subscriber"
+                "$ref": "#/components/schemas/subscriberPatch"
               },
               "examples": {
                 "Example 1": {
