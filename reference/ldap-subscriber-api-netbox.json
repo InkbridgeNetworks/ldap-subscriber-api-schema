@@ -4,7 +4,7 @@
     "id": "lznywhytwibbc"
   },
   "info": {
-    "title": "ldap-subscriber-api-netbox",
+    "title": "Netbox Overlay for LDAP subscriber management API",
     "version": "1.0",
     "description": "API overlay to allow automatic allocation of static IP addresses using Netbox.",
     "contact": {
@@ -73,10 +73,7 @@
           },
           "description": "Post the necessary fields for the API to create a new subscriber."
         },
-        "description": "Create a new user.",
-        "tags": [
-          "netbox"
-        ]
+        "description": "Create a new user."
       },
       "parameters": [
         {
@@ -95,9 +92,6 @@
       ],
       "get": {
         "summary": "Get User Info by User ID",
-        "tags": [
-          "netbox"
-        ],
         "responses": {
           "200": {
             "description": "OK",
