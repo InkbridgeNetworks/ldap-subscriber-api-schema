@@ -416,7 +416,7 @@
             "x-stoplight": {
               "id": "42b3m0cmxraq7"
             },
-            "description": "An IPv4 address to request (::), or retain (any vali6 IPv4 address)",
+            "description": "An IPv6 address to request (::), or retain (any valid IPv6 address)",
             "items": {
               "x-stoplight": {
                 "id": "9rlwpmxrj10lz"
@@ -586,7 +586,7 @@
             "x-stoplight": {
               "id": "42b3m0cmxraq7"
             },
-            "description": "An IPv4 address to request (::), or retain (any vali6 IPv4 address)",
+            "description": "An IPv6 address to request (::), or retain (any valid IPv6 address)",
             "items": {
               "x-stoplight": {
                 "id": "9rlwpmxrj10lz"
