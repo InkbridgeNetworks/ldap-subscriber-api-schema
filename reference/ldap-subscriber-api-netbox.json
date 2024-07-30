@@ -21,7 +21,7 @@
   "paths": {
     "/netboxOverlay/realm/{realmId}/subscriber": {
       "post": {
-        "summary": "Create New User",
+        "summary": "Create a subscriber",
         "operationId": "post-user",
         "responses": {
           "200": {
@@ -92,7 +92,7 @@
         }
       ],
       "get": {
-        "summary": "Get User Info by User ID",
+        "summary": "Get a subscriber",
         "responses": {
           "200": {
             "description": "OK",
@@ -173,7 +173,7 @@
         "description": "Retrieve a subscriber object."
       },
       "patch": {
-        "summary": "Update User Information",
+        "summary": "Patch a subscriber",
         "operationId": "patch-users-userId",
         "responses": {
           "200": {
@@ -212,7 +212,7 @@
         }
       },
       "delete": {
-        "summary": "",
+        "summary": "Delete a subscriber",
         "operationId": "delete-netboxOverlay-realm-realmId-subscriber-subscriberId",
         "responses": {
           "200": {
@@ -222,7 +222,7 @@
         "description": "Delete a subscriber object."
       },
       "put": {
-        "summary": "",
+        "summary": "Replace a subscriber",
         "operationId": "put-netboxOverlay-realm-realmId-subscriber-subscriberId",
         "responses": {
           "200": {
