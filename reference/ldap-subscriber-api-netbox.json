@@ -440,6 +440,162 @@
           "servicePrecedence",
           "serviceProfile"
         ]
+      },
+      "subscriberPatch": {
+        "title": "subscriberPatch",
+        "x-stoplight": {
+          "id": "dcavf0hgskc0s"
+        },
+        "type": "object",
+        "description": "A subscriber - A user authenticating via the RADIUS service.\n\nNote: The attributes listed in the definition of the object are a subset of the attributes available.\n\nAny attribute that's available in the relevant LDAP schema (freeradius-radius.schema, freeradius-dhcpv4.schema, freeradius-dhcpv6.schema, etc...) for the protocol, can be included in POST, PATCH, PUT actions, including generic attributes such as `radiusAttribute`.  Generic attributes take the format `<attribute> <op> <quote><value><quote>` e.g. `Reply-Message := \"Welcome user %{User-Name}\"`, and can be used to add any attribute allowed in the protocol dictionary.\n\nFor the NetBox overlay, radiusFramedIPAddress, radiusFramedIPv6Address, radiusFramedIPv6Prefix, are used to request or retain IP addresses.\n\nIPv4 attributes populated with 0.0.0.0 will be replaced with allocations from Netbox.  IPv6 attributes with :: or ::/<prefix_len> in the case of the prefix attribute, will also be replaced with allocations from Netbox.\n\nWhen PUTing or PATCHing objects, and fewer than the existing allocation of IP addresses are included in the request body, the IP addresses retained will be dictated by the ones specified.  For example, a PATCH against a subscriber containing allocations { \"radiusFramedIPAddress\" : [ \"192.68.0.1\", \"192.168.0.2\", \"192.168.0.3\" ] } with { \"radiusFramedIPaddress\" : [ \"192.168.0.1\" ] } will cause the deallocation of \"192.168.0.2\" and \"192.168.0.3\".  If the caller does not care which IP addresses are retained, they may submit an array containing only zeroed IP address elements, with the element count being the number of addresses to retain.\n\nnetboxGroup and netboxCo must be included in any call which modifies IP allocation or the call will fail.",
+        "properties": {
+          "subscriberId": {
+            "type": "string",
+            "description": "A unique (within a realm) identifier for a subscriber",
+            "example": "123456789"
+          },
+          "serviceStatus": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "suspended"
+            ],
+            "description": "Whether this subscriber can access the service"
+          },
+          "statusReason": {
+            "type": "string",
+            "description": "Why the subscriber's service was disabled or suspended"
+          },
+          "serviceId": {
+            "type": "string",
+            "description": "The type of access media this subscriber object relates to, e.g. fixedLine, wireless etc... Must match a configured service category",
+            "example": "fixedLine"
+          },
+          "servicePrecedence": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "secondary"
+            ],
+            "description": "If multiple subscriber objects match an incoming Access-Request, the first subscriber object with \"primary\" will be used",
+            "example": "primary"
+          },
+          "serviceProfile": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URI of a service profile object to apply to the subscriber",
+            "example": "http://localhost:3000/service/fixedLine/profile/INETG1M"
+          },
+          "serviceProfileSuspended": {
+            "type": "string",
+            "description": "The URI of a service profile object to apply to the subscriber",
+            "format": "uri",
+            "example": "http://localhost:3000/service/fixedLine/profile/suspendedNonPayment"
+          },
+          "clientGroup": {
+            "type": "array",
+            "format": "uri",
+            "description": "The URI(s) of a clientGroup to restrict subscriber to.  Prevents subscriber from connecting RADIUS clients outside of this set of groups",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "example": "http://localhost:3000/client-groups/example.org-bngs",
+              "format": "uri"
+            }
+          },
+          "subscriberGroup": {
+            "type": "array",
+            "format": "uri",
+            "description": "The URI of a subscriberGroup object.  Used to apply common sets of RADIUS attributes or serviceProfiles to subscriber",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "portBindingclient": {
+            "type": "string",
+            "format": "uri",
+            "description": "URI of the last client the subscriber authenticated via.  Primarily used for Change of Authorisation and disconnect messages",
+            "example": "http://localhost:3000/clients/192.0.2.1"
+          },
+          "portBindingIdentifier": {
+            "type": "string",
+            "example": "DSLAM03-D6-KTP atm 0/0/0/44:0.35",
+            "description": "The subscriber's unique circuit ID, either learned or pre-provisioned"
+          },
+          "portBindingModified": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When port binding details were last updated",
+            "readOnly": true
+          },
+          "portBinding": {
+            "type": "boolean",
+            "description": "If true, the subscriber will be unabled to authenticate via any other circuit than the one we learned the first time the subscriber authenticated"
+          },
+          "netboxGroup": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "85l841ct6agjr"
+            },
+            "description": "The netbox group to add a subscriber to.  Not stored in LDAP.",
+            "example": "aNetboxGroup"
+          },
+          "netboxCo": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "rlg7lz5lw9pp0"
+            },
+            "description": "The CO to allocate IPv4, IPv6 WAN and IPv6 PD addresses from."
+          },
+          "radiusFramedIPAddress": {
+            "type": "array",
+            "x-stoplight": {
+              "id": "bc8fikpv6uwr2"
+            },
+            "description": "An IPv4 address to request (0.0.0.0), or retain (any valid IPv4 address).",
+            "items": {
+              "x-stoplight": {
+                "id": "1nzfkbtywtttb"
+              },
+              "type": "string",
+              "example": "0.0.0.0",
+              "pattern": "^((25[0-5]|(2[0-4]|1\\d|[1-9]|)\\d)\\.?\\b){4}$"
+            }
+          },
+          "radiusFramedIPv6Address": {
+            "type": "array",
+            "x-stoplight": {
+              "id": "42b3m0cmxraq7"
+            },
+            "description": "An IPv4 address to request (::), or retain (any vali6 IPv4 address)",
+            "items": {
+              "x-stoplight": {
+                "id": "9rlwpmxrj10lz"
+              },
+              "type": "string",
+              "example": "::",
+              "pattern": "^[a-f0-9:]+$"
+            }
+          },
+          "radiusFramedIPv6Prefix": {
+            "type": "array",
+            "x-stoplight": {
+              "id": "lrv6rxzbs5khm"
+            },
+            "description": "An IPv6 address to request (::/<prefix_len>), or retain (any valid IPv6 prefix)",
+            "items": {
+              "x-stoplight": {
+                "id": "79xod2q8fgn9n"
+              },
+              "type": "string",
+              "pattern": "^([a-f0-9:]+)/[0-9]{1,3}$",
+              "example": "::/56"
+            }
+          }
+        }
       }
     },
     "responses": {
