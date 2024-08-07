@@ -110,7 +110,7 @@
                       "servicePrecedence": "primary",
                       "serviceProfile": "http://localhost:3000/service/GPON/profile/INETG1M",
                       "radiusFramedIPAddress": [
-                        "192.168.0.1"
+                        "192.168.0.2"
                       ],
                       "radiusFramedIPv6Address": [
                         "ff06::c3",
@@ -118,7 +118,8 @@
                       ],
                       "radiusFramedIPv6Prefix": [
                         "ff05::c2::/56"
-                      ]
+                      ],
+                      "ipV4GatewayAddress": "192.168.0.1"
                     }
                   },
                   "Example 2": {
@@ -139,7 +140,8 @@
                       ],
                       "radiusFramedIPv6Prefix": [
                         "ff05::c2::/56"
-                      ]
+                      ],
+                      "ipV4GatewayAddress": "192.168.0.1"
                     }
                   },
                   "Example 3": {
@@ -155,7 +157,8 @@
                       ],
                       "radiusFramedIPv6Prefix": [
                         "ff05::c2::/56"
-                      ]
+                      ],
+                      "ipV4GatewayAddress": "192.168.0.1"
                     }
                   }
                 }
@@ -429,7 +432,40 @@
             "$ref": "#/components/schemas/subscriber"
           }
         ],
-        "description": "Subscriber fields allowed in a Put or Post"
+        "description": "Subscriber fields allowed in a Put or Post",
+        "examples": [
+          {
+            "subscriberId": "123456789",
+            "serviceStatus": "enabled",
+            "serviceId": "fixedLine",
+            "servicePrecedence": "primary",
+            "serviceProfile": "http://localhost:3000/service/fixedLine/profile/INETG1M",
+            "statusReason": "string",
+            "serviceProfileSuspended": "http://localhost:3000/service/fixedLine/profile/suspendedNonPayment",
+            "clientGroup": [
+              "http://localhost:3000/client-groups/example.org-bngs"
+            ],
+            "subscriberGroup": [
+              "http://example.com"
+            ],
+            "portBindingclient": "http://localhost:3000/clients/192.0.2.1",
+            "portBindingIdentifier": "DSLAM03-D6-KTP atm 0/0/0/44:0.35",
+            "portBindingModified": "2019-08-24T14:15:22Z",
+            "portBinding": true,
+            "netboxSubscriberName": "A Subscriber",
+            "netboxGroup": "aNetboxGroup",
+            "netboxCo": "string",
+            "radiusFramedIPAddress": [
+              "0.0.0.0"
+            ],
+            "radiusFramedIPv6Address": [
+              "::"
+            ],
+            "radiusFramedIPv6Prefix": [
+              "::/56"
+            ]
+          }
+        ]
       },
       "subscriberPatch": {
         "title": "subscriberPatch",
@@ -446,6 +482,37 @@
             "x-stoplight": {
               "id": "xbyjqs0x7cn5e"
             }
+          }
+        ],
+        "examples": [
+          {
+            "serviceStatus": "enabled",
+            "servicePrecedence": "primary",
+            "serviceProfile": "http://localhost:3000/service/fixedLine/profile/INETG1M",
+            "statusReason": "string",
+            "serviceProfileSuspended": "http://localhost:3000/service/fixedLine/profile/suspendedNonPayment",
+            "clientGroup": [
+              "http://localhost:3000/client-groups/example.org-bngs"
+            ],
+            "subscriberGroup": [
+              "http://example.com"
+            ],
+            "portBindingclient": "http://localhost:3000/clients/192.0.2.1",
+            "portBindingIdentifier": "DSLAM03-D6-KTP atm 0/0/0/44:0.35",
+            "portBindingModified": "2019-08-24T14:15:22Z",
+            "portBinding": true,
+            "netboxSubscriberName": "A Subscriber",
+            "netboxGroup": "aNetboxGroup",
+            "netboxCo": "string",
+            "radiusFramedIPAddress": [
+              "0.0.0.0"
+            ],
+            "radiusFramedIPv6Address": [
+              "::"
+            ],
+            "radiusFramedIPv6Prefix": [
+              "::/56"
+            ]
           }
         ]
       },
@@ -494,16 +561,15 @@
             "netboxGroup": "aNetboxGroup",
             "netboxCo": "string",
             "radiusFramedIPAddress": [
-              "0.0.0.0"
+              "192.168.0.2"
             ],
             "radiusFramedIPv6Address": [
-              "::"
+              "FE80::0202:B3FF:FE1E:8329"
             ],
             "radiusFramedIPv6Prefix": [
-              "::/56"
+              "2001:DB8:1201:1::/64"
             ],
-            "ipV4GatewayAddress": "string",
-            "": "string"
+            "ipV4GatewayAddress": "192.168.0.1"
           }
         ],
         "description": "Fields returned when a subscriber is returned from a GET operation"
@@ -521,9 +587,13 @@
             "x-stoplight": {
               "id": "z38qz6eslxibc"
             },
-            "description": "The gateway address for the given prefix the subscriber is assigned."
+            "description": "The gateway address for the given prefix the subscriber is assigned.",
+            "example": "192.168.0.1"
           }
-        }
+        },
+        "required": [
+          "ipV4GatewayAddress"
+        ]
       },
       "subscriberRequiredFields": {
         "title": "subscriberRequiredFields",
