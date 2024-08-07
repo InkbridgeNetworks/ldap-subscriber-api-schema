@@ -569,7 +569,7 @@
             "radiusFramedIPv6Prefix": [
               "2001:DB8:1201:1::/64"
             ],
-            "ipV4GatewayAddress": "192.168.0.1"
+            "IPv4GatewayAddress": "192.168.0.1"
           }
         ],
         "description": "Fields returned when a subscriber is returned from a GET operation"
@@ -582,7 +582,7 @@
         "type": "object",
         "description": "Attributes that are dynamically populated by the API",
         "properties": {
-          "ipV4GatewayAddress": {
+          "IPv4GatewayAddress": {
             "type": "string",
             "x-stoplight": {
               "id": "z38qz6eslxibc"
@@ -590,10 +590,7 @@
             "description": "The gateway address for the given prefix the subscriber is assigned.",
             "example": "192.168.0.1"
           }
-        },
-        "required": [
-          "ipV4GatewayAddress"
-        ]
+        }
       },
       "subscriberRequiredFields": {
         "title": "subscriberRequiredFields",
