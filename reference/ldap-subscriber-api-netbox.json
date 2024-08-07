@@ -336,29 +336,6 @@
                 "type": "boolean",
                 "description": "If true, the subscriber will be unabled to authenticate via any other circuit than the one we learned the first time the subscriber authenticated"
               },
-              "netboxSubscriberName": {
-                "type": "string",
-                "x-stoplight": {
-                  "id": "pz0hwcpq58e80"
-                },
-                "description": "Firstname, Lastname of the subscriber to record in Netbox.  Not stored in LDAP",
-                "example": "A Subscriber"
-              },
-              "netboxGroup": {
-                "type": "string",
-                "x-stoplight": {
-                  "id": "85l841ct6agjr"
-                },
-                "description": "The netbox group to add a subscriber to.  Not stored in LDAP",
-                "example": "aNetboxGroup"
-              },
-              "netboxCo": {
-                "type": "string",
-                "x-stoplight": {
-                  "id": "rlg7lz5lw9pp0"
-                },
-                "description": "The CO to allocate IPv4, IPv6 WAN and IPv6 PD addresses from. Not stored in LDAP"
-              },
               "radiusFramedIPAddress": {
                 "type": "array",
                 "x-stoplight": {
@@ -430,6 +407,12 @@
           },
           {
             "$ref": "#/components/schemas/subscriber"
+          },
+          {
+            "$ref": "#/components/schemas/subscriberNetboxFields",
+            "x-stoplight": {
+              "id": "vy1wmiwr30zr4"
+            }
           }
         ],
         "description": "Subscriber fields allowed in a Put or Post",
@@ -481,6 +464,12 @@
             "$ref": "#/components/schemas/subscriber",
             "x-stoplight": {
               "id": "xbyjqs0x7cn5e"
+            }
+          },
+          {
+            "$ref": "#/components/schemas/subscriberNetboxFields",
+            "x-stoplight": {
+              "id": "l1qxgvzfdce6m"
             }
           }
         ],
@@ -557,9 +546,6 @@
             "portBindingIdentifier": "DSLAM03-D6-KTP atm 0/0/0/44:0.35",
             "portBindingModified": "2019-08-24T14:15:22Z",
             "portBinding": true,
-            "netboxSubscriberName": "A Subscriber",
-            "netboxGroup": "aNetboxGroup",
-            "netboxCo": "string",
             "radiusFramedIPAddress": [
               "192.168.0.2"
             ],
@@ -569,10 +555,42 @@
             "radiusFramedIPv6Prefix": [
               "2001:DB8:1201:1::/64"
             ],
-            "IPv4GatewayAddress": "192.168.0.1"
+            "netboxIPv4GatewayAddress": "192.168.0.1"
           }
         ],
         "description": "Fields returned when a subscriber is returned from a GET operation"
+      },
+      "subscriberNetboxFields": {
+        "title": "subscriberNetbox",
+        "x-stoplight": {
+          "id": "vqkw84mi1tecp"
+        },
+        "type": "object",
+        "properties": {
+          "netboxSubscriberName": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "pz0hwcpq58e80"
+            },
+            "description": "Firstname, Lastname of the subscriber to record in Netbox.  Not stored in LDAP",
+            "example": "A Subscriber"
+          },
+          "netboxGroup": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "85l841ct6agjr"
+            },
+            "description": "The netbox group to add a subscriber to.  Not stored in LDAP",
+            "example": "aNetboxGroup"
+          },
+          "netboxCo": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "rlg7lz5lw9pp0"
+            },
+            "description": "The CO to allocate IPv4, IPv6 WAN and IPv6 PD addresses from. Not stored in LDAP"
+          }
+        }
       },
       "subscriberDynamicFields": {
         "title": "subscriberDynamicFields",
@@ -582,7 +600,7 @@
         "type": "object",
         "description": "Attributes that are dynamically populated by the API",
         "properties": {
-          "IPv4GatewayAddress": {
+          "netboxIPv4GatewayAddress": {
             "type": "string",
             "x-stoplight": {
               "id": "z38qz6eslxibc"
