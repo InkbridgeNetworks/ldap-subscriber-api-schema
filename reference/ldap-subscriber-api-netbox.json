@@ -547,15 +547,15 @@
             "portBindingModified": "2019-08-24T14:15:22Z",
             "portBinding": true,
             "radiusFramedIPAddress": [
-              "192.168.0.2"
+              "162.81.13.250"
             ],
             "radiusFramedIPv6Address": [
-              "FE80::0202:B3FF:FE1E:8329"
+              "2606:83c0:f00::"
             ],
             "radiusFramedIPv6Prefix": [
-              "2001:DB8:1201:1::/64"
+              "2606:83c0:c00::/56"
             ],
-            "netboxIPv4GatewayAddress": "192.168.0.1"
+            "netboxIPv4GatewayAddress": "162.81.12.1"
           }
         ],
         "description": "Fields returned when a subscriber is returned from a GET operation"
@@ -563,7 +563,7 @@
       "subscriberNetboxFields": {
         "title": "subscriberNetbox",
         "x-stoplight": {
-          "id": "vqkw84mi1tecp"
+          "id": "vqkw84mi1tecr"
         },
         "type": "object",
         "properties": {
@@ -590,7 +590,15 @@
             },
             "description": "The CO to allocate IPv4, IPv6 WAN and IPv6 PD addresses from. Not stored in LDAP"
           }
-        }
+        },
+        "description": "Fields that need to be provided when modifying IP address allocations",
+        "examples": [
+          {
+            "netboxSubscriberName": "A Subscriber",
+            "netboxGroup": "aNetboxGroup",
+            "netboxCo": "string"
+          }
+        ]
       },
       "subscriberDynamicFields": {
         "title": "subscriberDynamicFields",
@@ -659,7 +667,8 @@
           "servicePrecedence",
           "serviceProfile"
         ],
-        "description": "Fields that must be present in POST and PUT operations"
+        "description": "Fields that must be present in POST and PUT operations",
+        "x-internal": false
       },
       "subscriberOptionalFields": {
         "title": "subscriberOptionalFields",
