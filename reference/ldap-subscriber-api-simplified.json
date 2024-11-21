@@ -279,8 +279,11 @@
             },
             "description": "Optional PPP credentials for the subscriber"
           },
-          "portBinding": {
-            "type": "array",
+          "portBindingIdentifier": {
+            "type": [
+              "array",
+              "string"
+            ],
             "x-stoplight": {
               "id": "gr3ty7jgogcbt"
             },
@@ -291,7 +294,7 @@
             "description": "An optional reference to a port which should be associated with this subscriber. If the port already points to an existing subscriber an error will be returned.",
             "items": {
               "x-stoplight": {
-                "id": "zpbyr87zbdlel"
+                "id": "7bd4tot7ztfgi"
               },
               "type": "string"
             }
