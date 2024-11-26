@@ -355,8 +355,8 @@
             "x-stoplight": {
               "id": "9ewnf97cfan4g"
             },
-            "description": "The PPPoE password.  Must be in the form '{<scheme>}<hash>' where scheme is one of the schemes documented here https://linux.die.net/man/8/slappasswd, or https://man.archlinux.org/man/core/openldap/slapd-pw-sha2.5.en and <hash> is the hex encoding of the hash of the password.  ",
-            "example": "{cleartext}superSecret",
+            "description": "The PPPoE password.  Must be in the form `{<scheme>}<hash>` where scheme is one of the schemes documented here https://linux.die.net/man/8/slappasswd, or https://man.archlinux.org/man/core/openldap/slapd-pw-sha2.5.en and `<hash>` is the base64 encoding of the hash of the password.  ",
+            "example": "{SHA256}K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=",
             "pattern": "^{[^}]+}.+$"
           }
         },
