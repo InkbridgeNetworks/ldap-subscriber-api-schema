@@ -2305,7 +2305,8 @@
           },
           "portBindingIdentifier": {
             "type": "string",
-            "example": "DSLAM03-D6-KTP atm 0/0/0/44:0.35",
+            "format": "uri",
+            "example": "http://localhost:3000/client/192.0.2.1/port/DSLAM03-D6-KTP atm 0/0/0/44:0.35/qinq/100%2B25",
             "description": "The subscriber's unique circuit ID, either learned or pre-provisioned"
           },
           "portBindingModified": {
