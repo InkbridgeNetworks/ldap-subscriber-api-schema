@@ -288,8 +288,8 @@
               "id": "gr3ty7jgogcbt"
             },
             "example": [
-              "client/192.168.2.0/portPhysical/6%2F%1%2F1/portQinQ/102%2B101",
-              "client/192.168.2.0/portPhysical/6%2F%1%2F2/portQinQ/102%2B102"
+              "client/192.168.2.0/port/6%2F1%2F1/qinq/102%2B101",
+              "client/192.168.2.0/port/6%2F1%2F2/qinq/102%2B102"
             ],
             "description": "An optional reference to a port which should be associated with this subscriber. If the port already points to an existing subscriber an error will be returned.",
             "items": {
