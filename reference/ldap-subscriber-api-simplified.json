@@ -65,6 +65,19 @@
                       }
                     ]
                   }
+                },
+                "Example 2": {
+                  "value": {
+                    "subscriberId": "B012345678",
+                    "serviceProfile": "dynamicSpeed",
+                    "serviceSpeedUpload": "1G",
+                    "serviceSpeedDownload": "1G",
+                    "serviceStatus": "enabled",
+                    "pppCredentials" : {
+                      "userName" : "testpppuser1",
+                      "password" : "{sha256}E3D/UMV7I97LdXFFJa7OAVgRSZGXjW7fgY9SjrjMtCk="
+                    }
+                  }
                 }
               }
             }
