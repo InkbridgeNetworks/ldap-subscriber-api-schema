@@ -2301,7 +2301,7 @@
             "type": "string",
             "format": "uri",
             "description": "URI of the last client the subscriber authenticated via.  Primarily used for Change of Authorisation and disconnect messages",
-            "example": "http://localhost:3000/clients/192.0.2.1"
+            "example": "http://localhost:3000/client/192.0.2.1"
           },
           "portBindingIdentifier": {
             "type": "string",
