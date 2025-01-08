@@ -237,7 +237,7 @@
           },
           "serviceProfileSuspended": {
             "type": "string",
-            "description": "Why the subscriber is in the suspend state",
+            "description": "Service profile to use if the subscriber is suspended",
             "example": "suspend",
             "x-stoplight": {
               "id": "fz2htbygwtiz3"
