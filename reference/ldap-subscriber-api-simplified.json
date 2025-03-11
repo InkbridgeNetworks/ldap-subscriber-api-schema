@@ -69,7 +69,9 @@
                 "Example 2": {
                   "value": {
                     "subscriberId": "B012345678",
-                    "serviceProfile": "dynamicSpeed",
+                    "serviceProfile": [
+                      "dynamicSpeed"
+                    ],
                     "serviceSpeedUpload": "1G",
                     "serviceSpeedDownload": "1G",
                     "serviceStatus": "enabled",
