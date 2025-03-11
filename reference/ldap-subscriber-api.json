@@ -2384,7 +2384,13 @@
           "radiusClientRequireMa": {
             "type": "boolean",
             "description": "Whether we requires the Message-Authenticator attribute in Access-Requests from this client"
-          }
+          },
+	  "tacacsClientSecret": {
+	    "type": "string",
+	    "example": "testing123",
+	    "description": "The shared key the TACACS client will use to communicate with the TACACS service",
+	    "format": "password"
+	  }
         },
         "required": [
           "id"
