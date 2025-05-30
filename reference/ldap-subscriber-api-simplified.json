@@ -24,7 +24,7 @@
     }
   ],
   "paths": {
-    "/realms/{realmId}/subscribers": {
+    "/realms/{realmId}/serviceClass/{serviceClass}/subscribers": {
       "post": {
         "summary": "Create a subscriber",
         "operationId": "post-realms-subscribers",
@@ -75,9 +75,9 @@
                     "serviceSpeedUpload": "1G",
                     "serviceSpeedDownload": "1G",
                     "serviceStatus": "enabled",
-                    "pppCredentials" : {
-                      "username" : "testpppuser1",
-                      "password" : "{sha256}E3D/UMV7I97LdXFFJa7OAVgRSZGXjW7fgY9SjrjMtCk="
+                    "pppCredentials": {
+                      "username": "testpppuser1",
+                      "password": "{sha256}E3D/UMV7I97LdXFFJa7OAVgRSZGXjW7fgY9SjrjMtCk="
                     }
                   }
                 }
@@ -91,16 +91,22 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/realmId"
+        },
+        {
+          "$ref": "#/components/parameters/serviceClass"
         }
       ]
     },
-    "/realms/{realmId}/subscribers/{subscriberId}": {
+    "/realms/{realmId}/serviceClass/{serviceClass}/subscribers/{subscriberId}": {
       "parameters": [
         {
           "$ref": "#/components/parameters/realmId"
         },
         {
           "$ref": "#/components/parameters/subscriberId"
+        },
+        {
+          "$ref": "#/components/parameters/serviceClass"
         }
       ],
       "get": {
@@ -220,15 +226,6 @@
           }
         ],
         "properties": {
-          "serviceClass": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "uy7u3k8pt0in9"
-            },
-            "description": "A qualifier applied to all profiles and subscriber IDs.  If a serviceClass is provided, only subscribers in that class will be accessible, and any profile assignments will be within that class.",
-            "example": "PREMIUM_BB",
-            "default": "default"
-          },
           "subscriberId": {
             "type": "string",
             "description": "Unique identifier for the subscriber",
@@ -438,6 +435,15 @@
           "type": "string"
         },
         "description": "Unique identifier for a subscriber"
+      },
+      "serviceClass": {
+        "name": "serviceClass",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "A qualifier applied to all profile assignments and subscribers"
       }
     }
   },
