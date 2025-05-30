@@ -2301,11 +2301,12 @@
             "type": "string",
             "format": "uri",
             "description": "URI of the last client the subscriber authenticated via.  Primarily used for Change of Authorisation and disconnect messages",
-            "example": "http://localhost:3000/clients/192.0.2.1"
+            "example": "http://localhost:3000/client/192.0.2.1"
           },
           "portBindingIdentifier": {
             "type": "string",
-            "example": "DSLAM03-D6-KTP atm 0/0/0/44:0.35",
+            "format": "uri",
+            "example": "http://localhost:3000/client/192.0.2.1/port/DSLAM03-D6-KTP atm 0/0/0/44:0.35/qinq/100%2B25",
             "description": "The subscriber's unique circuit ID, either learned or pre-provisioned"
           },
           "portBindingModified": {
@@ -2383,7 +2384,13 @@
           "radiusClientRequireMa": {
             "type": "boolean",
             "description": "Whether we requires the Message-Authenticator attribute in Access-Requests from this client"
-          }
+          },
+	  "tacacsClientSecret": {
+	    "type": "string",
+	    "example": "testing123",
+	    "description": "The shared key the TACACS client will use to communicate with the TACACS service",
+	    "format": "password"
+	  }
         },
         "required": [
           "id"

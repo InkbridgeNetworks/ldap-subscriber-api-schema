@@ -65,6 +65,21 @@
                       }
                     ]
                   }
+                },
+                "Example 2": {
+                  "value": {
+                    "subscriberId": "B012345678",
+                    "serviceProfile": [
+                      "dynamicSpeed"
+                    ],
+                    "serviceSpeedUpload": "1G",
+                    "serviceSpeedDownload": "1G",
+                    "serviceStatus": "enabled",
+                    "pppCredentials" : {
+                      "userName" : "testpppuser1",
+                      "password" : "{sha256}E3D/UMV7I97LdXFFJa7OAVgRSZGXjW7fgY9SjrjMtCk="
+                    }
+                  }
                 }
               }
             }
@@ -246,7 +261,7 @@
           },
           "serviceProfileSuspended": {
             "type": "string",
-            "description": "Why the subscriber is in the suspend state",
+            "description": "Service profile to use if the subscriber is suspended",
             "example": "suspend",
             "x-stoplight": {
               "id": "fz2htbygwtiz3"
@@ -297,8 +312,8 @@
               "id": "gr3ty7jgogcbt"
             },
             "example": [
-              "client/192.168.2.0/portPhysical/6%2F%1%2F1/portQinQ/102%2B101",
-              "client/192.168.2.0/portPhysical/6%2F%1%2F2/portQinQ/102%2B102"
+              "client/192.168.2.0/port/6%2F1%2F1/qinq/102%2B101",
+              "client/192.168.2.0/port/6%2F1%2F2/qinq/102%2B102"
             ],
             "description": "An optional reference to a port which should be associated with this subscriber. If the port already points to an existing subscriber an error will be returned.",
             "items": {
