@@ -205,6 +205,15 @@
           }
         ],
         "properties": {
+          "serviceClass": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "uy7u3k8pt0in9"
+            },
+            "description": "A qualifier applied to all profiles and subscriber IDs.  If a serviceClass is provided, only subscribers in that class will be accessible, and any profile assignments will be within that class.",
+            "example": "PREMIUM_BB",
+            "default": "default"
+          },
           "subscriberId": {
             "type": "string",
             "description": "Unique identifier for the subscriber",
@@ -298,6 +307,12 @@
               },
               "type": "string"
             }
+          },
+          "": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "1exinke7fymbb"
+            }
           }
         },
         "required": [
@@ -326,7 +341,9 @@
           "ipAddress": {
             "type": "string",
             "example": "192.158.1.0/29",
-            "description": "An IPv4 or IPv6 address to assign to a subscriber"
+            "description": "An IPv4 or IPv6 address to assign to a subscriber",
+            "minLength": 7,
+            "maxLength": 43
           }
         },
         "required": [
