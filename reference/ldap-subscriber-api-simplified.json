@@ -24,6 +24,166 @@
     }
   ],
   "paths": {
+    "/realms/{realmId}/subscribers": {
+      "post": {
+        "summary": "Create a subscriber",
+        "operationId": "post-realms-default-subscribers",
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "409": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/statusResponse"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscriber"
+              }
+            }
+          },
+          "description": "A subscriber object definition"
+        },
+        "description": "Add a new subscriber in the 'default' service class."
+      },
+      "parameters": [
+        {
+          "name": "realmId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Unique identifier for a realm"
+        }
+      ]
+    },
+    "/realms/{realmId}/subscribers/{subscriberId}": {
+      "parameters": [
+        {
+          "name": "realmId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Unique identifier for a realm"
+        },
+        {
+          "name": "subscriberId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Unique identifier for a subscriber"
+        }
+      ],
+      "get": {
+        "summary": "Retrieve a subscriber",
+        "operationId": "get-realms-realmId-default-subscribers-subscriberId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/subscriber",
+                  "description": "A subscriber object"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "subscriberId": "A123456789",
+                      "serviceProfile": [
+                        "dynamicSpeed"
+                      ],
+                      "serviceStatus": "suspended",
+                      "serviceProfileSuspend": "nonPaymentSuspend",
+                      "staticIp": [
+                        {
+                          "ipType": "ipv4",
+                          "ipAddress": "192.158.1.38"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/statusResponse"
+          }
+        },
+        "description": "Return a subscriber in the 'default' service class in a specified realm."
+      },
+      "patch": {
+        "summary": "Update a subscriber",
+        "operationId": "patch-realms-realmId-subscribers-default-subscriberId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/statusResponse"
+          }
+        },
+        "description": "Update a subscriber in the 'default' service class, for a given realm by replacing only the provided attributes.  If an attribute is null, it will be removed.\n\nFor multi-valued and nested attributes the complete set of values must be provided, and will replace all existing values.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscriber",
+                "description": "A partial subscriber object"
+              },
+              "examples": {
+                "Suspending a subscriber for non-payment": {
+                  "value": {
+                    "serviceProfileSuspended": "nonPaymentSuspend",
+                    "serviceStatus": "suspended"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Attributes to update."
+        }
+      },
+      "delete": {
+        "summary": "Delete a subscriber",
+        "operationId": "delete-realms-realmId-subscribers-default-subscriberId",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/statusResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/statusResponse"
+          }
+        },
+        "description": "Delete a subscriber in the 'default' service class from a given realm."
+      }
+    },
     "/realms/{realmId}/serviceClass/{serviceClass}/subscribers": {
       "post": {
         "summary": "Create a subscriber",
@@ -50,22 +210,6 @@
                 "description": "A complete subscriber object"
               },
               "examples": {
-                "Example 1": {
-                  "value": {
-                    "subscriberId": "A123456789",
-                    "serviceProfile": [
-                      "port25Enabled"
-                    ],
-                    "serviceStatus": "suspended",
-                    "serviceProfileSuspend": "nonPaymentSuspend",
-                    "staticIp": [
-                      {
-                        "ipType": "ipv4prefix",
-                        "ipAddress": "192.158.1.0/29"
-                      }
-                    ]
-                  }
-                },
                 "Example 2": {
                   "value": {
                     "subscriberId": "B012345678",
@@ -126,7 +270,7 @@
                     "value": {
                       "subscriberId": "A123456789",
                       "serviceProfile": [
-                        "port25Enabled"
+                        "dynamicSpeed"
                       ],
                       "serviceStatus": "suspended",
                       "serviceProfileSuspend": "nonPaymentSuspend",
@@ -175,6 +319,14 @@
               "schema": {
                 "$ref": "#/components/schemas/subscriber",
                 "description": "A partial subscriber object"
+              },
+              "examples": {
+                "Suspending a subscriber for non-payment": {
+                  "value": {
+                    "serviceProfileSuspended": "nonPaymentSuspend",
+                    "serviceStatus": "suspended"
+                  }
+                }
               }
             }
           },
@@ -212,7 +364,8 @@
           {
             "subscriberId": "A123456789",
             "serviceProfile": [
-              "dynamicSpeed"
+              "dynamicSpeed",
+              "staticIp"
             ],
             "serviceStatus": "enabled",
             "serviceSpeedUpload": "500M",
@@ -223,26 +376,52 @@
                 "ipAddress": "192.158.1.38"
               }
             ]
+          },
+          {
+            "subscriberId": "A123456789",
+            "serviceProfile": [
+              "dynamicSpeed"
+            ],
+            "serviceStatus": "enabled",
+            "serviceSpeedUpload": "500M",
+            "serviceSpeedDownload": "500M"
+          },
+          {
+            "subscriberId": "B012345678",
+            "serviceProfile": [
+              "dynamicSpeed"
+            ],
+            "serviceSpeedUpload": "1G",
+            "serviceSpeedDownload": "1G",
+            "serviceStatus": "enabled",
+            "pppCredentials": {
+              "username": "testpppuser1",
+              "password": "{sha256}E3D/UMV7I97LdXFFJa7OAVgRSZGXjW7fgY9SjrjMtCk="
+            }
           }
         ],
         "properties": {
           "subscriberId": {
             "type": "string",
-            "description": "Unique identifier for the subscriber",
+            "description": "A qnique SID (Subscriber Identifier) for the subscriber",
             "example": "A123456789"
           },
           "serviceProfile": {
             "type": "array",
-            "description": "Service profile the subscriber is assigned",
+            "description": "Service abstract profile the subscriber is assigned. Beneath the abstract profiles, there are concrete profiles which are assigned based on the RADIUS client type.  These concrete profiles return attributes that configure an aspect of the subscriber's service, like speed, QoS or static IP assignments.",
             "example": [
-              "port25Enabled"
+              "dynamicSpeed"
             ],
             "items": {
               "x-stoplight": {
                 "id": "zd928rpk7owsi"
               },
               "type": "string",
-              "example": "port25Disabled"
+              "example": "dynamicSpeed",
+              "enum": [
+                "dynamicSpeed",
+                "staticIp"
+              ]
             }
           },
           "serviceStatus": {
@@ -265,7 +444,7 @@
             },
             "enum": [
               "suspend",
-              "brightspeedNow"
+              "nonPaymentSuspend"
             ]
           },
           "serviceSpeedUpload": {
@@ -293,13 +472,6 @@
               "$ref": "#/components/schemas/subscriberStaticIp"
             }
           },
-          "pppCredentials": {
-            "$ref": "#/components/schemas/pppCredentials",
-            "x-stoplight": {
-              "id": "bz9fnhaxmfsh0"
-            },
-            "description": "Optional PPP credentials for the subscriber"
-          },
           "portBindingIdentifier": {
             "type": [
               "array",
@@ -320,16 +492,20 @@
               "type": "string"
             }
           },
+          "pppCredentials": {
+            "$ref": "#/components/schemas/pppCredentials",
+            "x-stoplight": {
+              "id": "bz9fnhaxmfsh0"
+            },
+            "description": "Optional PPP credentials for the subscriber"
+          },
           "": {
             "type": "string",
             "x-stoplight": {
-              "id": "1exinke7fymbb"
+              "id": "2thxskloc4exj"
             }
           }
-        },
-        "required": [
-          "subscriberId"
-        ]
+        }
       },
       "subscriberStaticIp": {
         "title": "subscriberStaticIp",
