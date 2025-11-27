@@ -2201,7 +2201,7 @@
             },
             "in": "header",
             "name": "x-permissions",
-            "description": "If true, returns endpoints directly under the current information that the user can access, and their permissions.  Returns \"permissionsResponse\""
+            "description": "If true, returns endpoints directly under the current path that the user can access, and their permissions.  Returns \"permissionsResponse\""
           },
           {
             "schema": {
