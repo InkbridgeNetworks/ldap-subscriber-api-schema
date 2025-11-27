@@ -2184,7 +2184,6 @@
     "/": {
       "get": {
         "summary": "Global parameters and headers",
-        "tags": ["global"],
         "responses": {
           "200": {
             "$ref": "#/components/responses/permissionsResponse"
@@ -2211,7 +2210,10 @@
             "in": "query"
           }
         ],
-        "description": "This endpoint demonstrates certain operations which apply globally to all endpoints.  \nThe OpenAPI specification is not flexible enough to represent this.\n\nGlobal endpoints are triggered by using a specific header or query parameter.\n\nThe documentation for those parameters states the response type that'll be received."
+        "description": "This endpoint demonstrates certain operations which apply globally to all endpoints.  \nThe OpenAPI specification is not flexible enough to represent this.\n\nGlobal endpoints are triggered by using a specific header or query parameter.\n\nThe documentation for those parameters states the response type that'll be received.",
+        "tags": [
+          "Global"
+        ]
       },
       "parameters": []
     }
@@ -2866,14 +2868,14 @@
               }
             },
             "examples": {
-              "Querying /": {
+              "permissionsResponse - Querying /": {
                 "value": {
                   "realm": "r",
                   "subscriber": "rmd",
                   "service": "rm"
                 }
               },
-              "Querying /realm/<realm>/": {
+              "permissionsResponse - Querying /realm/<realm>/": {
                 "value": {
                   "subscriber": "rmd"
                 }
