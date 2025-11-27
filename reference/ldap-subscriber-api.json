@@ -2180,6 +2180,40 @@
           }
         ]
       }
+    },
+    "/": {
+      "get": {
+        "summary": "Global parameters and headers",
+        "tags": ["global"],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/permissionsResponse"
+          }
+        },
+        "operationId": "get-global",
+        "x-stoplight": {
+          "id": "awyakbe5d2ujc"
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "boolean",
+              "example": true
+            },
+            "in": "header",
+            "name": "x-permissions",
+            "description": "If true, returns endpoints directly under the current information that the user can access, and their permissions.  Returns \"permissionsResponse\""
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query"
+          }
+        ],
+        "description": "This endpoint demonstrates certain operations which apply globally to all endpoints.  \nThe OpenAPI specification is not flexible enough to represent this.\n\nGlobal endpoints are triggered by using a specific header or query parameter.\n\nThe documentation for those parameters states the response type that'll be received."
+      },
+      "parameters": []
     }
   },
   "components": {
@@ -2306,7 +2340,7 @@
           "portBindingIdentifier": {
             "type": "string",
             "format": "uri",
-            "example": "http://localhost:3000/client/192.0.2.1/port/DSLAM03-D6-KTP atm 0/0/0/44:0.35/qinq/100%2B25",
+            "example": "http://localhost:3000/client/192.0.2.1/port/DSLAM03-D6-KTP%20atm%200%2F0%2F0%2F44:0.35/qinq/100%2B25",
             "description": "The subscriber's unique circuit ID, either learned or pre-provisioned"
           },
           "portBindingModified": {
@@ -2385,12 +2419,12 @@
             "type": "boolean",
             "description": "Whether we requires the Message-Authenticator attribute in Access-Requests from this client"
           },
-	  "tacacsClientSecret": {
-	    "type": "string",
-	    "example": "testing123",
-	    "description": "The shared key the TACACS client will use to communicate with the TACACS service",
-	    "format": "password"
-	  }
+          "tacacsClientSecret": {
+            "type": "string",
+            "example": "testing123",
+            "description": "The shared key the TACACS client will use to communicate with the TACACS service",
+            "format": "password"
+          }
         },
         "required": [
           "id"
@@ -2815,10 +2849,43 @@
             "schema": {}
           }
         }
+      },
+      "permissionsResponse": {
+        "description": "This response shows permisssions for children of this endpoint.  \n\nIt only shows permissions for namespaces, i.e. fixed objects, it does not show permissions for\nuser created objects.  Permissions should be assumed to apply to all user created objects beneath\nthe returned endpoint.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "x-stoplight": {
+                  "id": "sejmivgbh3y7g"
+                },
+                "type": "string",
+                "pattern": "^[rmd]{1,3}$",
+                "example": "r"
+              }
+            },
+            "examples": {
+              "Querying /": {
+                "value": {
+                  "realm": "r",
+                  "subscriber": "rmd",
+                  "service": "rm"
+                }
+              },
+              "Querying /realm/<realm>/": {
+                "value": {
+                  "subscriber": "rmd"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "securitySchemes": {},
-    "examples": {}
+    "examples": {},
+    "requestBodies": {}
   },
   "tags": [
     {
@@ -2857,5 +2924,8 @@
       "name": "Subscriber management",
       "description": "Endpoints for managing subscribers."
     }
+  ],
+  "security": [
+    {}
   ]
 }
