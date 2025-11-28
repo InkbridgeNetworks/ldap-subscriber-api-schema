@@ -2207,7 +2207,17 @@
             "schema": {
               "type": "string"
             },
-            "in": "query"
+            "in": "query",
+            "name": "copy_uri",
+            "description": "If specified URL is the same resource type as the endpoint called, a copy will be initiated.  The behaviour of the copy depends on the presence of the `copy_recursive` flag, and the HTTP verb used.  `POST` will result in objects being created, `PUT` will replace existing objects, `PATCH` will modify existing objects. `POST` only is allowed to contain a JSON payload, which can be used to alter the ID of the destination object."
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "copy_recursive",
+            "description": "If true, copy the object specified by `copy_uri` and its decedents. "
           }
         ],
         "description": "This endpoint demonstrates certain operations which apply globally to all endpoints.  \nThe OpenAPI specification is not flexible enough to represent this.\n\nGlobal endpoints are triggered by using a specific header or query parameter.\n\nThe documentation for those parameters states the response type that'll be received.",
