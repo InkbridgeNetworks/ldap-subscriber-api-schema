@@ -3450,15 +3450,10 @@
   ],
   "security": [
     {
-      "OIDC": [
-        "read:realm",
-        "write:realm",
-        "read:profile",
-        "write:profile",
-        "read:client",
-        "write:client",
-        "read:accessDevice"
-      ]
+      "OIDC": []
+    },
+    {
+      "AccessToken": []
     }
   ]
 }
