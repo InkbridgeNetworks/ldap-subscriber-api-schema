@@ -950,7 +950,6 @@
           "Abstract profile (serviceProfile)"
         ],
         "security": [
-          {},
           {
             "OIDC": [
               "read:profile"
@@ -1675,7 +1674,6 @@
         "description": "Return an array of ports associated with an client",
         "summary": "List ports associated with a client",
         "security": [
-          {},
           {
             "OIDC": [
               "read:client"
@@ -3381,6 +3379,12 @@
     "examples": {},
     "requestBodies": {},
     "securitySchemes": {
+      "AccessToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Bearer access token used to call API."
+      },
       "OIDC": {
         "type": "oauth2",
         "flows": {
