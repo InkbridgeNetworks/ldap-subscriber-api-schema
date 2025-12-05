@@ -52,7 +52,9 @@
         "summary": "List available realms",
         "security": [
           {
-            "AccessToken": ["read:realm"]
+            "OIDC": [
+              "read:realm"
+            ]
           }
         ]
       },
@@ -89,7 +91,9 @@
         "summary": "Add a new realm",
         "security": [
           {
-            "AccessToken": ["write:realm"]
+            "OIDC": [
+              "write:realm"
+            ]
           }
         ]
       }
@@ -127,7 +131,14 @@
           },
           "description": "Return an existing realm definition"
         },
-        "summary": "Return a specific realm"
+        "summary": "Return a specific realm",
+        "security": [
+          {
+            "OIDC": [
+              "read:realm"
+            ]
+          }
+        ]
       },
       "put": {
         "operationId": "put-realm-realmId",
@@ -159,7 +170,14 @@
         "tags": [
           "Realm"
         ],
-        "summary": "Replace a realm"
+        "summary": "Replace a realm",
+        "security": [
+          {
+            "OIDC": [
+              "write:realm"
+            ]
+          }
+        ]
       },
       "patch": {
         "operationId": "patch-realm-realmId",
@@ -191,7 +209,14 @@
         "tags": [
           "Realm"
         ],
-        "summary": "Update a realm"
+        "summary": "Update a realm",
+        "security": [
+          {
+            "OIDC": [
+              "write:realm"
+            ]
+          }
+        ]
       },
       "delete": {
         "operationId": "delete-realm-realmId",
@@ -215,7 +240,14 @@
         "tags": [
           "Realm"
         ],
-        "summary": "Delete a realm"
+        "summary": "Delete a realm",
+        "security": [
+          {
+            "OIDC": [
+              "write:realm"
+            ]
+          }
+        ]
       }
     },
     "/realm/{realmId}/subscriber": {
@@ -248,7 +280,14 @@
         },
         "operationId": "get-realm-realmId-subscriber",
         "description": "Return an array of all subscribers in a realm",
-        "summary": "List subscribers in a realm"
+        "summary": "List subscribers in a realm",
+        "security": [
+          {
+            "OIDC": [
+              "read:subscriber"
+            ]
+          }
+        ]
       },
       "post": {
         "operationId": "post-realm-realmId-subscriber",
@@ -280,7 +319,14 @@
           "Subscriber"
         ],
         "description": "Add a new subscriber",
-        "summary": "Add a subscriber to a realm"
+        "summary": "Add a subscriber to a realm",
+        "security": [
+          {
+            "OIDC": [
+              "write:subscriber"
+            ]
+          }
+        ]
       }
     },
     "/realm/{realmId}/subscriber/{compoundSubscriberId}": {
@@ -316,7 +362,14 @@
         },
         "operationId": "get-realm-realmId-subscriber-subscriberId",
         "description": "Get specific subscriber for a given realm",
-        "summary": "Return a subscriber"
+        "summary": "Return a subscriber",
+        "security": [
+          {
+            "OIDC": [
+              "read:subscriber"
+            ]
+          }
+        ]
       },
       "put": {
         "operationId": "put-realm-realmId-subscriber-subscriberId",
@@ -348,7 +401,14 @@
         "tags": [
           "Subscriber"
         ],
-        "summary": "Replace a subscriber"
+        "summary": "Replace a subscriber",
+        "security": [
+          {
+            "OIDC": [
+              "write:subscriber"
+            ]
+          }
+        ]
       },
       "patch": {
         "operationId": "patch-realm-realmId-subscriber-subscriberId",
@@ -380,7 +440,14 @@
           "Subscriber"
         ],
         "description": "Update a subscriber in a given realm by replacing only the provided attributes.\n\nAttributes with a null value will be removed.\n\nMulti-valued attributes will have all values replaced",
-        "summary": "Update a subscriber"
+        "summary": "Update a subscriber",
+        "security": [
+          {
+            "OIDC": [
+              "write:subscriber"
+            ]
+          }
+        ]
       },
       "delete": {
         "operationId": "delete-realm-realmId-subscriber-subscriberId",
@@ -404,7 +471,14 @@
             "$ref": "#/components/parameters/prune"
           }
         ],
-        "summary": "Delete a subscriber"
+        "summary": "Delete a subscriber",
+        "security": [
+          {
+            "OIDC": [
+              "write:subscriber"
+            ]
+          }
+        ]
       }
     },
     "/group": {
@@ -432,7 +506,14 @@
         },
         "operationId": "get-group",
         "description": "Return an array of available subscriber groups",
-        "summary": "List available subscriberGroups"
+        "summary": "List available subscriberGroups",
+        "security": [
+          {
+            "OIDC": [
+              "read:subscriber"
+            ]
+          }
+        ]
       },
       "parameters": [],
       "post": {
@@ -465,7 +546,14 @@
         "tags": [
           "Subscriber group"
         ],
-        "summary": "Add a subscriberGroup"
+        "summary": "Add a subscriberGroup",
+        "security": [
+          {
+            "OIDC": [
+              "write:subscriber"
+            ]
+          }
+        ]
       }
     },
     "/group/{subscriberGroupId}": {
@@ -498,7 +586,14 @@
         "tags": [
           "Subscriber group"
         ],
-        "summary": "Return a subscriberGroup"
+        "summary": "Return a subscriberGroup",
+        "security": [
+          {
+            "OIDC": [
+              "read:subscriber"
+            ]
+          }
+        ]
       },
       "put": {
         "operationId": "put-group-subscriberGroupId",
@@ -530,7 +625,14 @@
         "tags": [
           "Subscriber group"
         ],
-        "summary": "Replace a subscriberGroup"
+        "summary": "Replace a subscriberGroup",
+        "security": [
+          {
+            "OIDC": [
+              "write:subscriber"
+            ]
+          }
+        ]
       },
       "patch": {
         "operationId": "patch-group-subscriberGroupId",
@@ -553,7 +655,14 @@
         "tags": [
           "Subscriber group"
         ],
-        "summary": "Update a subscriberGroup"
+        "summary": "Update a subscriberGroup",
+        "security": [
+          {
+            "OIDC": [
+              "write:subscriber"
+            ]
+          }
+        ]
       },
       "delete": {
         "operationId": "delete-group-subscriberGroupId",
@@ -570,6 +679,13 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/prune"
+          }
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:subscriber"
+            ]
           }
         ]
       }
@@ -602,6 +718,13 @@
         "summary": "List available services",
         "tags": [
           "Service"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "read:service"
+            ]
+          }
         ]
       },
       "post": {
@@ -634,6 +757,13 @@
         "summary": "Add a new service",
         "tags": [
           "Service"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:service"
+            ]
+          }
         ]
       }
     },
@@ -667,6 +797,13 @@
         "summary": "Return a service",
         "tags": [
           "Service"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "read:service"
+            ]
+          }
         ]
       },
       "put": {
@@ -699,6 +836,13 @@
         "summary": "Replace a service",
         "tags": [
           "Service"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:service"
+            ]
+          }
         ]
       },
       "patch": {
@@ -731,6 +875,13 @@
         "summary": "Update a service",
         "tags": [
           "Service"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:service"
+            ]
+          }
         ]
       },
       "delete": {
@@ -754,6 +905,13 @@
         ],
         "tags": [
           "Service"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:service"
+            ]
+          }
         ]
       }
     },
@@ -790,6 +948,14 @@
         "summary": "List serviceProfiles in a service",
         "tags": [
           "Abstract profile (serviceProfile)"
+        ],
+        "security": [
+          {},
+          {
+            "OIDC": [
+              "read:profile"
+            ]
+          }
         ]
       },
       "post": {
@@ -822,6 +988,13 @@
         "summary": "Add a serviceProfile to a service",
         "tags": [
           "Abstract profile (serviceProfile)"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:profile"
+            ]
+          }
         ]
       }
     },
@@ -858,6 +1031,13 @@
         "summary": "Return a serviceProfile",
         "tags": [
           "Abstract profile (serviceProfile)"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "read:profile"
+            ]
+          }
         ]
       },
       "put": {
@@ -890,6 +1070,13 @@
         "summary": "Replace a serviceProfile",
         "tags": [
           "Abstract profile (serviceProfile)"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:profile"
+            ]
+          }
         ]
       },
       "patch": {
@@ -922,6 +1109,13 @@
         "summary": "Update a serviceProfile",
         "tags": [
           "Abstract profile (serviceProfile)"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:profile"
+            ]
+          }
         ]
       },
       "delete": {
@@ -946,6 +1140,13 @@
         "summary": "Delete a serviceProfile",
         "tags": [
           "Abstract profile (serviceProfile)"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:profile"
+            ]
+          }
         ]
       }
     },
@@ -985,6 +1186,13 @@
         "summary": "List freeradiusPolicies in a serviceProfile",
         "tags": [
           "Concrete profile (freeradiusProfile)"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:profile"
+            ]
+          }
         ]
       },
       "post": {
@@ -1017,40 +1225,26 @@
         "summary": "Add a freeradiusProfile to a serviceProfile",
         "tags": [
           "Concrete profile (freeradiusProfile)"
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:profile"
+            ]
+          }
         ]
       }
     },
-    "/service/{serviceId}/profile/{profileId}/policy/{clientGroupId}": {
+    "/service/{serviceId}/profile/{profileId}/policy/{policyId}": {
       "parameters": [
         {
-          "name": "serviceId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "example": "fixedLine"
-          },
-          "description": "Identifier for a type of service provided by the ISP or carrier, e.g fixedLine, cellular etc.."
+          "$ref": "#/components/parameters/serviceId"
         },
         {
-          "name": "profileId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "example": "INETG1M"
-          },
-          "description": "Identifier for an abstract class of service profile"
+          "$ref": "#/components/parameters/profileId"
         },
         {
-          "name": "clientGroupId",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "example": "myFirstNas"
-          },
-          "description": "Identifier for a concrete class of service profile"
+          "$ref": "#/components/parameters/policyId"
         }
       ],
       "get": {
@@ -1077,6 +1271,16 @@
         "summary": "Return a freeradiusProfile associated with a serviceProfile",
         "tags": [
           "Concrete profile (freeradiusProfile)"
+        ],
+        "x-stoplight": {
+          "id": "o6if20ghsoepw"
+        },
+        "security": [
+          {
+            "OIDC": [
+              "read:profile"
+            ]
+          }
         ]
       },
       "put": {
@@ -1109,6 +1313,16 @@
         "summary": "Replace a freeradiusProfile",
         "tags": [
           "Concrete profile (freeradiusProfile)"
+        ],
+        "x-stoplight": {
+          "id": "gdb5vt9e5agqf"
+        },
+        "security": [
+          {
+            "OIDC": [
+              "write:profile"
+            ]
+          }
         ]
       },
       "patch": {
@@ -1141,6 +1355,16 @@
         "summary": "Update a freeradiusProfile",
         "tags": [
           "Concrete profile (freeradiusProfile)"
+        ],
+        "x-stoplight": {
+          "id": "3xdc6wqr82nky"
+        },
+        "security": [
+          {
+            "OIDC": [
+              "write:profile"
+            ]
+          }
         ]
       },
       "delete": {
@@ -1164,6 +1388,16 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/prune"
+          }
+        ],
+        "x-stoplight": {
+          "id": "onq9wcmzdz2df"
+        },
+        "security": [
+          {
+            "OIDC": [
+              "write:profile"
+            ]
           }
         ]
       }
@@ -1196,7 +1430,14 @@
         },
         "operationId": "get-client",
         "description": "Return an array of clients",
-        "summary": "List clients"
+        "summary": "List clients",
+        "security": [
+          {
+            "OIDC": [
+              "read:client"
+            ]
+          }
+        ]
       },
       "post": {
         "operationId": "post-client",
@@ -1228,7 +1469,14 @@
         "tags": [
           "Client"
         ],
-        "summary": "Add a client"
+        "summary": "Add a client",
+        "security": [
+          {
+            "OIDC": [
+              "write:client"
+            ]
+          }
+        ]
       }
     },
     "/client/{clientId}": {
@@ -1261,7 +1509,14 @@
         "tags": [
           "Client"
         ],
-        "summary": "Return a client"
+        "summary": "Return a client",
+        "security": [
+          {
+            "OIDC": [
+              "read:client"
+            ]
+          }
+        ]
       },
       "put": {
         "operationId": "put-client-clientId",
@@ -1293,7 +1548,14 @@
         "tags": [
           "Client"
         ],
-        "summary": "Replace a client"
+        "summary": "Replace a client",
+        "security": [
+          {
+            "OIDC": [
+              "write:client"
+            ]
+          }
+        ]
       },
       "patch": {
         "operationId": "patch-client-clientId",
@@ -1325,7 +1587,14 @@
         "tags": [
           "Client"
         ],
-        "summary": "Update a client"
+        "summary": "Update a client",
+        "security": [
+          {
+            "OIDC": [
+              "write:client"
+            ]
+          }
+        ]
       },
       "delete": {
         "operationId": "delete-client-clientId",
@@ -1348,6 +1617,13 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/prune"
+          }
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:client"
+            ]
           }
         ]
       }
@@ -1397,7 +1673,15 @@
         },
         "operationId": "get-client-port",
         "description": "Return an array of ports associated with an client",
-        "summary": "List ports associated with a client"
+        "summary": "List ports associated with a client",
+        "security": [
+          {},
+          {
+            "OIDC": [
+              "read:client"
+            ]
+          }
+        ]
       },
       "post": {
         "operationId": "post-client-port",
@@ -1436,7 +1720,14 @@
         "tags": [
           "Client"
         ],
-        "summary": "Add a port associated with a client"
+        "summary": "Add a port associated with a client",
+        "security": [
+          {
+            "OIDC": [
+              "write:client"
+            ]
+          }
+        ]
       },
       "parameters": [
         {
@@ -1484,7 +1775,14 @@
         "tags": [
           "Client"
         ],
-        "summary": "Return a port associated with a client"
+        "summary": "Return a port associated with a client",
+        "security": [
+          {
+            "OIDC": [
+              "read:client"
+            ]
+          }
+        ]
       },
       "put": {
         "operationId": "put-client-portId",
@@ -1523,7 +1821,14 @@
         "tags": [
           "Client"
         ],
-        "summary": "Replace a port associated with a client"
+        "summary": "Replace a port associated with a client",
+        "security": [
+          {
+            "OIDC": [
+              "write:client"
+            ]
+          }
+        ]
       },
       "patch": {
         "operationId": "patch-client-portId",
@@ -1562,7 +1867,14 @@
         "tags": [
           "Client"
         ],
-        "summary": "Update a port associated with a client"
+        "summary": "Update a port associated with a client",
+        "security": [
+          {
+            "OIDC": [
+              "write:client"
+            ]
+          }
+        ]
       },
       "delete": {
         "operationId": "delete-client-portd",
@@ -1585,6 +1897,13 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/prune"
+          }
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:client"
+            ]
           }
         ]
       }
@@ -1617,7 +1936,14 @@
         "tags": [
           "Client group"
         ],
-        "summary": "List clientGroups"
+        "summary": "List clientGroups",
+        "security": [
+          {
+            "OIDC": [
+              "read:client"
+            ]
+          }
+        ]
       },
       "post": {
         "operationId": "post-clientGroup",
@@ -1649,7 +1975,14 @@
         "tags": [
           "Client group"
         ],
-        "summary": "Add an clientGroup"
+        "summary": "Add an clientGroup",
+        "security": [
+          {
+            "OIDC": [
+              "write:client"
+            ]
+          }
+        ]
       }
     },
     "/clientGroup/{clientGroupId}": {
@@ -1682,7 +2015,14 @@
         },
         "operationId": "get-client-group-clientGroupId",
         "description": "Return an clientGroup",
-        "summary": "Return an clientGroup"
+        "summary": "Return an clientGroup",
+        "security": [
+          {
+            "OIDC": [
+              "read:client"
+            ]
+          }
+        ]
       },
       "put": {
         "operationId": "put-clientGroup-clientGroupId",
@@ -1711,7 +2051,14 @@
         "tags": [
           "Client group"
         ],
-        "summary": "Replace an clientGroup"
+        "summary": "Replace an clientGroup",
+        "security": [
+          {
+            "OIDC": [
+              "write:client"
+            ]
+          }
+        ]
       },
       "patch": {
         "operationId": "patch-clientGroup-clientGroupId",
@@ -1743,7 +2090,14 @@
         "tags": [
           "Client group"
         ],
-        "summary": "Update an clientGroup"
+        "summary": "Update an clientGroup",
+        "security": [
+          {
+            "OIDC": [
+              "write:client"
+            ]
+          }
+        ]
       },
       "delete": {
         "operationId": "delete-clientGroup-clientGroupId",
@@ -1766,6 +2120,13 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/prune"
+          }
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:client"
+            ]
           }
         ]
       }
@@ -1798,7 +2159,14 @@
         },
         "operationId": "get-accessDevice",
         "description": "Return an array of accessDevices",
-        "summary": "List accessDevices"
+        "summary": "List accessDevices",
+        "security": [
+          {
+            "OIDC": [
+              "read:accessDevice"
+            ]
+          }
+        ]
       },
       "post": {
         "operationId": "post-accessDevice",
@@ -1830,7 +2198,14 @@
         "tags": [
           "accessDevice"
         ],
-        "summary": "Add an accessDevice"
+        "summary": "Add an accessDevice",
+        "security": [
+          {
+            "OIDC": [
+              "write:accessDevice"
+            ]
+          }
+        ]
       }
     },
     "/accessDevice/{accessDeviceId}": {
@@ -1863,7 +2238,14 @@
         "tags": [
           "accessDevice"
         ],
-        "summary": "Return an accessDevice"
+        "summary": "Return an accessDevice",
+        "security": [
+          {
+            "OIDC": [
+              "read:accessDevice"
+            ]
+          }
+        ]
       },
       "put": {
         "operationId": "put-accessDevice-accessDeviceId",
@@ -1895,7 +2277,14 @@
         "tags": [
           "accessDevice"
         ],
-        "summary": "Replace an accessDevice"
+        "summary": "Replace an accessDevice",
+        "security": [
+          {
+            "OIDC": [
+              "write:accessDevice"
+            ]
+          }
+        ]
       },
       "patch": {
         "operationId": "patch-accessDevice-accessDeviceId",
@@ -1927,7 +2316,14 @@
         "tags": [
           "accessDevice"
         ],
-        "summary": "Update an accessDevice"
+        "summary": "Update an accessDevice",
+        "security": [
+          {
+            "OIDC": [
+              "write:accessDevice"
+            ]
+          }
+        ]
       },
       "delete": {
         "operationId": "delete-accessDevice-accessDeviceId",
@@ -1950,6 +2346,13 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/prune"
+          }
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:accessDevice"
+            ]
           }
         ]
       }
@@ -1999,7 +2402,14 @@
         },
         "operationId": "get-accessDevice-port",
         "description": "Return an array of ports associated with an accessDevice",
-        "summary": "List ports associated with an accessDevice"
+        "summary": "List ports associated with an accessDevice",
+        "security": [
+          {
+            "OIDC": [
+              "read:accessDevice"
+            ]
+          }
+        ]
       },
       "post": {
         "operationId": "post-accessDevice-port",
@@ -2038,7 +2448,14 @@
         "tags": [
           "accessDevice"
         ],
-        "summary": "Add a port associated with an accessDevice"
+        "summary": "Add a port associated with an accessDevice",
+        "security": [
+          {
+            "OIDC": [
+              "write:accessDevice"
+            ]
+          }
+        ]
       },
       "parameters": [
         {
@@ -2086,7 +2503,14 @@
         "tags": [
           "accessDevice"
         ],
-        "summary": "Return a port associated with an accessDevice"
+        "summary": "Return a port associated with an accessDevice",
+        "security": [
+          {
+            "OIDC": [
+              "read:client"
+            ]
+          }
+        ]
       },
       "put": {
         "operationId": "put-accessDevice-portId",
@@ -2125,7 +2549,14 @@
         "tags": [
           "accessDevice"
         ],
-        "summary": "Replace a port associated with an accessDevice"
+        "summary": "Replace a port associated with an accessDevice",
+        "security": [
+          {
+            "OIDC": [
+              "write:accessDevice"
+            ]
+          }
+        ]
       },
       "patch": {
         "operationId": "patch-accessDevice-portId",
@@ -2164,7 +2595,14 @@
         "tags": [
           "accessDevice"
         ],
-        "summary": "Update a port associated with an accessDevice"
+        "summary": "Update a port associated with an accessDevice",
+        "security": [
+          {
+            "OIDC": [
+              "write:accessDevice"
+            ]
+          }
+        ]
       },
       "delete": {
         "operationId": "delete-accessDevice-portd",
@@ -2187,6 +2625,13 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/prune"
+          }
+        ],
+        "security": [
+          {
+            "OIDC": [
+              "write:accessDevice"
+            ]
           }
         ]
       }
@@ -2797,6 +3242,15 @@
           "type": "string"
         },
         "description": "Unique identifier for a port, within a client or accessDevice"
+      },
+      "policyId": {
+        "name": "policyId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Identifier for an concrete class of service profile"
       }
     },
     "responses": {
@@ -2882,22 +3336,41 @@
                 "x-stoplight": {
                   "id": "sejmivgbh3y7g"
                 },
-                "type": "string",
-                "pattern": "^[rmd]{1,3}$",
-                "example": "r"
-              }
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 2,
+                "uniqueItems": true,
+                "items": {
+                  "x-stoplight": {
+                    "id": "e7yz6nsdxgkln"
+                  },
+                  "enum": [
+                    "read",
+                    "write"
+                  ],
+                  "readOnly": true
+                },
+                "readOnly": true
+              },
+              "readOnly": true
             },
             "examples": {
-              "permissionsResponse - Querying /": {
+              "Permissions for '/'": {
                 "value": {
-                  "realm": "r",
-                  "subscriber": "rmd",
-                  "service": "rm"
+                  "/realm": [
+                    "read",
+                    "write"
+                  ],
+                  "/client": [
+                    "read"
+                  ]
                 }
               },
-              "permissionsResponse - Querying /realm/<realm>/": {
+              "Permissions for '/realm/example'": {
                 "value": {
-                  "subscriber": "rmd"
+                  "/realm/example/subscriber": [
+                    "read"
+                  ]
                 }
               }
             }
@@ -2905,15 +3378,33 @@
         }
       }
     },
-    "securitySchemes": {
-      "AccessToken": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      }
-    },
     "examples": {},
-    "requestBodies": {}
+    "requestBodies": {},
+    "securitySchemes": {
+      "OIDC": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://idp.example.com/oauth2/authorize",
+            "tokenUrl": "https://idp.example.com/oauth2/token",
+            "scopes": {
+              "read:realm": "Read realms",
+              "write:realm": "Modify realms",
+              "read:subscriber": "Read subscribers and subscriberGroups",
+              "write:subscriber": "Modify subscribers and subscriberGroups",
+              "read:service": "Read services",
+              "write:service": "Modify services",
+              "read:profile": "Read profiles, and policies",
+              "write:profile": "Modify profiles, and policies",
+              "read:client": "Read clients and clientGroups",
+              "write:client": "Write clients and clientGroups",
+              "read:accessDevice": "Read access devices",
+              "write:accessDevice": "Modify access devices"
+            }
+          }
+        }
+      }
+    }
   },
   "tags": [
     {
@@ -2955,7 +3446,15 @@
   ],
   "security": [
     {
-      "AccessToken": []
+      "OIDC": [
+        "read:realm",
+        "write:realm",
+        "read:profile",
+        "write:profile",
+        "read:client",
+        "write:client",
+        "read:accessDevice"
+      ]
     }
   ]
 }
