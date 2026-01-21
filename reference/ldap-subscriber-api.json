@@ -43,6 +43,12 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/onUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/onForbidden"
+          },
           "500": {
             "$ref": "#/components/responses/onInternalServerError"
           }
@@ -66,6 +72,12 @@
           },
           "400": {
             "$ref": "#/components/responses/onBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/onUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/onForbidden"
           },
           "409": {
             "$ref": "#/components/responses/onConflict"
@@ -112,6 +124,12 @@
           "200": {
             "$ref": "#/components/responses/onSuccess"
           },
+          "401": {
+            "$ref": "#/components/responses/onUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/onForbidden"
+          },
           "404": {
             "$ref": "#/components/responses/onNotFound"
           },
@@ -148,6 +166,12 @@
           },
           "400": {
             "$ref": "#/components/responses/onBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/onUnauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "$ref": "#/components/responses/onNotFound"
@@ -188,6 +212,12 @@
           "400": {
             "$ref": "#/components/responses/onBadRequest"
           },
+          "401": {
+            "$ref": "#/components/responses/onUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/onForbidden"
+          },
           "404": {
             "$ref": "#/components/responses/onNotFound"
           },
@@ -223,6 +253,9 @@
         "responses": {
           "200": {
             "$ref": "#/components/responses/onSuccess"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "$ref": "#/components/responses/onNotFound"
@@ -3369,6 +3402,79 @@
                   "/realm/example/subscriber": [
                     "read"
                   ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "onUnauthorized": {
+        "description": "The access token is missing, expired, or invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "error_msg"
+              ],
+              "properties": {
+                "error_msg": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "l7wa0zxbbp8cz"
+                  },
+                  "default": "The access token is missing, expired, or invalid",
+                  "description": "A description of the authentication error."
+                }
+              }
+            }
+          }
+        },
+        "headers": {
+          "WWW-Authenticate": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Bearer realm=\"api\", error=\"invalid_token\", error_description=\"The access token is missing or invalid\""
+          }
+        }
+      },
+      "onForbidden": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "error_msg",
+                "required_scope"
+              ],
+              "properties": {
+                "error_msg": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "lzfbavpxancjo"
+                  },
+                  "default": "The token does not have the required scope to access this resource",
+                  "description": "Description of the error"
+                },
+                "required_scope": {
+                  "type": [
+                    "array"
+                  ],
+                  "x-stoplight": {
+                    "id": "3153skj4zfh0q"
+                  },
+                  "description": "What scope would have been required to access this resource",
+                  "deprecated": true,
+                  "items": {
+                    "x-stoplight": {
+                      "id": "ml311rivgj4eg"
+                    },
+                    "type": "string",
+                    "example": "read:realm"
+                  },
+                  "readOnly": true
                 }
               }
             }
