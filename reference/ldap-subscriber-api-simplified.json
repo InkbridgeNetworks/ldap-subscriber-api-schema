@@ -398,6 +398,19 @@
               "username": "testpppuser1",
               "password": "{sha256}E3D/UMV7I97LdXFFJa7OAVgRSZGXjW7fgY9SjrjMtCk="
             }
+          },
+          {
+            "subscriberId": "A123456789",
+            "serviceProfile": [
+              "dynamicSpeed"
+            ],
+            "serviceStatus": "enabled",
+            "serviceSpeedUpload": "500M",
+            "serviceSpeedDownload": "500M",
+            "portBindingId": [
+              "client/172.17.0.1/port/1%2F2%2F1/qinq/2055+1999",
+              "client/172.17.0.1/port/10%2F1%2F1/qinq/2055+1999"
+            ]
           }
         ],
         "properties": {
