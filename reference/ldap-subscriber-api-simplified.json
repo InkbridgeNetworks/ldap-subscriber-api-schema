@@ -497,7 +497,7 @@
               "client/192.168.2.0/port/6%2F1%2F1/qinq/102+101",
               "client/192.168.2.0/port/6%2F1%2F2/qinq/102+102"
             ],
-            "description": "An optional reference to a port which should be associated with this subscriber. If the port already points to an existing subscriber an error will be returned.",
+            "description": "An optional reference to a port which should be associated with this subscriber. If the port already points to an existing subscriber an error will be returned.  The QinQ component is written as `<stag>+<ctag>`.",
             "items": {
               "x-stoplight": {
                 "id": "7bd4tot7ztfgi"
