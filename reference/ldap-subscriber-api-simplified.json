@@ -160,6 +160,24 @@
                     "serviceProfileSuspended": "nonPaymentSuspend",
                     "serviceStatus": "suspended"
                   }
+                },
+                "Assigning multiple port bindings for grooming": {
+                  "value": {
+                    "portBindingIdentifier": [
+                      "client/192.168.2.0/port/6%2F1%2F1/qinq/102+102",
+                      "client/192.168.2.0/port/6%2F1%2F2/qinq/102+102"
+                    ]
+                  }
+                },
+                "Remove subscriber staticIp": {
+                  "value": {
+                    "staticIp": null
+                  }
+                },
+                "Remove subscriber port binding": {
+                  "value": {
+                    "portBindingIdentifier": null
+                  }
                 }
               }
             }
@@ -325,6 +343,24 @@
                   "value": {
                     "serviceProfileSuspended": "nonPaymentSuspend",
                     "serviceStatus": "suspended"
+                  }
+                },
+                "Assigning multiple port bindings for grooming": {
+                  "value": {
+                    "portBindingIdentifier": [
+                      "client/192.168.2.0/port/6%2F1%2F1/qinq/102+102",
+                      "client/192.168.2.0/port/6%2F1%2F2/qinq/102+102"
+                    ]
+                  }
+                },
+                "Remove subscriber staticIp": {
+                  "value": {
+                    "staticIp": null
+                  }
+                },
+                "Remove subscriber port binding": {
+                  "value": {
+                    "portBindingIdentifier": null
                   }
                 }
               }
@@ -497,7 +533,7 @@
               "client/192.168.2.0/port/6%2F1%2F1/qinq/102+101",
               "client/192.168.2.0/port/6%2F1%2F2/qinq/102+102"
             ],
-            "description": "An optional reference to a port which should be associated with this subscriber. If the port already points to an existing subscriber an error will be returned.  The QinQ component is written as `<stag>+<ctag>`.",
+            "description": "An optional reference to a port which should be associated with this subscriber. If the port already points to an existing subscriber an error will be returned.  The QinQ component is written as `<stag>+<ctag>`.\n\nNote (For multiple port bindings for grooming): After grooming is complete, the second port binding must be removed by sending a PATCH request that includes only the current (active) port binding.",
             "items": {
               "x-stoplight": {
                 "id": "7bd4tot7ztfgi"
