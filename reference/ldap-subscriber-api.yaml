@@ -2521,6 +2521,172 @@ paths:
       security:
       - OIDC:
         - write:accessDevice
+  /bulk:
+    post:
+      operationId: post-bulk
+      summary: Run many requests in one call
+      description: |
+        Submit a list of API requests in a single HTTP call and have the server run them against its own endpoints, then stream back one result per request.
+
+        This saves a round trip per request when a client needs to create, read, update, or delete many resources at once.  The client sends one request; the server replays each entry in the `payload` list against the matching local endpoint (for example `POST /realm`, `DELETE /client/1`) exactly as if the client had called that endpoint directly.
+
+        How a bulk call is processed:
+
+        1. The server reads the `payload` list and validates every entry up front.  If any entry is missing a `url` or `method`, or uses a method other than `GET`, `POST`, `PATCH`, `PUT`, or `DELETE`, the whole call is rejected with `400` before anything runs.
+        2. The server groups the entries into batches of `batchSize` (default 20) and runs each batch concurrently.  Entries within a batch run at the same time; batches run one after another.
+        3. As each batch finishes, the server streams its results to the client.  The response is sent incrementally, so a large bulk call does not have to be held in memory in full before the client sees the first result.
+        4. When every batch is done, the server appends a `stats` object summarising how many requests were processed and how many succeeded.
+
+        Authorization is enforced per entry, not on the bulk call as a whole.  Each replayed request carries the caller's access token and is checked against the scope its own endpoint requires (for example an entry that does `POST /realm` needs `write:realm`).  An entry the caller is not allowed to make comes back with a `403` in its own result, while the rest of the batch still runs.
+
+        Streaming changes how errors are reported.  Once the server has started writing the response body it can no longer change the HTTP status line, so the HTTP status of a bulk call is almost always `200` even when individual entries fail or the run is aborted.  Clients MUST inspect the `code` field inside each result, and the `stats` object, to determine the real outcome.  If a fatal error happens part way through streaming, the server closes the JSON document early and adds top-level `err_msg` and `code` fields describing the failure.
+
+        Transactions (`asTransaction`) are not implemented.  A request that sets `asTransaction` to `true` is rejected with `400`.  Without transactions, a failure in one entry does not roll back entries that already succeeded.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - payload
+              properties:
+                payload:
+                  type: array
+                  minItems: 1
+                  description: The list of requests to run.  Each entry is replayed against the API endpoint that matches its `url`.
+                  items:
+                    type: object
+                    required:
+                    - url
+                    - method
+                    properties:
+                      url:
+                        type: string
+                        format: uri-reference
+                        description: Resource path to call, relative to the API root.  A leading `/` is added if absent, so `realm/example.org` and `/realm/example.org` are equivalent.
+                        example: /realm/example.org
+                      method:
+                        type: string
+                        enum:
+                        - GET
+                        - POST
+                        - PATCH
+                        - PUT
+                        - DELETE
+                        description: HTTP method to use for this entry.
+                        example: POST
+                      body:
+                        description: |
+                          Request body for this entry.  Optional for `GET` and `DELETE`.  The type depends on the top-level `jsonBody` flag: when `jsonBody` is `true`, `body` must be a JSON object and the server serialises it before dispatching; when `jsonBody` is `false` (the default), `body` must be an already-serialised JSON string.
+                        oneOf:
+                        - type: object
+                        - type: string
+                failEarly:
+                  type: boolean
+                  default: false
+                  description: If `true`, stop as soon as an entry returns a status other than `200` or `201`; remaining entries are not run.  If `false`, run every entry regardless of individual failures.
+                jsonBody:
+                  type: boolean
+                  default: false
+                  description: |
+                    Controls how each entry's `body` is carried, and how each response body is returned.  When `true`, every entry's `body` must be a JSON object (the server serialises it for the dispatched request) and each response body is parsed back into a JSON object in the result.  When `false`, every entry's `body` must be a pre-serialised string and each response body is returned verbatim as a string.
+                batchSize:
+                  type: integer
+                  minimum: 0
+                  default: 20
+                  description: Number of entries to run concurrently per batch.  A value of `0` runs the entire payload as a single concurrent batch.
+                  example: 20
+                asTransaction:
+                  type: boolean
+                  default: false
+                  description: Reserved for transactional processing.  Not implemented; sending `true` is rejected with `400`.
+            examples:
+              Create two realms:
+                value:
+                  jsonBody: true
+                  payload:
+                  - url: /realm/example.org
+                    method: POST
+                    body:
+                      id: example.org
+                      description: First realm
+                  - url: /realm/example.com
+                    method: POST
+                    body:
+                      id: example.com
+                      description: Second realm
+      responses:
+        '200':
+          description: |
+            The bulk call was accepted and its results streamed back.  A `200` here does NOT mean every entry succeeded; inspect each result's `code` and the `stats` object.  If the run was aborted mid-stream, top-level `err_msg` and `code` fields are present and the `result` array may be truncated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    description: One entry per request that was run, in payload order.
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          format: uri-reference
+                          description: The resource path that was called.
+                        method:
+                          type: string
+                          description: The HTTP method that was used.
+                        code:
+                          type: integer
+                          description: The HTTP status code returned by the endpoint for this entry.
+                          example: 201
+                        body:
+                          description: The response body for this entry.  A JSON object when `jsonBody` is `true`, a string otherwise, or absent when the endpoint returned no body.
+                          oneOf:
+                          - type: object
+                          - type: string
+                          - type: 'null'
+                  stats:
+                    type: object
+                    description: Summary counts for the whole run.
+                    properties:
+                      processed:
+                        type: integer
+                        description: Total number of entries that were run.
+                        example: 2
+                      successful:
+                        type: integer
+                        description: Number of entries that returned `200` or `201`.
+                        example: 2
+                      failed:
+                        type: integer
+                        description: Number of entries that returned any other status (`processed` minus `successful`).
+                        example: 0
+                  err_msg:
+                    type: string
+                    description: Present only when a fatal error aborted the run mid-stream.  Describes the failure.
+                  code:
+                    type: integer
+                    description: Present only alongside `err_msg`.  The HTTP status code that would have been returned had the error happened before streaming started.
+        '400':
+          description: |
+            The bulk request itself was malformed and rejected before any entry ran.  Causes include a missing or empty `payload`, an entry missing `url` or `method`, an entry using an unsupported method, a `body` whose type does not match the `jsonBody` flag, or `asTransaction` set to `true`.
+          content:
+            application/json:
+              schema: {}
+        '401':
+          $ref: '#/components/responses/onUnauthorized'
+        '403':
+          $ref: '#/components/responses/onForbidden'
+        '405':
+          description: Method not allowed.  The bulk endpoint accepts `POST` only.
+        '500':
+          $ref: '#/components/responses/onInternalServerError'
+      tags:
+      - Global
+    parameters: []
   /rename:
     post:
       operationId: post-rename
