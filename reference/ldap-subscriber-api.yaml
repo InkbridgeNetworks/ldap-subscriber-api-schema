@@ -264,7 +264,6 @@ paths:
       - $ref: '#/components/parameters/filter_serviceId'
       - $ref: '#/components/parameters/filter_serviceProfile'
       - $ref: '#/components/parameters/filter_subscriberGroup'
-      - $ref: '#/components/parameters/filter_clientGroup'
       - $ref: '#/components/parameters/filter_portBindingClient'
       - $ref: '#/components/parameters/filter_portBindingIdentifier'
       - $ref: '#/components/parameters/subscribe'
@@ -2896,16 +2895,6 @@ components:
           description: The URI of a service profile object to apply to the subscriber
           format: uri
           example: http://localhost:3000/service/fixedLine/profile/suspendedNonPayment
-        clientGroup:
-          type: array
-          format: uri
-          description: The URI(s) of a clientGroup to restrict subscriber to.  Prevents subscriber from connecting RADIUS
-            clients outside of this set of groups
-          uniqueItems: true
-          items:
-            type: string
-            example: http://localhost:3000/client-groups/example.org-bngs
-            format: uri
         subscriberGroup:
           type: array
           format: uri
@@ -2950,6 +2939,34 @@ components:
               - 'true':    any modification to the entry triggers a Disconnect-Request.
               - 'false':   any modification triggers a CoA-Request.
               - 'oneshot': sends an immediate Disconnect-Request, then reverts to 'false'.
+        serviceSpeedUpload:
+          type: string
+          description: Maximum upload bandwidth for the subscriber, as a human-readable rate (digits followed by a B/K/M/G/T/E
+            unit suffix)
+          example: 500M
+        serviceSpeedDownload:
+          type: string
+          description: Maximum download bandwidth for the subscriber, as a human-readable rate (digits followed by a B/K/M/G/T/E
+            unit suffix)
+          example: 500M
+        staticIpV4Addr:
+          type: string
+          format: ipv4
+          description: Static IPv4 address assigned to the subscriber
+          example: 192.0.2.10
+        staticIpV4Prefix:
+          type: string
+          description: Static IPv4 prefix assigned to the subscriber, in CIDR notation
+          example: 192.0.2.0/24
+        staticIpV6Addr:
+          type: string
+          format: ipv6
+          description: Static IPv6 address assigned to the subscriber
+          example: 2001:db8::1
+        staticIpV6Prefix:
+          type: string
+          description: Static IPv6 prefix assigned to the subscriber, in CIDR notation
+          example: 2001:db8::/48
     subscriberGroup:
       title: subscriberGroup
       x-stoplight:
@@ -2989,13 +3006,16 @@ components:
         id:
           type: string
           description: A unique identifier for the subscriberGroup
-        policy:
-          $ref: '#/components/schemas/freeradiusPolicy'
     client:
       title: client
       x-stoplight:
         id: zhddk66aypm1a
-      description: An client that is authorized to communicate with the RADIUS service
+      description: |-
+        A client that is authorized to communicate with the RADIUS service.
+
+        Note: The attributes listed in the definition of the object are a subset of the attributes available.
+
+        Any attribute that's available in the relevant LDAP schema (freeradius-radius.schema, freeradius-dhcpv4.schema, freeradius-dhcpv6.schema, etc...) for the protocol, can be included in POST, PATCH, PUT actions, including generic attributes such as `radiusAttribute`.  Generic attributes take the format `<attribute> <op> <quote><value><quote>` e.g. `Reply-Message := "Welcome user %{User-Name}"`, and can be used to add any attribute allowed in the protocol dictionary.
       allOf:
       - $ref: '#/components/schemas/_clientFields'
       - type: object
@@ -3035,19 +3055,39 @@ components:
           type: string
           example: my-test-client
           description: A friendly name that will be shown in logs
-        freeradiusClientGroup:
+        freeradiusClientType:
           type: string
           description: What the RADIUS client is (type/make/model)
+          example: nokia7750
+        freeradiusClientGroup:
+          type: string
+          description: URI of a clientGroup this client belongs to
           example: http://example.com/clientGroup/nokia7750
           format: uri
         freeradiusClientComment:
           type: string
           description: A humanly readable comment associated with the client
           example: This RADIUS client authenticates all subscriber in the foo region of bar
+        freeradiusClientIpV4Binding:
+          type: string
+          format: ipv4
+          description: If set, the client may only connect to the service from this IPv4 address
+          example: 192.0.2.1
+        freeradiusClientIpV6Binding:
+          type: string
+          format: ipv6
+          description: If set, the client may only connect to the service from this IPv6 address
+          example: 2001:db8::1
+        freeradiusClientRegion:
+          type: string
+          description: The region the client belongs to
+          example: north-west
         radiusClientSecret:
           type: string
           example: testing123
-          description: The shared secret (pre-shared-key) the RADIUS client will use to communicate with the RADIUS service
+          description: Shared secret (pre-shared key) the RADIUS client uses to communicate with the RADIUS service.  Providing
+            this makes the client RADIUS-capable; removing it (a PUT without it, or a PATCH setting it to null) removes RADIUS
+            capability.
           format: password
         radiusClientRequireMa:
           type: boolean
@@ -3055,7 +3095,8 @@ components:
         tacacsClientSecret:
           type: string
           example: testing123
-          description: The shared key the TACACS client will use to communicate with the TACACS service
+          description: Shared key the TACACS client uses to communicate with the TACACS service.  Providing this makes the
+            client TACACS-capable; removing it (a PUT without it, or a PATCH setting it to null) removes TACACS capability.
           format: password
     accessDevice:
       title: accessDevice
@@ -3115,7 +3156,6 @@ components:
       x-stoplight:
         id: 5b9nnqawh4d41
       description: A method of binding subscriber to a particular group of RADIUS clients
-      deprecated: true
       allOf:
       - $ref: '#/components/schemas/_clientGroupFields'
       - type: object
@@ -3124,7 +3164,6 @@ components:
     clientGroupCreate:
       title: clientGroupCreate
       description: clientGroup definition for POST requests.
-      deprecated: true
       allOf:
       - $ref: '#/components/schemas/_clientGroupFields'
       - type: object
@@ -3134,14 +3173,12 @@ components:
       title: clientGroupReplace
       description: clientGroup definition for PUT requests. The identity field (id) is taken from the URL, and is ignored
         when present in the body.
-      deprecated: true
       allOf:
       - $ref: '#/components/schemas/_clientGroupFields'
     clientGroupPatch:
       title: clientGroupPatch
       description: Partial clientGroup definition for PATCH requests. No fields are required. Setting a field to null removes
         the attribute.
-      deprecated: true
       allOf:
       - $ref: '#/components/schemas/_clientGroupFields'
     _clientGroupFields:
@@ -3154,6 +3191,26 @@ components:
           type: string
           description: The identifier for the clientGroup
           example: group1
+        clients:
+          type: array
+          description: URIs of the clients that belong to this group
+          uniqueItems: true
+          items:
+            type: string
+            format: uri
+            example: http://localhost:3000/client/192.0.2.1
+        radiusClientSecret:
+          type: string
+          format: password
+          description: Shared RADIUS secret applied to the group of clients.  Providing this makes the group RADIUS-capable;
+            removing it (a PUT without it, or a PATCH setting it to null) removes RADIUS capability.
+          example: testing123
+        tacacsClientSecret:
+          type: string
+          format: password
+          description: Shared TACACS key applied to the group of clients.  Providing this makes the group TACACS-capable;
+            removing it (a PUT without it, or a PATCH setting it to null) removes TACACS capability.
+          example: testing123
     service:
       title: service
       x-stoplight:
@@ -3239,15 +3296,19 @@ components:
           type: string
           example: INET1M
           description: Identifier for the serviceProfile
-        portBinding:
-          type: boolean
-          description: The default port binding state for any subscriber which uses this serviceProfile
+        description:
+          type: string
+          description: A human-readable description of the serviceProfile
+        serviceProfilePriority:
+          type: integer
+          description: Priority used to order this serviceProfile when several apply to a subscriber
+          example: 10
     freeradiusPolicy:
       title: freeradiusPolicy
       x-stoplight:
         id: ebjv3rkkgvqou
       description: |-
-        A set of FreeRADIUS attributes and assigment rules which modify attributes in the current request.  A freeradiusPolicy is can be a "concrete" implementation of a serviceProfile.  freeradiusPolicies may also be assigned to individual subscribers or subscriberGroups.
+        A set of FreeRADIUS attributes and assigment rules which modify attributes in the current request.  A freeradiusPolicy is can be a "concrete" implementation of a serviceProfile.  freeradiusPolicies may also be assigned to individual subscribers or subscriberGroups.  When a freeradiusPolicy is the concrete implementation of a serviceProfile, its id corresponds to the clientGroup it implements the serviceProfile for.
 
         Note: The attributes listed in the definition of the object are a subset of the attributes available.
 
@@ -3329,13 +3390,6 @@ components:
           type: string
           description: Identifier of this QinQ tagging, in the form `<svlan>+<cvlan>`.
           example: 100+25
-        type:
-          type: string
-          enum:
-          - qinq
-          pattern: ^qinq$
-          example: qinq
-          description: Port type must be 'QinQ'
         svlan:
           type: integer
           maximum: 4096
@@ -3394,19 +3448,6 @@ components:
           type: string
           description: Identifier of this physical port. URL-encoded port name as it appears in the path.
           example: 1%2F2%2F3
-        type:
-          type: string
-          pattern: ^physical$
-          example: physical
-          description: Port type must be 'physical'
-          enum:
-          - physical
-        port:
-          type: string
-          example: 2/1/1
-          description: Identifier for the physical port
-          x-stoplight:
-            id: v6eqp8ruallel
         remoteAssociation:
           type: string
           format: uri
@@ -3454,13 +3495,6 @@ components:
           type: string
           description: Identifier of this S-tag tagging. The S-VLAN as a decimal string.
           example: '100'
-        type:
-          type: string
-          x-stoplight:
-            id: z52ttxx8bdrq9
-          description: Port type must be 'physStag'
-          enum:
-          - physStag
         port:
           type: string
           x-stoplight:
@@ -3616,15 +3650,6 @@ components:
         type: string
         format: uri
       description: Filter by subscriberGroup URI membership. See "URL filter encoding" in the API description for how to encode
-        the value.
-    filter_clientGroup:
-      name: filter_clientGroup
-      in: query
-      required: false
-      schema:
-        type: string
-        format: uri
-      description: Filter by clientGroup URI membership. See "URL filter encoding" in the API description for how to encode
         the value.
     filter_portBindingClient:
       name: filter_portBindingClient
